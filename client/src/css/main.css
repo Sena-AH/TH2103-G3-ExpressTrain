@@ -1,0 +1,87 @@
+/*
+ main body
+*/
+main {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-width: 400px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/*
+ Search-bars
+*/
+.input-search {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  padding: 1rem;
+}
+.input-search input {
+  width: 100%;
+}
+
+/*
+ Radio-btns
+*/
+.input-form {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  padding: 1rem;
+}
+.input-form div {
+  text-align: center;
+  width: 100%;
+}
+
+/*
+ Ticket-input
+*/
+.input-tickets {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  padding: 1rem;
+}
+.input-tickets select {
+  text-align: left;
+  width: 100%;
+}
+
+/*
+ Date-input
+*/
+.input-date {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  padding: 1rem;
+}
+.input-date input {
+  text-align: left;
+  width: 100%;
+}
+
+/*
+ Search-btn
+*/
+.search-btn {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  padding: 1rem;
+}
+.search-btn button {
+  text-align: center;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
