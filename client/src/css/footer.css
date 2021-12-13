@@ -1,0 +1,18 @@
+footer {
+  background-color: #242424;
+  color: #fff;
+  height: min-content;
+  display: grid;
+  grid-template-columns: 1fr;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+footer p {
+  text-align: center;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0.5rem;
+}
