@@ -3,9 +3,19 @@ class DbInitializer {
     this.db = require('better-sqlite3')(databasePath, { verbose: console.log });
   }
 
+  Init() {
+    this.CreateTables();
+    this.SeedTables();
+  }
+
   CreateTables () {
     this.CreateUserTable();
     this.CreateTrainTable();
+  }
+
+  SeedTables() {
+    this.SeedTrainStations();
+    this.SeedTrains();
   }
 
   CreateUserTable() {
@@ -22,7 +32,15 @@ class DbInitializer {
     const statement = this.db.prepare(`CREATE TABLE IF NOT EXISTS 'Train'( 
       'Id' INTEGER PRIMARY KEY AUTOINCREMENT, 
       'SeatAmount' integer);`);
-      statement.run();
+    statement.run();
+  }
+  
+  SeedTrainStations() {
+    // Todo
+  }
+
+  SeedTrains() {
+    // Todo
   }
 }
 

@@ -3,7 +3,7 @@
 // Database initialization
 const DbInitializer = require('./database/DbInitializer');
 const dbInitializer = new DbInitializer('database/TrainSchedules.db');
-dbInitializer.CreateTables();
+dbInitializer.Init();
 
 const express = require("express");
 const PORT = process.env.PORT || 3001;
