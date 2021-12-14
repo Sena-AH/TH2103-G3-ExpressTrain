@@ -1,25 +1,26 @@
 class DbInitializer {
-  constructor(databasePath = 'database/TrainSchedules.db') {
-    this.db = require('better-sqlite3')(databasePath, { verbose: console.log });
+  // # means private.
+  #database;
+  constructor(databasePath = 'database/default.db') {
+    this.#database = require('better-sqlite3')(databasePath, { verbose: console.log });
   }
 
   Init() {
-    this.CreateTables();
-    this.SeedTables();
+    this.#CreateTables();
+    this.#SeedTables();
   }
 
-  CreateTables () {
-    this.CreateUserTable();
-    this.CreateTrainTable();
+  GetDatabase() {
+    return this.#database;
   }
 
-  SeedTables() {
-    this.SeedTrainStations();
-    this.SeedTrains();
+  #CreateTables () {
+    this.#CreateUserTable();
+    this.#CreateTrainTable();
   }
 
-  CreateUserTable() {
-    const statement = this.db.prepare(`CREATE TABLE IF NOT EXISTS 'User'(
+  #CreateUserTable() {
+    const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'User'(
       'Id' INTEGER PRIMARY KEY AUTOINCREMENT,
       'FirstName' nvarchar(100),
       'LastName' nvarchar(100),
@@ -28,18 +29,23 @@ class DbInitializer {
     statement.run();
   }
 
-  CreateTrainTable() {
-    const statement = this.db.prepare(`CREATE TABLE IF NOT EXISTS 'Train'( 
+  #CreateTrainTable() {
+    const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'Train'( 
       'Id' INTEGER PRIMARY KEY AUTOINCREMENT, 
       'SeatAmount' integer);`);
     statement.run();
   }
+
+  #SeedTables() {
+    this.#SeedTrainStations();
+    this.#SeedTrains();
+  }
   
-  SeedTrainStations() {
+  #SeedTrainStations() {
     // Todo
   }
 
-  SeedTrains() {
+  #SeedTrains() {
     // Todo
   }
 }
