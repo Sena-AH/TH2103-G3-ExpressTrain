@@ -10,6 +10,11 @@ export const SidebarData = [
         cName: 'nav-text'
     },
     {
+        title: 'My Bookings',
+        path: '/MyBookingsPage',
+        cName: 'nav-text'
+    },
+    {
         title: 'Contact',
         path: '/ContactPage',
         cName: 'nav-text'
