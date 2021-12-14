@@ -1,9 +1,13 @@
 // server/index.js
 
+// Database initialization
+const DbInitializer = require('./database/DbInitializer');
+const dbInitializer = new DbInitializer('database/TrainSchedules.db');
+dbInitializer.Init();
+// use "const db = dbInitializer.GetDatabase();" to get the database.
+
 const express = require("express");
-
 const PORT = process.env.PORT || 3001;
-
 const app = express();
 
 app.get("/api", (req, res) => {
@@ -13,12 +17,3 @@ app.get("/api", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
-
-// require the sqlite driver better-sqlite3
-
-const driver = require('better-sqlite3');
-
-
-// connect to a database (call the connection db)
-
-const db = driver('./database/booking.sqlite3');
