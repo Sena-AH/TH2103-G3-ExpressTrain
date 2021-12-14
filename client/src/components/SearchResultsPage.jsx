@@ -50,6 +50,15 @@ function HomePage() {
         <button type="button" onClick={handleClick}>Search</button>
       </div>
 
+      <div className="filter-menu input-tickets">
+        <select name="Filter" id="filter">
+          <option value="Price low to high">Price low to high</option>
+          <option value="Price high to low">Price high to low</option>
+          <option value="Fastest route">Fastest route</option>
+          <option value="Recommended tickets">Recommended tickets</option>
+        </select>
+      </div>
+
     </main>
   );
 };

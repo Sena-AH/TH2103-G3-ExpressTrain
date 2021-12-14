@@ -11,6 +11,8 @@ import AboutPage from './components/AboutPage';
 import ContactPage from './components/ContactPage';
 import Footer from './components/Footer';
 import MyBookingsPage from './components/MyBookingsPage';
+import SearchResultsPage from './components/SearchResultsPage';
+
 
 
 function App() {
@@ -23,6 +25,8 @@ function App() {
         <Route path="/AboutPage" element={<AboutPage />} />
         <Route path="/MyBookingsPage" element={<MyBookingsPage />} />
         <Route path="/ContactPage" element={<ContactPage />} />
+        <Route path="/SearchResultsPage" element={<SearchResultsPage />} />
+
         <Route element={Error} />
       </Routes>
       <Footer />
