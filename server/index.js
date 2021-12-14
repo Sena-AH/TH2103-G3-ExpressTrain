@@ -1,9 +1,12 @@
 // server/index.js
 
+// usings in c#
+const DbInitializer = require('./database/DbInitializer');
+const dbInitializer = new DbInitializer('database/TrainSchedules.db');
+dbInitializer.CreateTables();
+
 const express = require("express");
-
 const PORT = process.env.PORT || 3001;
-
 const app = express();
 
 app.get("/api", (req, res) => {
