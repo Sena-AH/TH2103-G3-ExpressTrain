@@ -16,6 +16,6 @@ app.listen(PORT, () => {
 });
 
 // usings in c#
-let DbInitializer = require('./database/DbInitializer').default;
-let dbInitializer = new DbInitializer();
+const DbInitializer = require('./database/DbInitializer');
+const dbInitializer = new DbInitializer();
 dbInitializer.CreateTables();

@@ -4,7 +4,8 @@ class DbInitializer {
   }
 
   CreateTables () {
-    CreateUserTable();
+    this.CreateUserTable();
+    this.CreateTrainTable();
   }
 
   CreateUserTable() {
@@ -18,9 +19,11 @@ class DbInitializer {
   }
 
   CreateTrainTable() {
-    const statement = db.prepare(`CREATE TABLE IF NOT EXISTS 'Train'( 
-      'Id' INTEGER PRIMARY KKEY AUTOINCREMENT, 
-      'Seat' integer,
-      'Seat);`);      
-           
-module.exports = DbInitializer;module.exports = DbInitializer;module.exports = DbInitializer;module.exports = DbInitializer;module.exports = DbInitializer;module.exports = DbInitializer;
+    const statement = this.db.prepare(`CREATE TABLE IF NOT EXISTS 'Train'( 
+      'Id' INTEGER PRIMARY KEY AUTOINCREMENT, 
+      'SeatAmount' integer);`);
+      statement.run();
+  }
+}
+
+module.exports = DbInitializer;
