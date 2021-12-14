@@ -4,7 +4,7 @@
   align-items: center;
 }
 
-.search-result{
+.search-result-button:focus{
   border: black 1px solid;
   display:flex;
   flex-direction: column;
@@ -14,6 +14,12 @@
   margin-top: 10px;
 }
 
-hr{
-  border: solid 1px black;
+.current-total-price-div{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  border:black 1px solid;
+
 }

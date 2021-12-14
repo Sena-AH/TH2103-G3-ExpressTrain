@@ -10,6 +10,16 @@ function HomePage() {
     navigate("/SearchResultsPage");
   }
 
+  function handleClick2() {
+    navigate("/");
+  }
+  function handleClick3() {
+    console.log("hello");
+  }
+  function handleClick4() {
+    console.log("hello to you too");
+  }
+
   return (
     <main>
       <div className="input-search">
@@ -61,17 +71,30 @@ function HomePage() {
       </div>
 
       <div className="search-result-div">
-        <div className="search-result">
-          <p>XX:XX - XX:XX</p>
-          <p className="travel-duration">XXH XXM</p>
-          <p>__________________</p>
-          <p>Price : XXXXKR</p>
-        </div>
-        <div className="search-result">
-          <p>XX:XX - XX:XX</p>
-          <p className="travel-duration">XXH XXM</p>
-          <p>__________________</p>
-          <p>Price : XXXXKR</p>
+        <button onClick={handleClick3} className="search-result-button">
+          <span>XX:XX - XX:XX</span>
+          <br></br>
+          <span className="travel-duration">XXH XXM</span>
+          <br></br>
+          <span>__________________</span>
+          <br></br>
+          <span>Price : XXXXKR</span>
+        </button>
+        <button onClick={handleClick4} className="search-result-button">
+          <span>XX:XX - XX:XX</span>
+          <br></br>
+          <span className="travel-duration">XXH XXM</span>
+          <br></br>
+          <span>__________________</span>
+          <br></br>
+          <span>Price : XXXXKR</span>
+        </button>
+      </div>
+
+      <div className="current-total-price-div">
+        <p>Total price: XXXXKR</p>
+        <div className="search-btn">
+          <button type="button" onClick={handleClick2}>Continue</button>
         </div>
       </div>
 
