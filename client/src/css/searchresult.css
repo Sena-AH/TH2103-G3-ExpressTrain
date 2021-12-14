@@ -1,0 +1,19 @@
+.search-result-div{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.search-result{
+  border: black 1px solid;
+  display:flex;
+  flex-direction: column;
+  align-self: center;
+  align-items: center;
+  color: green;
+  margin-top: 10px;
+}
+
+hr{
+  border: solid 1px black;
+}

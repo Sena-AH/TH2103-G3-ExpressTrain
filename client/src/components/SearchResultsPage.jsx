@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import '../css/searchresult.css';
 
 
 function HomePage() {
@@ -57,6 +58,21 @@ function HomePage() {
           <option value="Fastest route">Fastest route</option>
           <option value="Recommended tickets">Recommended tickets</option>
         </select>
+      </div>
+
+      <div className="search-result-div">
+        <div className="search-result">
+          <p>XX:XX - XX:XX</p>
+          <p className="travel-duration">XXH XXM</p>
+          <p>__________________</p>
+          <p>Price : XXXXKR</p>
+        </div>
+        <div className="search-result">
+          <p>XX:XX - XX:XX</p>
+          <p className="travel-duration">XXH XXM</p>
+          <p>__________________</p>
+          <p>Price : XXXXKR</p>
+        </div>
       </div>
 
     </main>
