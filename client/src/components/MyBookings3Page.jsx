@@ -1,17 +1,15 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import MyBookings2Page from './MyBookings2Page';
 
 
-
-function MyBookingsPage() {
-
+function MyBookings3Page() {
 
   let navigate = useNavigate();
 
   function handleClick() {
-    navigate("/MyBookings2Page");
+    navigate("/");
   }
+
 
   return (
     <main>
@@ -19,11 +17,18 @@ function MyBookingsPage() {
         <h1>My Bookings</h1>
       </div>
 
-      <div className="my-bookings-search">
-        <input></input>
+      
+        
+      <div>
+      <p>
+        Booking ID: XXXXXXX
+        is now cancelled
+        
+        Hope to see you again :)
+      </p>
       </div>
       <div className="search-btn">
-        <button type="button" onClick={handleClick}>My Bookings</button>
+        <button type="button" onClick={handleClick}>Back to Start</button>
       </div>
 
     </main>
@@ -31,4 +36,4 @@ function MyBookingsPage() {
   );
 };
 
-export default MyBookingsPage;
+export default MyBookings3Page;
