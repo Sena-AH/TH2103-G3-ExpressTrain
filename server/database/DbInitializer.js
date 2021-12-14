@@ -1,6 +1,6 @@
 class DbInitializer {
-  constructor() {
-    this.db = require('better-sqlite3')('database/TrainSchedules.db', { verbose: console.log });
+  constructor(databasePath = 'database/TrainSchedules.db') {
+    this.db = require('better-sqlite3')(databasePath, { verbose: console.log });
   }
 
   CreateTables () {
