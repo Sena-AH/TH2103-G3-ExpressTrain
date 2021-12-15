@@ -1,31 +1,35 @@
-// server/index.js
-
-//read settings (DB)
-const settings = require('../settings.json');
-
-// require path (helper for file paths)
-const path = require('path');
-
 // Database initialization
 const DbInitializer = require('./database/DbInitializer');
 const dbInitializer = new DbInitializer('database/TrainSchedules.db');
 dbInitializer.Init();
 // use "const db = dbInitializer.GetDatabase();" to get the database.
 
-const express = require("express");
-const PORT = process.env.PORT || 3001;
-const app = express();
+// Read settings
+const settings = require('../settings.json');
 
-app.get("/api", (req, res) => {
-  res.json({ message: "Hello from server!" });
-});
+// NOTE: No ACL 
+// (access - control / user credentials) yet!
 
-app.listen(PORT, () => {
-  console.log(`Server listening on ${PORT}`);
-});
+// require path (helper for file paths)
+const path = require('path');
 
-///////////////////////////////////////
+// require/import express
+const express = require('express');
 
+// create a new web server
+const webServer = express();
+
+// tell the web server to serve
+// all files (static content)
+// that are inside the folder "frontend"
+webServer.use(express.static('frontend'));
+
+// make it possible to read req bodies
+// (needed for post and put reqs)
+webServer.use(express.json({ limit: '100MB' }));
+
+// start the webserver and tell it to listen
+// on a specific port (in this case port 3000)
 webServer.listen(settings.port,
   () => console.log(
     'Listening on http://localhost:' + settings.port
@@ -38,7 +42,10 @@ const driver = require('better-sqlite3');
 const db = driver(path.join(__dirname,
   'database', settings.dbName));
 
-  let r = db.prepare(`
+// get the table and view names from the db 
+// so we can restrict to routes matching existing 
+// tables and views
+let r = db.prepare(`
   SELECT name, type
   FROM sqlite_schema
   WHERE type IN ('table', 'view')
