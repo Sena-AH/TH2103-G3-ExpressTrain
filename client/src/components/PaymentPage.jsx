@@ -23,19 +23,26 @@ function PaymentPage(){
                 <div className="horizontally-halved-div">
                 <br/>
                     SWISH 
-                    <hr style={{backgroundColor: "black"}, {margin: 5}}></hr>
-                    SWISH
                 </div>
                 <div className="horizontally-halved-div">
                 <br/>
-                    <input type="radio" id="Klarna" value="KlarnaPayment"></input> Klarna Payment card or invoice
-                    <br></br>
-                    <input type="radio" id="CardPayment"></input> Pay with card
+                    SWISH 
                 </div>
+            </div>
+            <div className="booking-medium-div">
+                <div className="horizontally-halved-div">
+                <br/>
+                    <input type="radio" name="PaymentRadio" value="KlarnaPayment"></input> Klarna Payment card or invoice
+                </div>
+                <div className="vertical-line"></div>
+                <div className="horizontally-halved-div">
+                    <input type="radio" name="PaymentRadio"></input> Pay with card
+                </div>
+                
             </div>
 
             <div>
-                <button>PROCEED TO PAYMENT</button>
+                <button>PROCEED TO PAYMENT</button> {/* Add link to next page here */}
             </div>
         </div>
     )        
