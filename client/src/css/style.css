@@ -1,0 +1,30 @@
+/* Page for making individually required CSS elements, divboxes, fonts etc that doesn't warrant having an entire dedicated page*/
+
+
+/*DIV ELEMENTS*/
+
+.centered-text-div {
+    text-align: center;
+    vertical-align: middle;
+    align-items: center;    
+}
+
+.booking-medium-div {
+    display: flex;
+    text-justify: auto;
+    vertical-align: middle;
+    justify-content: left;
+    align-items: left;
+    height: fit-content;
+    width: 20rem;
+    border-style: double;
+    background-color: rgb(174, 190, 206);
+    margin: 0 auto;
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.horizontally-halved-div{
+    width: 50%;
+    margin: 0 auto;
+}
