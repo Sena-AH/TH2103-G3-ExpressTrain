@@ -52,6 +52,7 @@ class DbInitializer {
     // Todo
   }
 
+  // Way of seeding, add the Id, that way it wont be added more than once in the database.
   #SeedTravellers() {
     const insert = this.#database.prepare(`INSERT OR REPLACE INTO 'Traveller' (Id, FirstName, LastName, Email, PhoneNumber) 
         VALUES ('1', 'Alejandra', 'Talamantes', 'alejandra@example', '123123123'),
