@@ -12,6 +12,7 @@ import ContactPage from './components/ContactPage';
 import Footer from './components/Footer';
 import MyBookingsPage from './components/MyBookingsPage';
 import SearchResultsPage from './components/SearchResultsPage';
+import BookingInformationPage from './components/BookingInformationPage';
 
 
 
@@ -26,6 +27,7 @@ function App() {
         <Route path="/MyBookingsPage" element={<MyBookingsPage />} />
         <Route path="/ContactPage" element={<ContactPage />} />
         <Route path="/SearchResultsPage" element={<SearchResultsPage />} />
+        <Route path="/BookingInformationPage" element={<BookingInformationPage />} />
 
         <Route element={Error} />
       </Routes>

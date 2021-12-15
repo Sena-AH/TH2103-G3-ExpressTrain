@@ -11,7 +11,7 @@ function HomePage() {
   }
 
   function handleClick2() {
-    navigate("/");
+    navigate("/BookingInformationPage");
   }
   function handleClick3() {
     console.log("hello");
