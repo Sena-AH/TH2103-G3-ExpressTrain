@@ -4,6 +4,7 @@ import './css/Navigation.css';
 import './css/header.css';
 import './css/footer.css';
 import './css/main.css';
+import './css/SeatsPage.css';
 
 import Menubar from './components/Menubar';
 import HomePage from './components/HomePage';
@@ -11,6 +12,7 @@ import AboutPage from './components/AboutPage';
 import ContactPage from './components/ContactPage';
 import Footer from './components/Footer';
 import MyBookingsPage from './components/MyBookingsPage';
+import SeatsPage from './components/SeatsPage';
 
 
 function App() {
@@ -23,6 +25,7 @@ function App() {
         <Route path="/AboutPage" element={<AboutPage />} />
         <Route path="/MyBookingsPage" element={<MyBookingsPage />} />
         <Route path="/ContactPage" element={<ContactPage />} />
+        <Route path="/SeatsPage" element={<SeatsPage />} />
         <Route element={Error} />
       </Routes>
       <Footer />

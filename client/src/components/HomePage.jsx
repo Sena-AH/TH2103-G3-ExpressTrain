@@ -3,10 +3,10 @@ function HomePage() {
     return (
       <main>
         <div className="input-search">
-          <input></input>
+          <input value="To..."></input>
         </div>
         <div className="input-search">
-          <input></input>
+          <input value="From..."></input>
         </div>
 
         <form className="input-form" action="">
