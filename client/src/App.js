@@ -14,7 +14,6 @@ import MyBookingsPage from './components/MyBookingsPage';
 
 
 function App() {
-
   return (
     <div className="App">
       <Menubar />
