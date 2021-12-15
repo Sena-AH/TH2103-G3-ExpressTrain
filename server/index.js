@@ -1,3 +1,5 @@
+// server/index.js
+
 // Database initialization
 const DbInitializer = require('./database/DbInitializer');
 const dbInitializer = new DbInitializer('database/TrainSchedules.db');
@@ -39,8 +41,9 @@ webServer.listen(settings.port,
 const driver = require('better-sqlite3');
 
 // connect to a database (call the connection db)
-const db = driver(path.join(__dirname,
+const db = driver(path.join(require('path').resolve(__dirname, '..'),
   'database', settings.dbName));
+
 
 // get the table and view names from the db 
 // so we can restrict to routes matching existing 
