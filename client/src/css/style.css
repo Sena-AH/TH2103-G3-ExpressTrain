@@ -26,5 +26,15 @@
 
 .horizontally-halved-div{
     width: 50%;
+    text-justify: auto;
+}
+
+.vertically-halved-div{
+    height: 50%;
     margin: 0 auto;
 }
+
+.vertical-line {
+    border-left: 6px solid rgb(0, 0, 0);
+    height: 50%;
+  }
