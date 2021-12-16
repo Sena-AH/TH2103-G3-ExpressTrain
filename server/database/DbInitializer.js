@@ -63,7 +63,12 @@ class DbInitializer {
   }
 
   #CreateBookingTable() {
-    
+    const statement = this.#database.prepare(` CREATE TABLE IF NOT EXISTS 'Booking'(
+      'Id' INTEGER PRIMARY KEY AUTOINCREMENT,
+      'SeatId' INTEGER,
+      'Cost' DECIMAL);`
+    );
+    statement.run();
   }
 
   #SeedTables() {
