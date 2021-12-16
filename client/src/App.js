@@ -21,7 +21,6 @@ import MyBookings3Page from './components/MyBookings3Page';
 import SearchResultsPage from './components/SearchResultsPage';
 
 function App() {
-
   return (
     <div className="App">
       <Menubar />
