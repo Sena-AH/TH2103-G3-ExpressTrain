@@ -76,6 +76,7 @@ class DbInitializer {
     //this.#SeedTrainStationPlatforms();
     this.#SeedCarts();
     this.#SeedTravellers();
+    this.#SeedBookingsTable();
   }
   
   #SeedTrainStations() {
@@ -120,6 +121,15 @@ class DbInitializer {
     VALUES ('1', 'Alejandra', 'Talamantes', 'alejandra@example', '123123123'),
     ('2', 'Bobby', 'Lander', 'bobby.lander@example', '123245123'),
     ('3', 'Tony', 'Mafia', 'tonymafia@example', '852123123');`
+    );
+    insert.run();
+  }
+
+  #SeedBookingsTable() {
+    const insert = this.#database.prepare(` INSERT OR REPLACE INTO 'Booking' (Id, SeatId, Cost)
+    VALUES ('1', '1', '400.00'),
+    ('2', '2', '500.00'),
+    ('3', '10', '200.00');`
     );
     insert.run();
   }
