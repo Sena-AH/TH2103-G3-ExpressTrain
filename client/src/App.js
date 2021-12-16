@@ -19,6 +19,7 @@ import SeatsPage from './components/SeatsPage';
 import MyBookings2Page from './components/MyBookings2Page';
 import MyBookings3Page from './components/MyBookings3Page';
 import SearchResultsPage from './components/SearchResultsPage';
+import BookingInformationPage from './components/BookingInformationPage';
 
 function App() {
   return (
@@ -33,7 +34,9 @@ function App() {
         <Route path="/ContactPage" element={<ContactPage />} />
         <Route path="/SeatsPage" element={<SeatsPage />} />
         <Route path="/SearchResultsPage" element={<SearchResultsPage />} />
+        <Route path="/BookingInformationPage" element={<BookingInformationPage />} />
         <Route path="/PaymentPage" element={<PaymentPage />} />
+
         <Route element={Error} />
       </Routes>
       <Footer />

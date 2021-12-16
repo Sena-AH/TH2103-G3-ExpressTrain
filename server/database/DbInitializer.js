@@ -26,7 +26,7 @@ class DbInitializer {
       'LastName' nvarchar(100),
       'Email' nvarchar(250),
       'PhoneNumber' integer);`);
-    statement.run();
+    statement.run(); 
   }
 
   #CreateTrainTable() {
