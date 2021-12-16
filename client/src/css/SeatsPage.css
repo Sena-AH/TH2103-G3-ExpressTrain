@@ -1,0 +1,21 @@
+.WholePage{
+    background-color: #F2BC8D;
+}
+
+.Title{
+    text-align: center;
+}
+
+.TotalPrice{
+    text-align: center;
+    background-color: #8EA3BF;
+}
+
+.TotalPriceText{
+
+}
+
+.TotalPriceContinueButton{
+    background-color: black;
+    color: ghostwhite;
+}

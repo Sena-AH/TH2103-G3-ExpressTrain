@@ -1,0 +1,25 @@
+.search-result-div{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.search-result-button:focus{
+  border: black 1px solid;
+  display:flex;
+  flex-direction: column;
+  align-self: center;
+  align-items: center;
+  color: green;
+  margin-top: 10px;
+}
+
+.current-total-price-div{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  border:black 1px solid;
+
+}

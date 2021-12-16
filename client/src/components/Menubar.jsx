@@ -26,9 +26,7 @@ function Menubar() {
             </Link>
           </div>
         </div>
-
-
-        
+                
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
           <ul className='nav-menu-items' onClick={showSidebar}>
               <li className="navbar-toggle">
