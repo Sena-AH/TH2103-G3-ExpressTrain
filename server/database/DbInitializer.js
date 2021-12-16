@@ -18,15 +18,16 @@ class DbInitializer {
     this.#CreateTravellerTable();
     this.#CreateCartTable();
     this.#CreateTrainStationTable();
-    this.CreateTrainStationPlatformTable();
+    this.#CreateBookingTable();
+    //this.#CreateTrainStationPlatformTable();
   }
 
   #CreateTravellerTable() {
     const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'Traveller'(
       'Id' INTEGER PRIMARY KEY AUTOINCREMENT,
-      'FirstName' nvarchar(100),
-      'LastName' nvarchar(100),
-      'Email' nvarchar(250),
+      'FirstName' NVARCHAR(100),
+      'LastName' NVARCHAR(100),
+      'Email' NVARCHAR(250),
       'PhoneNumber' INTEGER);`);
     statement.run(); 
   }
@@ -34,78 +35,87 @@ class DbInitializer {
   #CreateCartTable() {
     const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'Cart'( 
       'Id' INTEGER PRIMARY KEY AUTOINCREMENT,
-      'DepartureStationId' INTEGER,
-      'ArrivalStationId' INTEGER,
-      'DepartureTime' datetime,
-      'ArrivalTime' datetime);`
+      'DepartureStation' INTEGER,
+      'ArrivalStation' INTEGER,
+      'DepartureTime' DATETIME,
+      'ArrivalTime' DATETIME);`
       );
     statement.run();
   }
 
-  #CreateTrainStationPlatformTable() {
-    const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'TrainStationPlatform'( 
-      'Id' INTEGER PRIMARY KEY AUTOINCREMENT,
-      'TrainStationId' INTEGER,
-      'Name' nvarchar(100);`
-    );
-    statement.run();
-  }
+  // #CreateTrainStationPlatformTable() {
+  //   const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'TrainStationPlatform'( 
+  //     'Id' INTEGER PRIMARY KEY AUTOINCREMENT,
+  //     'TrainStationId' INTEGER,
+  //     'Name' NVARCHAR(100);`
+  //   );
+  //   statement.run();
+  // }
 
   #CreateTrainStationTable() {
     const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'TrainStation'( 
       'Id' INTEGER PRIMARY KEY AUTOINCREMENT, 
-      'Platforms' nvarchar(100),
-      'Name' nvarchar(100)
+      'Platforms' NVARCHAR(250),
+      'Name' NVARCHAR(100),
       'Location' nvarchar(100));`
     );
     statement.run();
   }
 
+  #CreateBookingTable() {
+    
+  }
+
   #SeedTables() {
     this.#SeedTrainStations();
-    this.#SeedTrainStationPlatforms();
+    //this.#SeedTrainStationPlatforms();
     this.#SeedCarts();
     this.#SeedTravellers();
   }
   
   #SeedTrainStations() {
-    const insert = this.#database.prepare(`INSERT OR REPLACE INTO 'TrainStation' (Id, Name, Location)
-    VALUES ('1', 'Gothenburg Central Station', 'Gothenburg'),
-    ('2', 'Stockholm Central Station', 'Stockholm'),
-    ('3', 'Malmo Central Station', 'Malmo');`
+    const insert = this.#database.prepare(`INSERT OR REPLACE INTO 'TrainStation' (Id, Platforms, Name, Location)
+    VALUES ('1', 'A,B,C,D', 'Gothenburg Central Station', 'Gothenburg'),
+    ('2', 'A,B,C,D', 'Stockholm Central Station', 'Stockholm'),
+    ('3', 'A,B,C,D', 'Malmo Central Station', 'Malmo');`
     );
     insert.run();
   }
 
-#SeedTrainStationPlatforms() {
-  const insert = this.#database.prepare(`INSERT OR REPLACE INTO 'TrainStationPlatform' (Id, TrainStationId, Name)
-  VALUES ('1', '1', 'A'),
-  ('2', '1', 'B'),
-  ('3', '1', 'C'),
-  ('4', '1', 'D'),
-  ('5', '2', 'A'),
-  ('6', '2', 'B'),
-  ('7', '2', 'C'),
-  ('8', '2', 'D'),
-  ('9', '3', 'A'),
-  ('10', '3', 'B'),
-  ('11', '3', 'C'),
-  ('12', '3', 'D');`
-  );
-  insert.run();
-}
+// #SeedTrainStationPlatforms() {
+//   const insert = this.#database.prepare(`INSERT OR REPLACE INTO 'TrainStationPlatform' (Id, TrainStationId, Name)
+//   VALUES ('1', '1', 'A'),
+//   ('2', '1', 'B'),
+//   ('3', '1', 'C'),
+//   ('4', '1', 'D'),
+//   ('5', '2', 'A'),
+//   ('6', '2', 'B'),
+//   ('7', '2', 'C'),
+//   ('8', '2', 'D'),
+//   ('9', '3', 'A'),
+//   ('10', '3', 'B'),
+//   ('11', '3', 'C'),
+//   ('12', '3', 'D');`
+//   );
+//   insert.run();
+// }
 
   #SeedCarts() {
-    // Todo
+    const insert = this.#database.prepare(`INSERT OR REPLACE INTO 'Cart' (Id, DepartureStation, ArrivalStation, DepartureTime, ArrivalTime) 
+    VALUES ('1', 'Gothenburg', 'Stockholm', '2021-12-24 07:15:00', '2021-12-24 10:15:00'),
+    ('2', 'Stockholm', 'Gothenburg', '2021-12-22 09:15:00', '2021-12-22 12:15:00'),
+    ('3', 'Malmo', 'Stockholm', '2021-12-31 06:00:00', '2021-12-31 10:00:00');`
+    );
+  insert.run();
   }
 
   // Way of seeding, add the Id, that way it wont be added more than once in the database.
   #SeedTravellers() {
     const insert = this.#database.prepare(`INSERT OR REPLACE INTO 'Traveller' (Id, FirstName, LastName, Email, PhoneNumber) 
-        VALUES ('1', 'Alejandra', 'Talamantes', 'alejandra@example', '123123123'),
-        ('2', 'Bobby', 'Lander', 'bobby.lander@example', '123245123'),
-        ('3', 'Tony', 'Mafia', 'tonymafia@example', '852123123');`
-        );
+    VALUES ('1', 'Alejandra', 'Talamantes', 'alejandra@example', '123123123'),
+    ('2', 'Bobby', 'Lander', 'bobby.lander@example', '123245123'),
+    ('3', 'Tony', 'Mafia', 'tonymafia@example', '852123123');`
+    );
     insert.run();
   }
 }
