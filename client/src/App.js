@@ -4,9 +4,9 @@ import './css/Navigation.css';
 import './css/header.css';
 import './css/footer.css';
 import './css/main.css';
+import './css/BookingConfirmation.css'
 import './css/SeatsPage.css';
 import './css/style.css';
-
 
 import Menubar from './components/Menubar';
 import HomePage from './components/HomePage';
@@ -15,11 +15,13 @@ import ContactPage from './components/ContactPage';
 import PaymentPage from './components/PaymentPage';
 import Footer from './components/Footer';
 import MyBookingsPage from './components/MyBookingsPage';
+import BookingConfirmationPage from './components/BookingConfirmationPage';
 import SeatsPage from './components/SeatsPage';
 import MyBookings2Page from './components/MyBookings2Page';
 import MyBookings3Page from './components/MyBookings3Page';
 import SearchResultsPage from './components/SearchResultsPage';
 import BookingInformationPage from './components/BookingInformationPage';
+
 
 function App() {
   return (
@@ -32,11 +34,11 @@ function App() {
         <Route path="/MyBookings2Page" element={<MyBookings2Page />} />
         <Route path="/MyBookings3Page" element={<MyBookings3Page />} />
         <Route path="/ContactPage" element={<ContactPage />} />
+        <Route path="/BookingConfirmation" element={<BookingConfirmationPage />} />
         <Route path="/SeatsPage" element={<SeatsPage />} />
         <Route path="/SearchResultsPage" element={<SearchResultsPage />} />
         <Route path="/BookingInformationPage" element={<BookingInformationPage />} />
         <Route path="/PaymentPage" element={<PaymentPage />} />
-
         <Route element={Error} />
       </Routes>
       <Footer />
