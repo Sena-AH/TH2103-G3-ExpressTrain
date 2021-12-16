@@ -8,7 +8,7 @@ function saveData()
 {
   let data={FirstName, LastName, Email, PhoneNumber}
 // console.warn(data);
-  fetch("/api/User", {
+  fetch("/api/Traveller", {
     method: "POST",
     headers: {
       'Accept': 'application/json',
