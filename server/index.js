@@ -2,7 +2,7 @@
 
 // Database initialization
 const DbInitializer = require('./database/DbInitializer');
-const dbInitializer = new DbInitializer('database/TrainSchedules.db');
+const dbInitializer = new DbInitializer('database/TrainDB2.db');
 dbInitializer.Init();
 // use "const db = dbInitializer.GetDatabase();" to get the database.
 
