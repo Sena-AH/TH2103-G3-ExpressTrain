@@ -24,10 +24,21 @@ function saveData()
 }
   return (
     <div className="bookingform">
-      <input className="input-form" type="text" name="FirstName" value={FirstName} onChange={(e)=>{setFirstName(e.target.value)}}  /> <br /> <br />
-      <input className="input-form" type="text" name="LastName"  value={LastName} onChange={(e)=>{setLastName(e.target.value)}} /> <br /> <br />
-      <input className="input-form" type="text" name="Email"  value={Email} onChange={(e)=>{setEmail(e.target.value)}}/> <br /> <br />
-      <input className="input-form" type="text" name="PhoneNumber"  value={PhoneNumber} onChange={(e)=>{setPhoneNumber(e.target.value)}}/> <br /> <br />
+      <div className="input-booking"> 
+        <input type="text" name="FirstName" value={FirstName} onChange={(e)=>{setFirstName(e.target.value)}}  /> <br /> <br />
+      </div>  
+
+      <div className="input-booking"> 
+        <input type="text" name="LastName"  value={LastName} onChange={(e)=>{setLastName(e.target.value)}} /> <br /> <br />
+      </div>
+      
+      <div className="input-booking"> 
+        <input type="text" name="Email"  value={Email} onChange={(e)=>{setEmail(e.target.value)}}/> <br /> <br />
+      </div>
+      
+      <div className="input-booking"> 
+        <input type="text" name="PhoneNumber"  value={PhoneNumber} onChange={(e)=>{setPhoneNumber(e.target.value)}}/> <br /> <br />
+      </div> 
 
       <div className="current-total-price-div">
         <p>Total price: XXXXKR</p>
