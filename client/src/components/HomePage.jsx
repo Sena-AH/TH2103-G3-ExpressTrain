@@ -12,10 +12,10 @@ function HomePage() {
   return (
     <main>
       <div className="input-search">
-        <input></input>
+        <input value="To"></input>
       </div>
       <div className="input-search">
-        <input></input>
+        <input value="From"></input>
       </div>
 
       <form className="input-form" action="">
@@ -26,6 +26,7 @@ function HomePage() {
         <div>
           <input type="radio" id="roundTrip" name="travelWay" value="roundTrip" />
           <label htmlFor="roundTrip">Round Trip</label>
+
         </div>
       </ form>
 
