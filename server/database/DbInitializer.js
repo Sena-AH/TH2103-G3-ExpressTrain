@@ -16,7 +16,8 @@ class DbInitializer {
 
   #CreateTables () {
     this.#CreateTravellerTable();
-    this.#CreateTrainTable();
+    this.#CreateCartTable();
+    this.#CreateTrainStationTable();
   }
 
   #CreateTravellerTable() {
@@ -29,11 +30,24 @@ class DbInitializer {
     statement.run(); 
   }
 
-  #CreateTrainTable() {
-    const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'Train'( 
-      'Id' INTEGER PRIMARY KEY AUTOINCREMENT, 
-      'SeatAmount' integer);`
+  #CreateCartTable() {
+    const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'Cart'( 
+      'Id' INTEGER PRIMARY KEY AUTOINCREMENT,
+      'DepartureStationId' integer,
+      'ArrivalStationId' integer,
+      'DepartureTime' datetime,
+      'ArrivalTime' datetime);`
       );
+    statement.run();
+  }
+
+  #CreateTrainStationTable() {
+    const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'TrainStation'( 
+      'Id' INTEGER PRIMARY KEY AUTOINCREMENT, 
+      'Platforms' nvarchar(100),
+      'Name' nvarchar(100)
+      'Location' nvarchar(100));`
+    );
     statement.run();
   }
 
