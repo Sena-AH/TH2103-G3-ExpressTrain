@@ -18,6 +18,7 @@ class DbInitializer {
     this.#CreateTravellerTable();
     this.#CreateCartTable();
     this.#CreateTrainStationTable();
+    this.CreateTrainStationPlatformTable();
   }
 
   #CreateTravellerTable() {
@@ -26,18 +27,27 @@ class DbInitializer {
       'FirstName' nvarchar(100),
       'LastName' nvarchar(100),
       'Email' nvarchar(250),
-      'PhoneNumber' integer);`);
+      'PhoneNumber' INTEGER);`);
     statement.run(); 
   }
 
   #CreateCartTable() {
     const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'Cart'( 
       'Id' INTEGER PRIMARY KEY AUTOINCREMENT,
-      'DepartureStationId' integer,
-      'ArrivalStationId' integer,
+      'DepartureStationId' INTEGER,
+      'ArrivalStationId' INTEGER,
       'DepartureTime' datetime,
       'ArrivalTime' datetime);`
       );
+    statement.run();
+  }
+
+  #CreateTrainStationPlatformTable() {
+    const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'TrainStationPlatform'( 
+      'Id' INTEGER PRIMARY KEY AUTOINCREMENT,
+      'TrainStationId' INTEGER,
+      'Name' nvarchar(100);`
+    );
     statement.run();
   }
 
@@ -53,15 +63,39 @@ class DbInitializer {
 
   #SeedTables() {
     this.#SeedTrainStations();
-    this.#SeedTrains();
+    this.#SeedTrainStationPlatforms();
+    this.#SeedCarts();
     this.#SeedTravellers();
   }
   
   #SeedTrainStations() {
-    // Todo
+    const insert = this.#database.prepare(`INSERT OR REPLACE INTO 'TrainStation' (Id, Name, Location)
+    VALUES ('1', 'Gothenburg Central Station', 'Gothenburg'),
+    ('2', 'Stockholm Central Station', 'Stockholm'),
+    ('3', 'Malmo Central Station', 'Malmo');`
+    );
+    insert.run();
   }
 
-  #SeedTrains() {
+#SeedTrainStationPlatforms() {
+  const insert = this.#database.prepare(`INSERT OR REPLACE INTO 'TrainStationPlatform' (Id, TrainStationId, Name)
+  VALUES ('1', '1', 'A'),
+  ('2', '1', 'B'),
+  ('3', '1', 'C'),
+  ('4', '1', 'D'),
+  ('5', '2', 'A'),
+  ('6', '2', 'B'),
+  ('7', '2', 'C'),
+  ('8', '2', 'D'),
+  ('9', '3', 'A'),
+  ('10', '3', 'B'),
+  ('11', '3', 'C'),
+  ('12', '3', 'D');`
+  );
+  insert.run();
+}
+
+  #SeedCarts() {
     // Todo
   }
 
