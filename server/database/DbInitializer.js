@@ -47,7 +47,7 @@ class DbInitializer {
     const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'TrainStationPlatform'( 
       'Id' INTEGER PRIMARY KEY AUTOINCREMENT,
       'TrainStationId' INTEGER,
-      'Name' NVARCHAR(100);`
+      'Name' NVARCHAR(100));`
     );
     statement.run();
   }
@@ -62,7 +62,7 @@ class DbInitializer {
   }
 
   #CreateScheduleTable() {
-    const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'Schedule' (
+    const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'Schedule'(
       'Id' INTEGER PRIMARY KEY AUTOINCREMENT,
       'TrainId' INTEGER,
       'DepartureTrainStationId' INTEGER,
