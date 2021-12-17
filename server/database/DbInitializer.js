@@ -19,7 +19,8 @@ class DbInitializer {
     this.#CreateCartTable();
     this.#CreateTrainStationTable();
     this.#CreateBookingTable();
-    //this.#CreateTrainStationPlatformTable();
+    this.#CreateTrainStationPlatformTable();
+    this.#CreateScheduleTable();
   }
 
   #CreateTravellerTable() {
@@ -35,31 +36,41 @@ class DbInitializer {
   #CreateCartTable() {
     const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'Cart'( 
       'Id' INTEGER PRIMARY KEY AUTOINCREMENT,
-      'DepartureStation' INTEGER,
-      'ArrivalStation' INTEGER,
-      'DepartureTime' DATETIME,
-      'ArrivalTime' DATETIME);`
+      'SeatAmount' INTEGER);`
       );
     statement.run();
   }
 
-  // #CreateTrainStationPlatformTable() {
-  //   const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'TrainStationPlatform'( 
-  //     'Id' INTEGER PRIMARY KEY AUTOINCREMENT,
-  //     'TrainStationId' INTEGER,
-  //     'Name' NVARCHAR(100);`
-  //   );
-  //   statement.run();
-  // }
+  #CreateTrainStationPlatformTable() {
+    const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'TrainStationPlatform'( 
+      'Id' INTEGER PRIMARY KEY AUTOINCREMENT,
+      'TrainStationId' INTEGER,
+      'Name' NVARCHAR(100);`
+    );
+    statement.run();
+  }
 
   #CreateTrainStationTable() {
     const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'TrainStation'( 
       'Id' INTEGER PRIMARY KEY AUTOINCREMENT, 
-      'Platforms' NVARCHAR(250),
       'Name' NVARCHAR(100),
       'Location' nvarchar(100));`
     );
     statement.run();
+  }
+
+  #CreateScheduleTable() {
+    const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'Schedule' (
+      'Id' INTEGER PRIMARY KEY AUTOINCREMENT,
+      'TrainId' INTEGER,
+      'DepartureTrainStationId' INTEGER,
+      'DeparturePlatformId' INTEGER,
+      'DepartureTime' DATETIME,
+      'DestinationTrainStationId' INTEGER,
+      'DestinationPlatformId' INTEGER,
+      'ArrivalTime' DATETIME);`
+      );
+      statement.run();
   }
 
   #CreateBookingTable() {
@@ -80,10 +91,10 @@ class DbInitializer {
   }
   
   #SeedTrainStations() {
-    const insert = this.#database.prepare(`INSERT OR REPLACE INTO 'TrainStation' (Id, Platforms, Name, Location)
-    VALUES ('1', 'A,B,C,D', 'Gothenburg Central Station', 'Gothenburg'),
-    ('2', 'A,B,C,D', 'Stockholm Central Station', 'Stockholm'),
-    ('3', 'A,B,C,D', 'Malmo Central Station', 'Malmo');`
+    const insert = this.#database.prepare(`INSERT OR REPLACE INTO 'TrainStation' (Id, Name, Location)
+    VALUES ('1', 'Gothenburg Central Station', 'Gothenburg'),
+    ('2', 'Stockholm Central Station', 'Stockholm'),
+    ('3', 'Malmo Central Station', 'Malmo');`
     );
     insert.run();
   }
