@@ -25,6 +25,7 @@ class DbInitializer {
   #CreateTravellerTable() {
     const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'Traveller'(
       'Id' INTEGER PRIMARY KEY AUTOINCREMENT,
+
       'FirstName' NVARCHAR(100),
       'LastName' NVARCHAR(100),
       'Email' NVARCHAR(250),
