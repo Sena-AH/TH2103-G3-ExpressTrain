@@ -22,89 +22,89 @@ class DbInitializer {
     this.#CreateTrainStationPlatformTable();
     this.#CreateScheduleTable();
     this.#CreateScheduleStageTable();
-    this.#CreatePaymentInfoTable();
+    //this.#CreatePaymentInfoTable();
   }
 
   #CreateTravellerTable() {
     const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'Traveller'(
-      'Id' INTEGER PRIMARY KEY AUTOINCREMENT,
-      'FirstName' NVARCHAR(100),
-      'LastName' NVARCHAR(100),
-      'Email' NVARCHAR(250),
-      'PhoneNumber' INTEGER);`);
+      'Id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+      'FirstName' NVARCHAR(100) NOT NULL,
+      'LastName' NVARCHAR(100) NOT NULL,
+      'Email' NVARCHAR(250) NOT NULL,
+      'PhoneNumber' INTEGER NOT NULL);`);
     statement.run(); 
   }
 
   #CreateCartTable() {
     const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'Cart'( 
-      'Id' INTEGER PRIMARY KEY AUTOINCREMENT,
-      'SeatAmount' INTEGER);`
+      'Id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+      'SeatAmount' INTEGER NOT NULL);`
       );
     statement.run();
   }
 
   #CreateTrainStationPlatformTable() {
     const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'TrainStationPlatform'( 
-      'Id' INTEGER PRIMARY KEY AUTOINCREMENT,
-      'TrainStationId' INTEGER,
-      'Name' NVARCHAR(100));`
+      'Id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+      'TrainStationId' INTEGER NOT NULL REFERENCES 'TrainStation',
+      'Name' NVARCHAR(100) NOT NULL);`
     );
     statement.run();
   }
 
   #CreateTrainStationTable() {
     const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'TrainStation'( 
-      'Id' INTEGER PRIMARY KEY AUTOINCREMENT, 
-      'Name' NVARCHAR(100),
-      'Location' nvarchar(100));`
+      'Id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
+      'Name' NVARCHAR(100) NOT NULL,
+      'Location' nvarchar(100) NOT NULL);`
     );
     statement.run();
   }
 
   #CreateScheduleTable() {
     const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'Schedule'(
-      'Id' INTEGER PRIMARY KEY AUTOINCREMENT,
-      'TrainId' INTEGER,
-      'DepartureTrainStationId' INTEGER,
-      'DeparturePlatformId' INTEGER,
-      'DepartureTime' DATETIME,
-      'DestinationTrainStationId' INTEGER,
-      'DestinationPlatformId' INTEGER,
-      'ArrivalTime' DATETIME);`
+      'Id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+      'CartId' INTEGER REFERENCES 'Cart' NOT NULL,
+      'DepartureTrainStationId' INTEGER REFERENCES 'TrainStation' NOT NULL,
+      'DeparturePlatformId' INTEGER REFERENCES 'TrainStationPlatform' NOT NULL,
+      'DestinationTrainStationId' INTEGER REFERENCES 'TrainStation' NOT NULL,
+      'DestinationPlatformId' INTEGER REFERENCES 'TrainStationPlatform' NOT NULL,
+      'DepartureTime' DATETIME NOT NULL,
+      'ArrivalTime' DATETIME NOT NULL);`
       );
       statement.run();
   }
 
   #CreateScheduleStageTable() {
-    const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'ScheduleStage' (
-      'ScheduleId' INTEGER PRIMARY KEY AUTOINCREMENT,
-      'SeatNumber' INTEGER PRIMARY KEY,
-      'TicketId' INTEGER);`
+    const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'ScheduleStage'(
+      'ScheduleId' INTEGER REFERENCES 'Schedule' NOT NULL,
+      'SeatNumber' INTEGER NOT NULL,
+      'BookingId' INTEGER REFERENCES 'Booking' NOT NULL,
+      PRIMARY KEY ('ScheduleId', 'SeatNumber'));`
       );
       statement.run();
   }
 
   #CreateBookingTable() {
     const statement = this.#database.prepare(` CREATE TABLE IF NOT EXISTS 'Booking'(
-      'BookingCodeId' INTEGER PRIMARY KEY AUTOINCREMENT,
-      'UserId' INTEGER,
-      'Price' DECIMAL,
-      'ScheduleStageId' INTEGER);`
+      'BookingCodeId' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+      'TravellerId' INTEGER NOT NULL REFERENCES 'Traveller',
+      'Price' DECIMAL NOT NULL);`
     );
     statement.run();
   }
 
-  #CreatePaymentInfoTable() {
-    const statement =  this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'PaymentInfo' (
-      'Id' INTEGER PRIMARY KEY AUTOINCREMENT, 
-      'UserId' INTEGER,
-      'AccountOwnerName' NVARCHAR(250),
-      'Provider' NVARCHAR(100),
-      'ProviderDetails' NVARCHAR(250),
-      'Expiration' DATE);`
-      );
-    statement.run();
-  }
+  // #CreatePaymentInfoTable() {
+  //   const statement =  this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'PaymentInfo' (
+  //     'Id' INTEGER PRIMARY KEY AUTOINCREMENT, 
+  //     'UserId' INTEGER,
+  //     'AccountOwnerName' NVARCHAR(250),
+  //     'Provider' NVARCHAR(100),
+  //     'ProviderDetails' NVARCHAR(250),
+  //     'Expiration' DATE);`
+  //     );
+  //   statement.run();
+  // }
 
   #SeedTables() {
     this.#SeedTrainStations();
@@ -112,7 +112,6 @@ class DbInitializer {
     this.#SeedSchedules();
     this.#SeedTravellers();
     this.#SeedBookingsTables();
-    //this.#SeedPaymentInfo();
     this.#SeedScheduleStages();
     this.#SeedCarts();
 
@@ -120,9 +119,9 @@ class DbInitializer {
   
   #SeedTrainStations() {
     const insert = this.#database.prepare(`INSERT OR REPLACE INTO 'TrainStation' (Id, Name, Location)
-    VALUES ('1', 'Gothenburg Central Station', 'Gothenburg'),
-    ('2', 'Stockholm Central Station', 'Stockholm'),
-    ('3', 'Malmo Central Station', 'Malmo');`
+    VALUES ('1', 'Göteborg Centralstationen', 'Göteborg'),
+    ('2', 'Stockholm Centralstationen', 'Stockholm'),
+    ('3', 'Malmö Centralstationen', 'Malmö');`
     );
     insert.run();
   }
@@ -146,7 +145,7 @@ class DbInitializer {
 }
 
   #SeedSchedules() {
-    const insert = this.#database.prepare(`INSERT OR REPLACE INTO 'Schedule' (Id, TrainId, DepartureTrainStationId, DeparturePlatformId, DestinationTrainStationId, DestinationPlatformId, DepartureTime, ArrivalTime) 
+    const insert = this.#database.prepare(`INSERT OR REPLACE INTO 'Schedule' (Id, CartId, DepartureTrainStationId, DeparturePlatformId, DestinationTrainStationId, DestinationPlatformId, DepartureTime, ArrivalTime) 
     VALUES ('1', '1', '3', '2', '1', '2021-12-24 07:15:00', '2021-12-24 10:15:00'),
     ('2', '1', '1', '3', '4', '2021-12-25 09:25:00', '2021-12-25 12:25:00'),
     ('3', '3', '2', '2', '3', '2021-12-26 17:30:00', '2021-12-26 20:15:00'),
@@ -182,17 +181,17 @@ class DbInitializer {
   }
 
   #SeedScheduleStages() {
-    const insert = this.#database.prepare(`INSERT OR REPLACE INTO 'ScheduleStage' (ScheduleId, SeatNumber, TicketId)
+    const insert = this.#database.prepare(`INSERT OR REPLACE INTO 'ScheduleStage' (ScheduleId, SeatNumber, BookingId)
     VALUES ('1', '23', '1'),
     ('2', '1', '2'),
-    ('3', '10', '3'),
-    ('4', '11', '4'),
-    ('5', '12', '5'),
-    ('6', '7', '6'),
-    ('7', '4', '7'),
-    ('8', '1', '10'),
-    ('9', '25', '11'),
-    ('10', '26', '11');`
+    ('3', '10', '4'),
+    ('4', '11', '2'),
+    ('5', '12', '4'),
+    ('6', '7', '3'),
+    ('7', '4', '3'),
+    ('8', '1', '1'),
+    ('9', '25', '3'),
+    ('10', '26', '2');`
     );
     insert.run();
   }
@@ -208,10 +207,11 @@ class DbInitializer {
   }
 
   #SeedBookingsTables() {
-    const insert = this.#database.prepare(` INSERT OR REPLACE INTO 'Booking' (Id, UserId, Price, ScheduleStageId)
-    VALUES ('1', '1', '400.00', '1'),
-    ('2', '2', '500.00', '2'),
-    ('3', '3', '200.00', '2');`
+    const insert = this.#database.prepare(` INSERT OR REPLACE INTO 'Booking' (Id, UserId, Price)
+    VALUES ('1', '1', '400.00'),
+    ('2', '2', '500.00'),
+    ('3', '2', '1500.00'),
+    ('4', '3', '200.00');`
     );
     insert.run();
   }
