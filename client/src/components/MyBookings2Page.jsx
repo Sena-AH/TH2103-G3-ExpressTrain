@@ -1,8 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-
 function MyBookings2Page() {
+  const [bookingCodeId] = useState("");
+
+  //let bookingData = {BookingCodeId, UserId, Price};
+  // might not need
+  //let scheduleStageData = {ScheduleId, SeatNumber, BookingId};
+
+  async function getData() {
+    const response = await fetch(`/api/booking/${bookingCodeId}`);
+    const data = await response.json();
+    console.log(data);
+
+    // console.log(data[BookingCodeId]);        
+  }
 
   let navigate = useNavigate();
 
@@ -10,16 +22,15 @@ function MyBookings2Page() {
     navigate("/MyBookings3Page");
   }
 
-
   return (
     <main>
       <div>
-        <h1>My Bookings</h1>
+        <h1>Min bokning</h1>
       </div>
 
       <div>
 
-        <h2>Booking ID: XXXXXXX</h2>
+        <h2>Boking ID: {bookingCodeId}</h2>
 
         <p>Departure location:
         xxxxxxxxxxx - xxxxxxxxxx
