@@ -2,17 +2,21 @@
  Header Menu
 */
 header {
-  background-color: #fff;
   color: #fff;
-  height: 60px;
+  height: 140px;
   width: 100%;
   display: grid;
   grid-template-columns: 1fr;
-  margin-top: 1em;
+}
+
+.bg {
+  background-image: url("../img/train_bg.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .header-bar {
-  background-color: #fff;
   display: grid;
   grid-template-columns: 1fr 1fr;
   min-width: 400px;
@@ -22,13 +26,39 @@ header {
   padding: 0 1em;
 }
 
+/*
+ Meny ikonen - Länk css
+*/
 .header-icon {
+  margin-top: 0.6rem;
+  color: #28475d;
   font-size: 2rem;
   background: none;
   text-align: right;
 }
+.header-icon a:visited {
+  color: #28475d;
+  font-size: 2rem;
+}
+.header-icon a:hover {
+  color: #418cbf;
+  font-size: 2rem;
+}
+.header-icon a:active {
+  color: #418cbf;
+  font-size: 2rem;
+}
 
+/*
+ Meny Logo
+*/
 .header-logo {
-  font-size: 1.5rem;
-  background: none;
+  margin-top: 0.5rem;
+  background-image: url("../img/logga_train.png");
+  font-size: 1rem;
+  background-repeat: no-repeat;
+}
+
+.header-logo p {
+  display: none;
 }

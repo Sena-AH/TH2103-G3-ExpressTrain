@@ -10,6 +10,66 @@ main {
   margin-right: auto;
 }
 
+.wrapper {
+  background-color: #fff;
+  margin: -1.5rem 1.5rem;
+  /*
+  Shadow
+  */
+  -webkit-box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px,
+    rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  -moz-box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px,
+    rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  /*
+  Rounded corners
+  */
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+/*
+Input mall
+*/
+.input {
+  background-color: #f1f2f6;
+  color: #aeadc4;
+  border: none;
+  font-size: 24px;
+  padding: 0.3rem 0rem 0.3rem 1rem;
+
+  /*
+  Rounded corners
+  */
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+.input:focus {
+  outline: none;
+}
+/*
+Input mall - color
+*/
+.input-color {
+  background-color: #f1f2f6;
+  color: #28475d;
+  border: none;
+  font-size: 24px;
+  padding: 0.3rem 0rem 0.3rem 1rem;
+
+  /*
+  Rounded corners
+  */
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+.input:focus {
+  outline: none;
+}
+
 /*
  Search-bars
 */
@@ -17,7 +77,7 @@ main {
   display: flex;
   margin-left: auto;
   margin-right: auto;
-  width: 80%;
+  width: 90%;
   padding: 1rem;
 }
 .input-search input {
@@ -31,12 +91,11 @@ main {
   display: flex;
   margin-left: auto;
   margin-right: auto;
-  width: 80%;
-  padding: 1rem;
+  width: 90%;
+  padding: 0rem 1rem;
 }
 .input-form div {
   text-align: center;
-  width: 100%;
 }
 
 /*
@@ -46,7 +105,7 @@ main {
   display: flex;
   margin-left: auto;
   margin-right: auto;
-  width: 80%;
+  width: 90%;
   padding: 1rem;
 }
 .input-tickets select {
@@ -61,7 +120,7 @@ main {
   display: flex;
   margin-left: auto;
   margin-right: auto;
-  width: 80%;
+  width: 90%;
   padding: 1rem;
 }
 .input-date input {
@@ -76,14 +135,31 @@ main {
   display: flex;
   margin-left: auto;
   margin-right: auto;
-  width: 80%;
+  width: 90%;
   padding: 1rem;
 }
 .search-btn button {
   text-align: center;
-  width: 80%;
+  width: 90%;
   margin-left: auto;
   margin-right: auto;
+
+  background-color: #1a883d;
+  border-radius: 5px;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 24px;
+  padding: 10px 31px;
+  text-decoration: none;
+  border: none;
+}
+.search-btn button:hover {
+  background-color: #5cbf2a;
+}
+.search-btn button:active {
+  position: relative;
+  top: 1px;
 }
 
 /*
