@@ -86,7 +86,7 @@ class DbInitializer {
   }
 
   #CreateBookingTable() {
-    const statement = this.#database.prepare(` CREATE TABLE IF NOT EXISTS 'Booking'(
+    const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'Booking'(
       'BookingCodeId' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
       'TravellerId' INTEGER NOT NULL REFERENCES 'Traveller',
       'Price' DECIMAL NOT NULL);`
@@ -125,23 +125,23 @@ class DbInitializer {
     insert.run();
   }
 
-#SeedTrainStationPlatforms() {
-  const insert = this.#database.prepare(`INSERT OR REPLACE INTO 'TrainStationPlatform' (Id, TrainStationId, Name)
-  VALUES ('1', '1', 'A'),
-  ('2', '1', 'B'),
-  ('3', '1', 'C'),
-  ('4', '1', 'D'),
-  ('5', '2', 'A'),
-  ('6', '2', 'B'),
-  ('7', '2', 'C'),
-  ('8', '2', 'D'),
-  ('9', '3', 'A'),
-  ('10', '3', 'B'),
-  ('11', '3', 'C'),
-  ('12', '3', 'D');`
-  );
-  insert.run();
-}
+  #SeedTrainStationPlatforms() {
+    const insert = this.#database.prepare(`INSERT OR REPLACE INTO 'TrainStationPlatform' (Id, TrainStationId, Name)
+    VALUES ('1', '1', 'A'),
+    ('2', '1', 'B'),
+    ('3', '1', 'C'),
+    ('4', '1', 'D'),
+    ('5', '2', 'A'),
+    ('6', '2', 'B'),
+    ('7', '2', 'C'),
+    ('8', '2', 'D'),
+    ('9', '3', 'A'),
+    ('10', '3', 'B'),
+    ('11', '3', 'C'),
+    ('12', '3', 'D');`
+    );
+    insert.run();
+  }
 
   #SeedSchedules() {
     const insert = this.#database.prepare(`INSERT OR REPLACE INTO 'Schedule' (Id, CartId, DepartureTrainStationId, DeparturePlatformId, DestinationTrainStationId, DestinationPlatformId, DepartureTime, ArrivalTime) 
@@ -176,7 +176,7 @@ class DbInitializer {
     ('26', '1', '3', '3', '1', '3', '2022-01-25 09:30:00', '2022-01-25 12:30:00'),
     ('27', '1', '3', '3', '2', '3', '2022-01-25 10:00:00', '2022-01-25 13:00:00');`
     );
-  insert.run();
+    insert.run();
   }
 
   #SeedScheduleStages() {
