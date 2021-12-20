@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 
-// Hämta antalet säten
+// 2Do
+// ScheduleId
+// Hämta alla carts med ScheduleId xxx
+// Hämta antalet säten i dessa carts
 // Kolla vilka som är upptagna
 // Rita ut i frontenden
 
@@ -11,7 +14,7 @@ function SeatsForm() {
     const [SeatAmount, setSeatAmount] = useState('');
 
     async function getData() {
-        console.log('tjohej')
+        console.log('getData start')
         const response = await fetch('/api/Cart');
         const data = await response.json();
         console.log(data)
