@@ -1,17 +1,38 @@
+import React, { useState } from 'react'
+
 function BookingConfirmationPage() {
-    return(
+    const [FirstName] = useState("");
+    const [LastName] = useState("");
+    const [Email] = useState("");
+    const [PhoneNumber] = useState("");
+
+
+    async function getData() {
+        console.log('getData start')
+        const response = await fetch('/api/Traveller');
+        const data = await response.json();
+        console.log(data)
+
+        //this.setState({ totalReactPackages: data.total })
+        //SeatAmount = data[CartId];
+        console.log(data[FirstName], data[LastName], data[Email], data[PhoneNumber]);
+    }
+
+
+    return (
         <main>
             <div>
-                <h1 class="Title">BOOKING CONFIRMATION</h1>
+                <h1 className="Title">BOOKING CONFIRMATION</h1>
                 <br></br>
 
-                <p class="EmailText">THANK YOU FOR YOUR PURCHASE! A BOOKING CONFIRMATION HAS BEEN SENT TO YOUR EMAIL.</p>
+                <p className="EmailText">THANK YOU FOR YOUR PURCHASE! A BOOKING CONFIRMATION HAS BEEN SENT TO YOUR EMAIL.</p>
                 <br></br>
+                <button type="button" onClick={getData}>getData</button>
 
-                <p class="BookingId">BOOKING ID: exampleId123</p>
+                <p className="BookingId">BOOKING ID: exampleId123</p>
                 <br></br>
             </div>
-            <div class="ConfirmationDetails">
+            <div className="ConfirmationDetails">
                 <div>
                     <p>TRIP LOCATION:</p>
                     <p>XXXXXXXX - XXXXXXXXX</p>
@@ -43,8 +64,8 @@ function BookingConfirmationPage() {
                     <br></br>
                 </div>
                 <div>
-                    <p class="TotalPriceText">TOTAL PRICE:</p>
-                    <p class="TotalPriceAmount">XXXX KR</p>
+                    <p className="TotalPriceText">TOTAL PRICE:</p>
+                    <p className="TotalPriceAmount">XXXX KR</p>
                 </div>
             </div>
         </main>
