@@ -8,14 +8,16 @@ function BookingConfirmationPage() {
 
 
     async function getData() {
-        console.log('getData start')
+        console.log('Data')
         const response = await fetch('/api/Traveller');
         const data = await response.json();
-        console.log(data)
+        console.log("only data: ", data);
 
-        //this.setState({ totalReactPackages: data.total })
-        //SeatAmount = data[CartId];
-        console.log(data[FirstName], data[LastName], data[Email], data[PhoneNumber]);
+        for (let i = 0; i < data.length; i++) {
+            console.log("data split up: ", data[i]);
+
+        }
+        // console.log(data[FirstName], data[LastName], data[Email], data[PhoneNumber]);
     }
 
 
