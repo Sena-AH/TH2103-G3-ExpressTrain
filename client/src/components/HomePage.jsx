@@ -26,7 +26,6 @@ function HomePage() {
                            name="view"
                            value="oneway"
                            id="oneway"
-                           checked
                     />
                     <label htmlFor="oneway" className="switch-label switch-label-off">Enkelresa</label>
 
