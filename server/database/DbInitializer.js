@@ -23,6 +23,7 @@ class DbInitializer {
     this.#CreateScheduleTable();
     this.#CreateScheduleStageTable();
     //this.#CreatePaymentInfoTable();
+    // hello
   }
 
   #CreateTravellerTable() {
