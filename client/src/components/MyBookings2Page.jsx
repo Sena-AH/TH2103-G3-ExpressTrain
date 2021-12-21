@@ -1,26 +1,30 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import React, { useState } from 'react';
+// import { useNavigate } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 
-function MyBookings2Page() {
-  const [bookingCodeId] = useState("");
+// function MyBookings2Page() {
+//   const [bookingCodeId] = useState("");
 
-  //let bookingData = {BookingCodeId, UserId, Price};
-  // might not need
-  //let scheduleStageData = {ScheduleId, SeatNumber, BookingId};
+function MyBookings2Page(props) {
+  const navigate = useNavigate();
+  const { state } = useLocation();
+  const bookingId = state.bookingId;
 
-  async function getData() {
-    const response = await fetch(`/api/booking/${bookingCodeId}`);
-    const data = await response.json();
-    console.log(data);
-
-    // console.log(data[BookingCodeId]);        
-  }
-
-  let navigate = useNavigate();
+  console.log(props);
 
   function handleClick() {
     navigate("/MyBookings3Page");
   }
+
+  // async function getData() {
+  //   const response = await fetch(`/api/booking/${bookingCodeId}`);
+  //   const data = await response.json();
+  //   console.log(data);
+
+  // console.log(data[BookingCodeId]);        
+  //}
+
+  //let navigate = useNavigate();
 
   return (
     <main>
@@ -30,7 +34,7 @@ function MyBookings2Page() {
 
       <div>
 
-        <h2>Boking ID: {bookingCodeId}</h2>
+        <h2>Boking ID: {bookingId}</h2>
 
         <p>Departure location:
         xxxxxxxxxxx - xxxxxxxxxx
