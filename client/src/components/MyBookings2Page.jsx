@@ -112,10 +112,10 @@ function MyBookings2Page() {
   }
   
   function Itinerary(props) {
-    let itineraries = [<div className="itenerary-result">xxxxxxxxxxx - xxxxxxxxxx (xx:xx - xx:xx) - Platform: xx - Seat: xx</div>];
-    // stages.forEach(element => {
-    //   itineraries.push(<div className="itenerary-result">xxxxxxxxxxx - xxxxxxxxxx (xx:xx - xx:xx) - Platform: xx - Seat: xx</div>);
-    // });
+    let itineraries = [];
+    schedules.forEach(schedule => {
+      itineraries.push(<div className="itenerary-result">{schedule.DepartureTrainStationId} - {schedule.DestinationTrainStationId} ({schedule.DepartureTime} - {schedule.ArrivalTime}) - Platform: {schedule.DeparturePlatformId} - Seat: xx</div>);
+    });
     return itineraries;
   }
 
@@ -132,18 +132,18 @@ function MyBookings2Page() {
 
           <div className="travel-date">
             <br></br>
-            <div className="travel-date-title">Travel Date:</div>
+            <div className="travel-date-title">Resdag:</div>
             <div className="travel-date-result">xx-xx-xx</div>
           </div>
           
           <div className="itenerary">
             <br></br>
-            <div className="itenerary-title">Itinerary:</div>
+            <div className="itenerary-title">Resväg:</div>
             <Itinerary />
+            {/* <div className="itenerary-result">xxxxxxxxxxx - xxxxxxxxxx (xx:xx - xx:xx) - Platform: xx - Seat: xx</div>
             <div className="itenerary-result">xxxxxxxxxxx - xxxxxxxxxx (xx:xx - xx:xx) - Platform: xx - Seat: xx</div>
             <div className="itenerary-result">xxxxxxxxxxx - xxxxxxxxxx (xx:xx - xx:xx) - Platform: xx - Seat: xx</div>
-            <div className="itenerary-result">xxxxxxxxxxx - xxxxxxxxxx (xx:xx - xx:xx) - Platform: xx - Seat: xx</div>
-            <div className="itenerary-result">xxxxxxxxxxx - xxxxxxxxxx (xx:xx - xx:xx) - Platform: xx - Seat: xx</div>
+            <div className="itenerary-result">xxxxxxxxxxx - xxxxxxxxxx (xx:xx - xx:xx) - Platform: xx - Seat: xx</div> */}
           </div>
 
           <div className="name">
