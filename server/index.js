@@ -126,6 +126,16 @@ webServer.get('/api/booking/:id', (req, res) => {
   `, { id: req.params.id }, true);
 });
 
+// REST ROUTE: Get Schedule stages by bookingId
+webServer.get('/api/schedulestage/booking/:id', (req, res) => {
+  req.params.table = 'ScheduleStage';
+  runQuery(req, res, `
+  SELECT *
+  FROM ${ req.params.table }
+  WHERE BookingId = :id
+  `, { id: req.params.id });
+});
+
 // REST ROUTE: Get one, ScheduleStage table
 webServer.get('/api/schedulestage/:id/:seat', (req, res) => {
   req.params.table = 'ScheduleStage';
@@ -136,22 +146,12 @@ webServer.get('/api/schedulestage/:id/:seat', (req, res) => {
   `, { id: req.params.id, seat: req.params.seat  }, true);
 });
 
-// REST ROUTE: Get Schedule stages by bookingId
-webServer.get('/api/schedulestage/booking/:id', (req, res) => {
-  req.params.table = 'ScheduleStage';
-  runQuery(req, res, `
-  SELECT *
-  FROM ${ req.params.table }
-  WHERE BookingId = :id
-  `, { id: req.params.id, seat: req.params.seat  }, true);
-});
-
 // REST ROUTE: GET one
 webServer.get('/api/:table/:id', (req, res) => {
   // run query
   runQuery(req, res, `
     SELECT *
-    FROM ${req.params.table}   
+    FROM ${req.params.table}
     WHERE id = :id
   `, { id: req.params.id }, true
   );

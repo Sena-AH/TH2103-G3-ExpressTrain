@@ -3,17 +3,18 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 function MyBookings2Page() {
   const navigate = useNavigate();
-  const [booking, setBooking] = useState("");
-  const [traveller, setTraveller] = useState("");
-  const [stage, setStage] = useState("");
-  const [error, setError] = useState(null);
   const { state } = useLocation();
   const bookingId = state.bookingId;
 
+  const [booking, setBooking] = useState("");
+  const [traveller, setTraveller] = useState("");
+  const [stages, setStages] = useState("");
+  const [schedules, setSchedules] = useState([]);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
-    // Booking
     async function fetchBooking() {
-       await fetch(`/api/booking/${bookingId}`)
+      await fetch(`/api/booking/${bookingId}`)
         .then(response => {
           if (!response.ok) {
             setError(response.status);
@@ -58,37 +59,64 @@ function MyBookings2Page() {
         })
         .then(
           result => {
-            setStage(result);
+            setStages(result);
           },
           error => {
             setError(error);
           }
         );
-      console.log(stage);
-      console.log(error);
     }
 
-    fetchBooking();
-    if (booking !== "") {
+    async function fetchSchedule(id) {
+      await fetch('/api/Schedule/' + id)
+        .then(response => {
+          if (!response.ok) {
+            setError(response.status);
+          }
+          return response.json();
+        })
+        .then(
+          result => {
+            // setSchedules({
+            //   ...schedules,
+            //   [result.Id]: result
+            // });
+            setSchedules(schedules => [...schedules, result])
+          },
+          error => {
+            setError(error);
+          }
+        );
+    }
+
+    if (booking === "") {
+      fetchBooking();
+    }
+    if ((booking !== "") && (traveller === "")) {
       fetchTraveller();
+    }
+    if ((traveller !== "") && (stages === "")) {
       fetchScheduleStages();
     }
-    
-  }, [bookingId]);
+    if ((stages !== "") && (schedules.length === 0)) {
+      console.log("stages amount: " + stages.length);
+      stages.forEach(stage => {
+        fetchSchedule(stage.ScheduleId);
+      });
+    }
 
-  // console.log(booking);
-  // console.log(error);
+  }, [bookingId, booking, traveller, stages, schedules]);
 
   function handleClick() {
     navigate("/MyBookings3Page");
   }
   
-  // async function getData() {
-  //   const responsce = await fetch(`/api/traveller/${data[TravellerId]}`)
-  // }
-
-  function Itinerary() {
-
+  function Itinerary(props) {
+    let itineraries = [<div className="itenerary-result">xxxxxxxxxxx - xxxxxxxxxx (xx:xx - xx:xx) - Platform: xx - Seat: xx</div>];
+    // stages.forEach(element => {
+    //   itineraries.push(<div className="itenerary-result">xxxxxxxxxxx - xxxxxxxxxx (xx:xx - xx:xx) - Platform: xx - Seat: xx</div>);
+    // });
+    return itineraries;
   }
 
   function Booking() {
@@ -100,30 +128,49 @@ function MyBookings2Page() {
 
         <div>
 
-          <h2>Boking ID: {bookingId}</h2>
+          <h3>Boking ID: {bookingId}</h3>
 
-          <p>
-          Travel Date:
-          xx-xx-xx
-          </p>
+          <div className="travel-date">
+            <br></br>
+            <div className="travel-date-title">Travel Date:</div>
+            <div className="travel-date-result">xx-xx-xx</div>
+          </div>
+          
+          <div className="itenerary">
+            <br></br>
+            <div className="itenerary-title">Itinerary:</div>
+            <Itinerary />
+            <div className="itenerary-result">xxxxxxxxxxx - xxxxxxxxxx (xx:xx - xx:xx) - Platform: xx - Seat: xx</div>
+            <div className="itenerary-result">xxxxxxxxxxx - xxxxxxxxxx (xx:xx - xx:xx) - Platform: xx - Seat: xx</div>
+            <div className="itenerary-result">xxxxxxxxxxx - xxxxxxxxxx (xx:xx - xx:xx) - Platform: xx - Seat: xx</div>
+            <div className="itenerary-result">xxxxxxxxxxx - xxxxxxxxxx (xx:xx - xx:xx) - Platform: xx - Seat: xx</div>
+          </div>
 
-          <p>Itinerary:
-          xxxxxxxxxxx - xxxxxxxxxx (xx:xx - xx:xx) - Platform: xx - Seat: xx
-          xxxxxxxxxxx - xxxxxxxxxx (xx:xx - xx:xx) - Platform: xx - Seat: xx
-          xxxxxxxxxxx - xxxxxxxxxx (xx:xx - xx:xx) - Platform: xx - Seat: xx
+          <div className="name">
+            <br></br>
+            <div className="name-title">Name:</div>
+            <div className="name-result">{traveller.FirstName} {traveller.LastName}</div>
+          </div>
+          
+          <div className="email">
+            <br></br>
+            <div className="email-title">Email:</div>
+            <div className="email-result">{traveller.Email}</div>
+          </div>
 
-          Name:
-          {traveller.FirstName} {traveller.LastName}
+          <div className="phoneNumber">
+            <br></br>
+            <div className="phoneNumber-title">Phone number:</div>
+            <div className="phoneNumber-result">{traveller.PhoneNumber}</div>
+          </div>
 
-          Email:
-          {traveller.Email}
-
-          Phone number:
-          {traveller.PhoneNumber}
-
-          Total price:
-          {booking.Price} kr</p>
+          <div className="price">
+            <br></br>
+            <div className="price-title">Total price:</div>
+            <div className="price-result">{booking.Price} kr</div>
+          </div>
         </div>
+        
         <div className="search-btn">
           <button type="button" onClick={handleClick}>Cancel Booking</button>
         </div>
