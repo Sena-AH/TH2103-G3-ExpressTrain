@@ -15,14 +15,18 @@ function MyBookings2Page(props) {
   function handleClick() {
     navigate("/MyBookings3Page");
   }
-
+  
+  async function getData() {
+    const response = await fetch(`/api/booking/${bookingId}`);
+    const data = await response.json();
+    console.log(data);
+    
+    console.log(data[bookingId]);        
+  }
+  
   // async function getData() {
-  //   const response = await fetch(`/api/booking/${bookingCodeId}`);
-  //   const data = await response.json();
-  //   console.log(data);
-
-  // console.log(data[BookingCodeId]);        
-  //}
+  //   const responsce = await fetch(`/api/traveller/${data[TravellerId]}`)
+  // }
 
   //let navigate = useNavigate();
 

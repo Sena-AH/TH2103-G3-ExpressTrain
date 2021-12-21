@@ -28,7 +28,7 @@ function MyBookingsPage() {
         <form onSubmit={handleSubmit}>
           <div className="my-bookings-search">
             {/* <input type="number" min="0"  name="bookingId" class="search-bar" placeholder="Bokningsnummer"></input> */}
-            <input type="number" min="0" name="bookingId" value={formData.bookingId} onChange={handelChange}/>
+            <input placeholder="Bokningsnummer" min="0" name="bookingId" value={formData.bookingId} onChange={handelChange}/>
           </div>
           <div className="search-btn">
             {/* <button type="submit" value="Submit" onClick={handleClick}>Sök</button> */}
