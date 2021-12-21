@@ -1,8 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import '../css/searchresult.css';
-
+import React, { useState, useRef, useEffect } from 'react'
 
 function HomePage() {
+
+  const [DepartureStation, setDepartureStation]=useState("");
+  const [ArrivalStation, setArrivalStation]=useState("");
 
   let navigate = useNavigate();
 
@@ -20,36 +23,47 @@ function HomePage() {
     console.log("hello to you too");
   }
 
+
+  let data = {ArrivalStation, DepartureStation}
+  fetch("/api/TrainStation", {
+    method: "GET",
+    headers: {
+      'accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+
+  })
+
   return (
     <main>
       <div className="input-search">
-        <input></input>
+        <input type="text" placeholder='Vart vill du åka från?' value={DepartureStation} onChange={(e)=>setDepartureStation(e.target.value)}></input>
       </div>
       <div className="input-search">
-        <input></input>
+        <input type="text" placeholder='Vart skall du åka till?' value={ArrivalStation} onChange={(e)=>setArrivalStation(e.target.value)}></input>
       </div>
 
       <form className="input-form" action="">
         <div>
           <input type="radio" id="oneWay" name="travelWay" value="oneWay" />
-          <label htmlFor="oneWay">One Way</label>
+          <label htmlFor="oneWay">Enkelresa</label>
         </div>
         <div>
           <input type="radio" id="roundTrip" name="travelWay" value="roundTrip" />
-          <label htmlFor="roundTrip">Round Trip</label>
+          <label htmlFor="roundTrip">Tur & Retur</label>
         </div>
       </ form>
 
       <div className="input-tickets">
         <select name="tickets" id="tickets">
-          <option value="1">1 ticket</option>
-          <option value="2">2 tickets</option>
-          <option value="3">3 tickets</option>
-          <option value="4">4 tickets</option>
-          <option value="5">5 tickets</option>
-          <option value="6">6 tickets</option>
-          <option value="7">7 tickets</option>
-          <option value="8">8 tickets</option>
+          <option value="1">1 biljett</option>
+          <option value="2">2 biljett</option>
+          <option value="3">3 biljett</option>
+          <option value="4">4 biljett</option>
+          <option value="5">5 biljett</option>
+          <option value="6">6 biljett</option>
+          <option value="7">7 biljett</option>
+          <option value="8">8 biljett</option>
         </select>
       </div>
 
@@ -58,27 +72,28 @@ function HomePage() {
       </div>
 
       <div className="search-btn">
-        <button type="button" onClick={handleClick}>Search</button>
+        <button type="button" onClick={handleClick}>Sök</button>
       </div>
 
       <div className="filter-menu input-tickets">
         <select name="Filter" id="filter">
-          <option value="Price low to high">Price low to high</option>
-          <option value="Price high to low">Price high to low</option>
-          <option value="Fastest route">Fastest route</option>
-          <option value="Recommended tickets">Recommended tickets</option>
+          <option value="Price low to high">Pris: Lågt till högt</option>
+          <option value="Price high to low">Pris: Högt till lågt</option>
+          <option value="Fastest route">Kortast restid</option>
+          <option value="Recommended tickets">Rekommenderad resa</option>
         </select>
       </div>
 
       <div className="search-result-div">
         <button onClick={handleClick3} className="search-result-button">
+          <span>{ArrivalStation} - {DepartureStation}</span>
           <span>XX:XX - XX:XX</span>
           <br></br>
           <span className="travel-duration">XXH XXM</span>
           <br></br>
           <span>__________________</span>
           <br></br>
-          <span>Price : XXXXKR</span>
+          <span>Pris : XXXXKR</span>
         </button>
         <button onClick={handleClick4} className="search-result-button">
           <span>XX:XX - XX:XX</span>
@@ -87,14 +102,14 @@ function HomePage() {
           <br></br>
           <span>__________________</span>
           <br></br>
-          <span>Price : XXXXKR</span>
+          <span>Pris : XXXXKR</span>
         </button>
       </div>
 
       <div className="current-total-price-div">
-        <p>Total price: XXXXKR</p>
+        <p>Totalkostnad: XXXXKR</p>
         <div className="search-btn">
-          <button type="button" onClick={handleClick2}>Continue</button>
+          <button type="button" onClick={handleClick2}>Fortsätt</button>
         </div>
       </div>
 
