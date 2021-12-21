@@ -1,23 +1,47 @@
 import React, { useState } from 'react'
 
+
 function BookingConfirmationPage() {
-    const [FirstName] = useState("");
-    const [LastName] = useState("");
-    const [Email] = useState("");
-    const [PhoneNumber] = useState("");
+    // const [FirstName] = useState("");
+    // const [LastName] = useState("");
+    // const [Email] = useState("");
+    // const [PhoneNumber] = useState("");
+    const [BookingId, setBookingId] = useState("");
 
 
-    async function getData() {
-        console.log('Data')
+
+
+    async function getTravellerData() {
+        console.log('Traveller Data')
         const response = await fetch('/api/Traveller');
-        const data = await response.json();
-        console.log("only data: ", data);
+        const travellerData = await response.json();
+        console.log("only data: ", travellerData);
 
-        for (let i = 0; i < data.length; i++) {
-            console.log("data split up: ", data[i]);
-
+        for (let i = 0; i < travellerData.length; i++) {
+            console.log("data split up: ", travellerData[i]);
         }
-        // console.log(data[FirstName], data[LastName], data[Email], data[PhoneNumber]);
+    }
+
+    async function getBookingData() {
+        console.log('Booking Data')
+        const response = await fetch('/api/Booking');
+        const bookingData = await response.json();
+        console.log("only data: ", bookingData);
+
+        for (let i = 0; i < bookingData.length; i++) {
+            console.log("data split up: ", bookingData[i]);
+        }
+    }
+
+    async function getScheduleStageData() {
+        console.log('Schedule Stage Data')
+        const response = await fetch('/api/ScheduleStage');
+        const scheduleStageData = await response.json();
+        console.log("only data: ", scheduleStageData);
+
+        for (let i = 0; i < scheduleStageData.length; i++) {
+            console.log("data split up: ", scheduleStageData[i]);
+        }
     }
 
 
@@ -29,9 +53,11 @@ function BookingConfirmationPage() {
 
                 <p className="EmailText">THANK YOU FOR YOUR PURCHASE! A BOOKING CONFIRMATION HAS BEEN SENT TO YOUR EMAIL.</p>
                 <br></br>
-                <button type="button" onClick={getData}>getData</button>
+                <button type="button" onClick={getTravellerData}>getTravellerData</button>
+                <button type="button" onClick={getBookingData}>getBookingData</button>
+                <button type="button" onClick={getScheduleStageData}>getScheduleStageData</button>
 
-                <p className="BookingId">BOOKING ID: exampleId123</p>
+                <p className="BookingId">BOOKING ID: {BookingId}</p>
                 <br></br>
             </div>
             <div className="ConfirmationDetails">
