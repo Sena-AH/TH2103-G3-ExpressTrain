@@ -1,3 +1,4 @@
+import React from 'react'
 import { useNavigate } from 'react-router-dom';
 
 
@@ -9,14 +10,17 @@ function HomePage() {
     navigate("/SearchResultsPage");
   }
 
+
+
+
   return (
     <main>
       <div className="wrapper">
         <div className="input-search">
-          <input className="input" placeholder="Till:"></input>
+          <input className="input" placeholder="Till:" />
         </div>
         <div className="input-search">
-          <input className="input" placeholder="Från:"></input>
+          <input className="input" placeholder="Från:" />
         </div>
 
         <form className="input-form" action="">
