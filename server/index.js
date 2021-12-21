@@ -24,7 +24,7 @@ const webServer = express();
 // tell the web server to serve
 // all files (static content)
 // that are inside the folder "frontend"
-webServer.use(express.static('frontend'));
+webServer.use(express.static('../client'));
 
 // make it possible to read req bodies
 // (needed for post and put reqs)
