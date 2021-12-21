@@ -87,10 +87,10 @@ function BookingConfirmationPage() {
     return (
         <main >
             <div>
-                <h1 className="Title">BOOKING CONFIRMATION</h1>
+                <h1 className="Title">Konfirmation av bokning</h1>
                 <br></br>
 
-                <p className="EmailText">THANK YOU FOR YOUR PURCHASE! A BOOKING CONFIRMATION HAS BEEN SENT TO YOUR EMAIL.</p>
+                <p className="EmailText">Tack för ditt köp! En bokningskonfirmation har skickats till din Email.</p>
                 <br></br>
                 <button type="button" onClick={getTravellerData}>getTravellerData</button>
                 <button type="button" onClick={getBookingData}>getBookingData</button>
@@ -98,42 +98,42 @@ function BookingConfirmationPage() {
                 <button type="button" onClick={getScheduleData}>getScheduleData</button>
                 <button type="button" onClick={getTrainStationData}>getTrainStationData</button>
 
-                <p className="BookingId">BOOKING ID: {BookingId}</p>
+                <p className="BookingId">Boknings ID: {BookingId}</p>
                 <br></br>
             </div>
             <div className="ConfirmationDetails">
                 <div>
-                    <p>TRIP LOCATION:</p>
+                    <p>Resemål:</p>
                     <p>{DepartureTrainStationName} - {ArrivalTrainStationName}</p>
                     <br></br>
                 </div>
                 <div>
-                    <p>DEPARTURE TIME AND DATE:</p>
+                    <p>Avgångs tid och ankomst tid:</p>
                     <p>{DepartureTime} - {ArrivalTime}</p>
                     <br></br>
                 </div>
                 <div>
-                    <p>SEAT NUMBER:</p>
+                    <p>Sittplats nummer:</p>
                     <p>{SeatNumber}</p>
                     <br></br>
                 </div>
                 <div>
-                    <p>NAME:</p>
+                    <p>Namn:</p>
                     <p>{FirstName} {LastName}</p>
                     <br></br>
                 </div>
                 <div>
-                    <p>EMAIL:</p>
+                    <p>Email:</p>
                     <p>{Email}</p>
                     <br></br>
                 </div>
                 <div>
-                    <p>PHONE NUMBER:</p>
+                    <p>Telefon nummer:</p>
                     <p>{PhoneNumber}</p>
                     <br></br>
                 </div>
                 <div>
-                    <p className="TotalPriceText">TOTAL PRICE:</p>
+                    <p className="TotalPriceText">Totalt pris:</p>
                     <p className="TotalPriceAmount">{Price} KR</p>
                 </div>
             </div>
