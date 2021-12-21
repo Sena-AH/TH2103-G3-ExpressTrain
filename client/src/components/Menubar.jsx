@@ -12,7 +12,7 @@ function Menubar() {
   const showSidebar = () => setSidebar(!sidebar)
 
     return (
-      <header>
+      <header className="bg">
         <div className="header-bar">
           <div className="header-logo">
               <Link to="/">
