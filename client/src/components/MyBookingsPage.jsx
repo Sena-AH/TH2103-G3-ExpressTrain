@@ -23,7 +23,7 @@ function MyBookingsPage() {
     <main>
       <div>
         <div>
-          <h1 class="page-title">Mina bokningar</h1>
+          <h1 className="page-title">Mina bokningar</h1>
         </div>
         <form onSubmit={handleSubmit}>
           <div className="my-bookings-search">
