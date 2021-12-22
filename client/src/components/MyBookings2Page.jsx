@@ -10,112 +10,204 @@ function MyBookings2Page() {
   const [traveller, setTraveller] = useState("");
   const [stages, setStages] = useState("");
   const [schedules, setSchedules] = useState([]);
+  const [trainStations, setTrainStations] = useState([]);
   const [error, setError] = useState(null);
 
+  var bookingCache = "";
+  var travellerCache = "";
+  var stagesCache = "";
+  var schedulesCache = [];
+  var trainStationsCache = [];
+
   useEffect(() => {
-    async function fetchBooking() {
-      await fetch(`/api/booking/${bookingId}`)
-        .then(response => {
-          if (!response.ok) {
-            setError(response.status);
-          }
-          return response.json();
-        })
-        .then(
-          result => {
-            setBooking(result);
-          },
-          error => {
-            setError(error);
-          }
-        );
+    async function fetchBooking(id) {
+      return await fetch(`/api/booking/${id}`)
+        .then(response => response.json());
     }
 
-    async function fetchTraveller() {
-      await fetch(`/api/Traveller/${booking.TravellerId}`)
-        .then(response => {
-          if (!response.ok) {
-            setError(response.status);
-          }
-          return response.json();
-        })
-        .then(
-          result => {
-            setTraveller(result);
-          },
-          error => {
-            setError(error);
-          }
-        );
+    async function fetchTraveller(id) {
+      return await fetch(`/api/Traveller/${id}`)
+      .then(response => response.json());
     }
 
-    async function fetchScheduleStages() {
-      await fetch(`/api/schedulestage/booking/${bookingId}`)
-        .then(response => {
-          if (!response.ok) {
-            setError(response.status);
-          }
-          return response.json();
-        })
-        .then(
-          result => {
-            setStages(result);
-          },
-          error => {
-            setError(error);
-          }
-        );
+    async function fetchScheduleStages(bookingId) {
+      return await fetch(`/api/schedulestage/booking/${bookingId}`)
+      .then(response => response.json());
     }
 
-    async function fetchSchedule(id) {
-      await fetch('/api/Schedule/' + id)
-        .then(response => {
-          if (!response.ok) {
-            setError(response.status);
-          }
-          return response.json();
-        })
-        .then(
-          result => {
-            // setSchedules({
-            //   ...schedules,
-            //   [result.Id]: result
-            // });
-            setSchedules(schedules => [...schedules, result])
-          },
-          error => {
-            setError(error);
-          }
-        );
+    async function fetchSchedules(stages) {
+      for (let i = 0; i < stages.length; i++) {
+        const stage = stages[i];
+        let result = await fetch(`/api/Schedule/${stage.ScheduleId}`)
+          .then(response => response.json());
+        setSchedules(schedules => [...schedules, result])
+      }
+    }
+    
+    async function fetchTrainStations(schedule) {
+      // return await fetch(`/api/TrainStation/{id}`)
+      // .then(response => response.json())
     }
 
-    if (booking === "") {
-      fetchBooking();
-    }
-    if ((booking !== "") && (traveller === "")) {
-      fetchTraveller();
-    }
-    if ((traveller !== "") && (stages === "")) {
-      fetchScheduleStages();
-    }
-    if ((stages !== "") && (schedules.length === 0)) {
-      console.log("stages amount: " + stages.length);
-      stages.forEach(stage => {
-        fetchSchedule(stage.ScheduleId);
-      });
-    }
+    (async () => {
+      bookingCache = await fetchBooking(bookingId);
+      setBooking(bookingCache);
 
-  }, [bookingId, booking, traveller, stages, schedules]);
+      travellerCache = await fetchTraveller(bookingCache.TravellerId);
+      setTraveller(travellerCache);
+
+      stagesCache = await fetchScheduleStages(bookingId);
+      setStages(stagesCache);
+
+      await fetchSchedules(stagesCache);
+      
+      trainStationsCache = await fetchTrainStations();
+    })();
+
+    // if ((stages !== "") && (schedules.length === 0)) {
+    //   stages.forEach(stage => {
+    //     fetchSchedule(stage.ScheduleId);
+    //   });
+    // }
+    // if ((schedules.length > 0) && (Object.keys(trainStations).length === 0)) {
+    //   schedules.forEach(schedule => {
+    //     fetchTrainStation(schedule.DepartureTrainStationId);
+    //     fetchTrainStation(schedule.DestinationTrainStationId);
+    //   });
+    // }
+
+    // async function fetchBookingOld() {
+    //   await fetch(`/api/booking/${bookingId}`)
+    //     .then(response => {
+    //       if (!response.ok) {
+    //         setError(response.status);
+    //       }
+    //       return response.json();
+    //     })
+    //     .then(
+    //       result => {
+    //         setBooking(result);
+    //       },
+    //       error => {
+    //         setError(error);
+    //       }
+    //     );
+    // }
+
+    // async function fetchTravellerOld() {
+    //   await fetch(`/api/Traveller/${booking.TravellerId}`)
+    //     .then(response => {
+    //       if (!response.ok) {
+    //         setError(response.status);
+    //       }
+    //       return response.json();
+    //     })
+    //     .then(
+    //       result => {
+    //         setTraveller(result);
+    //       },
+    //       error => {
+    //         setError(error);
+    //       }
+    //     );
+    // }
+
+    // async function fetchScheduleStagesOld() {
+    //   await fetch(`/api/schedulestage/booking/${bookingId}`)
+    //     .then(response => {
+    //       if (!response.ok) {
+    //         setError(response.status);
+    //       }
+    //       return response.json();
+    //     })
+    //     .then(
+    //       result => {
+    //         setStages(result);
+    //       },
+    //       error => {
+    //         setError(error);
+    //       }
+    //     );
+    // }
+
+    // async function fetchScheduleOld(id) {
+    //   await fetch('/api/Schedule/' + id)
+    //     .then(response => {
+    //       if (!response.ok) {
+    //         setError(response.status);
+    //       }
+    //       return response.json();
+    //     })
+    //     .then(
+    //       result => {
+    //         setSchedules(schedules => [...schedules, result])
+    //       },
+    //       error => {
+    //         setError(error);
+    //       }
+    //     );
+    // }
+
+    // async function fetchTrainStation(id) {
+    //   await fetch('/api/TrainStation/' + id)
+    //     .then(response => {
+    //       if (!response.ok) {
+    //         setError(response.status);
+    //       }
+    //       return response.json();
+    //     })
+    //     .then(
+    //       result => {
+    //         // setTrainStations(trainStations => ({...trainStations, result}))
+    //         if (!(result.Id in trainStations)) {
+    //           setTrainStations(trainStations => ({
+    //             ...trainStations,
+    //             [result.Id]: result
+    //           }));
+    //         }
+    //       },
+    //       error => {
+    //         setError(error);
+    //       }
+    //     );
+    // }
+
+    // if (booking === "") {
+    //   fetchBooking();
+    // }
+    // if ((booking !== "") && (traveller === "")) {
+    //   fetchTraveller();
+    // }
+    // if ((traveller !== "") && (stages === "")) {
+    //   fetchScheduleStages();
+    // }
+    // if ((stages !== "") && (schedules.length === 0)) {
+    //   stages.forEach(stage => {
+    //     fetchSchedule(stage.ScheduleId);
+    //   });
+    // }
+    // if ((schedules.length > 0) && (Object.keys(trainStations).length === 0)) {
+    //   schedules.forEach(schedule => {
+    //     fetchTrainStation(schedule.DepartureTrainStationId);
+    //     fetchTrainStation(schedule.DestinationTrainStationId);
+    //   });
+    // }
+
+  }, [bookingId]); //[bookingId, booking, traveller, stages, schedules, trainStations]);
 
   function handleClick() {
     navigate("/MyBookings3Page");
   }
   
-  function Itinerary(props) {
+  function Itinerary() {
     let itineraries = [];
-    schedules.forEach(schedule => {
-      itineraries.push(<div className="itenerary-result">{schedule.DepartureTrainStationId} - {schedule.DestinationTrainStationId} ({schedule.DepartureTime} - {schedule.ArrivalTime}) - Platform: {schedule.DeparturePlatformId} - Seat: xx</div>);
-    });
+    if (schedules.length > 0) {
+      for (let index = 0; index < schedules.length; index++) {
+        const schedule = schedules[index];
+        const seatNumber = stages[index].SeatNumber;
+        itineraries.push(<div key={index} className="itenerary-result">{schedule.DepartureTrainStationId} - {schedule.DestinationTrainStationId} ({schedule.DepartureTime} - {schedule.ArrivalTime}) - Platform: {schedule.DeparturePlatformId} - Seat: {seatNumber}</div>);
+      }
+    }
     return itineraries;
   }
 
@@ -127,13 +219,12 @@ function MyBookings2Page() {
         </div>
 
         <div>
-
           <h3>Boking ID: {bookingId}</h3>
 
           <div className="travel-date">
             <br></br>
             <div className="travel-date-title">Resdag:</div>
-            <div className="travel-date-result">xx-xx-xx</div>
+            <div className="travel-date-result">xxx</div>
           </div>
           
           <div className="itenerary">
