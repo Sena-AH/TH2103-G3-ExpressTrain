@@ -140,10 +140,6 @@ function MyBookings2Page() {
             <br></br>
             <div className="itenerary-title">Resväg:</div>
             <Itinerary />
-            {/* <div className="itenerary-result">xxxxxxxxxxx - xxxxxxxxxx (xx:xx - xx:xx) - Platform: xx - Seat: xx</div>
-            <div className="itenerary-result">xxxxxxxxxxx - xxxxxxxxxx (xx:xx - xx:xx) - Platform: xx - Seat: xx</div>
-            <div className="itenerary-result">xxxxxxxxxxx - xxxxxxxxxx (xx:xx - xx:xx) - Platform: xx - Seat: xx</div>
-            <div className="itenerary-result">xxxxxxxxxxx - xxxxxxxxxx (xx:xx - xx:xx) - Platform: xx - Seat: xx</div> */}
           </div>
 
           <div className="name">
