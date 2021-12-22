@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {useLocation, useNavigate} from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 //import index from '../../../server'
 
 
@@ -15,21 +15,26 @@ function SeatsForm() {
     // nödvändiga const
     const [CartId, setCartId] = useState('1'); // Ska komma med från föregående sida
     const [SeatAmount, setSeatAmount] = useState('');
+    const [travellerAmount, setTravellerAmount] = useState('');
+    const [scheduleId, setScheduleId] = useState('3');
 
-    async function getData(travellerAmount, scheduleId) {
+
+    async function getData() {
         console.log('getData start')
         // Hämta SeatAmount i cart
         const response = await fetch('/api/Cart');
         const data = await response.json();
-        console.log(data)
+
+        
+        console.log(data);
 
         //SeatAmount = data[CartId];
-        //console.log(data[CartId]);
+        console.log(data[CartId]);
         setSeatAmount(data[CartId].SeatAmount);
     }
     return (
         <div class="WholePage">
-                <button class="TotalPriceContinueButton" onClick={getData(travellerAmount = 1, scheduleId = 3)}>Visa lediga platser</button>
+            <button class="TotalPriceContinueButton" onClick={getData()}>Visa lediga platser</button>
 
 
             <h1 class="Title">Sittplatser</h1>
@@ -39,7 +44,7 @@ function SeatsForm() {
 
             <div class="TotalPrice">
                 <p class="TotalPriceText">PRIS TOTALT: XXX KR</p>
-                <button class="TotalPriceContinueButton" onClick={getData}>Fortsätt</button>
+                {/* <button class="TotalPriceContinueButton" onClick={getData}>Fortsätt</button> */}
                 Antal sittplatser: {SeatAmount}
 
 
