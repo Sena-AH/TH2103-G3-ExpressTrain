@@ -183,3 +183,13 @@ webServer.use((error, req, res, next) => {
   error ?
     res.status(error.status || 500).json({ error }) : next();
 });
+
+webServer.get('/api/:table/:id', (req, res) => {
+  // run query
+  runQuery(req, res, `
+    SELECT *
+    FROM ${req.params.table}   
+    WHERE location = :id
+  `, { id: req.params.id }, true
+  );
+});

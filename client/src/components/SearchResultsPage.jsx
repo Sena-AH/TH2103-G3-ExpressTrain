@@ -1,11 +1,17 @@
 import { useNavigate } from 'react-router-dom';
 import '../css/searchresult.css';
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect } from 'react' 
 
-function HomePage() {
+function SearchResults() {
 
   const [DepartureStation, setDepartureStation]=useState("");
   const [ArrivalStation, setArrivalStation]=useState("");
+  const [OutputDeparture, setOutputDeparture]=useState("");
+  const [OutputArrival, setOutputArrival]=useState("");
+  const [TotalCost, setTotalCost]=useState("");
+  const [DepartureTime, setDepartureTime]=useState("");
+  const [ArrivalTime, setArrivalTime]=useState("");
+  const [ListOfStations, setListOfStations]=useState("");
 
   let navigate = useNavigate();
 
@@ -23,16 +29,38 @@ function HomePage() {
     console.log("hello to you too");
   }
 
+  useEffect(()=>{
+    const url = "api/TrainStation/";
 
-  let data = {ArrivalStation, DepartureStation}
-  fetch("/api/TrainStation", {
-    method: "GET",
-    headers: {
-      'accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
+    const fetchData = async () => {
+      try {
+        const response = await fetch(url);
+        const json = await response.json();
+        console.log(json);
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
+    
+    
+    fetchData();
+  },[]);
+  
+  // response.forEach(e =>  {
+  //   try{
+  //     if(e.Name === {ArrivalStation}){
+  //     setOutputArrival({ArrivalStation})
 
-  })
+  //   }
+  //   } catch (error) {
+  //     console.log('arrival station not set', error)
+  //   }
+    
+  // });
+  function applyInformation(){
+
+  }
+
 
   return (
     <main>
@@ -57,13 +85,13 @@ function HomePage() {
       <div className="input-tickets">
         <select name="tickets" id="tickets">
           <option value="1">1 biljett</option>
-          <option value="2">2 biljett</option>
-          <option value="3">3 biljett</option>
-          <option value="4">4 biljett</option>
-          <option value="5">5 biljett</option>
-          <option value="6">6 biljett</option>
-          <option value="7">7 biljett</option>
-          <option value="8">8 biljett</option>
+          <option value="2">2 biljetter</option>
+          <option value="3">3 biljetter</option>
+          <option value="4">4 biljetter</option>
+          <option value="5">5 biljetter</option>
+          <option value="6">6 biljetter</option>
+          <option value="7">7 biljetter</option>
+          <option value="8">8 biljetter</option>
         </select>
       </div>
 
@@ -77,7 +105,7 @@ function HomePage() {
 
       <div className="filter-menu input-tickets">
         <select name="Filter" id="filter">
-          <option value="Price low to high">Pris: Lågt till högt</option>
+          <option value="low-high">Pris: Lågt till högt</option>
           <option value="Price high to low">Pris: Högt till lågt</option>
           <option value="Fastest route">Kortast restid</option>
           <option value="Recommended tickets">Rekommenderad resa</option>
@@ -86,7 +114,8 @@ function HomePage() {
 
       <div className="search-result-div">
         <button onClick={handleClick3} className="search-result-button">
-          <span>{ArrivalStation} - {DepartureStation}</span>
+          <span>{DepartureStation} - {ArrivalStation}</span>
+          <br></br>
           <span>XX:XX - XX:XX</span>
           <br></br>
           <span className="travel-duration">XXH XXM</span>
@@ -117,4 +146,4 @@ function HomePage() {
   );
 };
 
-export default HomePage;
+export default SearchResults;
