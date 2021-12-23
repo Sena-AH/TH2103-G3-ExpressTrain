@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
-import '../css/myBookings2Page.css'; 
+import '../css/myBookings2Page.css';
 
 function MyBookings2Page() {
   const navigate = useNavigate();
+  // useLocation holds several items, we grab the {state} and then we can access it by state.bookingId
   const {state} = useLocation();
   const bookingId = state.bookingId;
 
@@ -15,6 +16,7 @@ function MyBookings2Page() {
   const [platforms, setPlatforms] = useState([]);
   const [error, setError] = useState(null);
 
+  // using hooks, trying to prevent the code running a million times. we use the hook so if the bookingId changes then it will run the code(setbooking)
   useEffect(() => {
     (async () => {
       setBooking(await fetchBooking());
@@ -50,6 +52,7 @@ function MyBookings2Page() {
     })();
   }, [schedules]);
 
+  // if its empty then it doesnt get loaded.
   function isObjLoaded(state) {
     return !(Object.keys(state).length === 0);
   }
@@ -85,8 +88,10 @@ function MyBookings2Page() {
     let stations = {};
     for (const schedule of schedules) {
       const departureStationId = schedule.DepartureTrainStationId;
+      // we only add it to the dictionary if it is missing to avoid duplicate api calls.
       if (!(departureStationId in stations)) {
         const departureStation = await fetchUrl(`/api/TrainStation/${departureStationId}`, 'stations');
+        //         key                        value
         stations[departureStation.Id] = departureStation;
       }
       const destinationStationId = schedule.DestinationTrainStationId;
@@ -114,6 +119,7 @@ function MyBookings2Page() {
     return await fetch(url)
       .then(response => {
         if (!response.ok) {
+          // error 404 etc
           setError(`${response.status} (${errorMessage})`);
         }
         return response.json();
@@ -121,6 +127,7 @@ function MyBookings2Page() {
       .then(result => {
         return result;
       }, error => {
+        // more developer errors
         // setError(`${error} (${errorMessage})`);
       });
   }
@@ -129,12 +136,15 @@ function MyBookings2Page() {
     let itineraries = [];
     for (let i = 0; i < schedules.length; i++) {
       const schedule = schedules[i];
+      // if its null then return 'unknown'
       let departureStation = stations[schedule.DepartureTrainStationId].Name ?? 'unknown';
       let destinationStation = stations[schedule.DestinationTrainStationId].Name ?? 'unknown';
       let departurePlatform = platforms[schedule.DeparturePlatformId].Name ?? 'unknown';
-      let departureDate = formatDate(schedule.DepartureTime);
-      let departureTime = formatTime(schedule.DepartureTime);
-      let arrivalTime = formatTime(schedule.ArrivalTime);
+      let departureDate = formatDate(schedule.DepartureTime) ?? 'unknown';
+      console.log('schedule.DepartureTime: ' + schedule.DepartureTime);
+      console.log('departureDate:' + departureDate);
+      let departureTime = formatTime(schedule.DepartureTime) ?? 'unknown';
+      let arrivalTime = formatTime(schedule.ArrivalTime) ?? 'unknown';
       let seat = stages[i].SeatNumber ?? 'unknown';
 
       itineraries.push(<div key={schedule.Id} className="itinerary-result">
@@ -151,7 +161,7 @@ function MyBookings2Page() {
   }
 
   function formatDate(date) {
-    const [day, month, year] = [to2Digits(date.getDate()), to2Digits(date.getMonth()), date.getFullYear()];
+    const [day, month, year] = [to2Digits(date.getDate()), to2Digits(date.getMonth() + 1), date.getFullYear()];
     return `${year}-${month}-${day}`;
   }
 
@@ -161,14 +171,12 @@ function MyBookings2Page() {
   }
 
   function to2Digits(value) {
+    // making sure that the time has a 0, so if AM, then 02, but because maybe minutes has 12 it would try to add a 0, so the slice removes that 0. 012 => 12
     return ("0" + value).slice(-2);
   }
 
   function Booking() {
-    // if (!isObjLoaded(platforms)) {
-    //   return(<div>Laddar bokning...</div>);
-    // }
-    const travelDate = isObjLoaded(schedules) ? formatDate((schedules[0].DepartureTime)) : 'loading...';
+    const travelDate = isObjLoaded(schedules) ? formatDate((schedules[0].DepartureTime)) : 'laddar...';
     return (<>
       <div>
         <h1>Min bokning</h1>
@@ -185,7 +193,7 @@ function MyBookings2Page() {
         <div className="itinerary">
           <br/>
           <div className="itinerary-title">Resväg:</div>
-          {itineraryIsLoaded() ? <Itinerary/> : 'loading...'}
+          {itineraryIsLoaded() ? <Itinerary /> : 'laddar...'}
         </div>
 
         <div className="name">
