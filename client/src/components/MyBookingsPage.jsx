@@ -51,8 +51,9 @@ function MyBookingsPage() {
           </div>
           <form onSubmit={handleSubmit}>
             <div className="my-bookings-search">
+              {/* ternary; if its valid do nothing, otherwise '(Invalid booking-Id)' is printed */}
               <input className="search-bar" placeholder="Bokningsnummer" min="0" name="bookingId" value={formData.bookingId}
-                     onChange={handelChange}/> {idIsValid ? '' : '(Invalid Booking-ID)'}
+                     onChange={handelChange}/><div className="error-message">{idIsValid ? '' : '(Ogiltig Boknings-ID)'}</div>
             </div>
             <div className="search-btn">
               <input type="submit" value="Sök bokning"/>
