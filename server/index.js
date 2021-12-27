@@ -5,7 +5,7 @@ const settings = require('../settings.json');
 
 // Database initialization
 const DbInitializer = require('./database/DbInitializer');
-const dbInitializer = new DbInitializer('database/' + settings.dbName);
+const dbInitializer = new DbInitializer(settings.dbName);
 dbInitializer.Init();
 // use "const db = dbInitializer.GetDatabase();" to get the database.
 
@@ -117,17 +117,17 @@ settings.allowWherePosts
   && webServer.post('/api/where/:table/', getMany);
 
 // REST ROUTE: Get one, Booking table
-webServer.get('/api/booking/:id', (req, res) => {
-  req.params.table = 'Booking';
-  runQuery(req, res, `
-  SELECT *
-  FROM ${ req.params.table }
-  WHERE BookingCodeId = :id
-  `, { id: req.params.id }, true);
-});
+// webServer.get('/api/Booking/:id', (req, res) => {
+//   req.params.table = 'Booking';
+//   runQuery(req, res, `
+//   SELECT *
+//   FROM ${ req.params.table }
+//   WHERE Id = :id
+//   `, { id: req.params.id }, true);
+// });
 
 // REST ROUTE: Get Schedule stages by bookingId
-webServer.get('/api/schedulestage/booking/:id', (req, res) => {
+webServer.get('/api/Schedulestage/Booking/:id', (req, res) => {
   req.params.table = 'ScheduleStage';
   runQuery(req, res, `
   SELECT *
@@ -137,7 +137,7 @@ webServer.get('/api/schedulestage/booking/:id', (req, res) => {
 });
 
 // REST ROUTE: Get one, ScheduleStage table
-webServer.get('/api/schedulestage/:id/:seat', (req, res) => {
+webServer.get('/api/Schedulestage/:id/:seat', (req, res) => {
   req.params.table = 'ScheduleStage';
   runQuery(req, res, `
   SELECT *

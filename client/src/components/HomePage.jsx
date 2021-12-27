@@ -7,13 +7,9 @@ function HomePage() {
   let navigate = useNavigate();
 
   function handleClick() {
-    navigate("/SearchResultsPage");
+    navigate("/SearchResults");
   }
 
-
-
-
-  
   return (
     <main>
       <div className="wrapper">

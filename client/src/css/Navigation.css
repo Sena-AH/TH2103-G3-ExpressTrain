@@ -53,3 +53,7 @@
 .nav-text a:hover {
   background-color: #1d5077;
 }
+
+.showPointer {
+  cursor: pointer;
+}

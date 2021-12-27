@@ -7,11 +7,11 @@ function HomePage() {
   let navigate = useNavigate();
 
   function handleClick() {
-    navigate("/SearchResultsPage");
+    navigate("/SearchResults");
   }
 
   function handleClick2() {
-    navigate("/BookingInformationPage");
+    navigate("/BookingInformation");
   }
   function handleClick3() {
     console.log("hello");

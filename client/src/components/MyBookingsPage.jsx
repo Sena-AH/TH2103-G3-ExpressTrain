@@ -24,7 +24,7 @@ function MyBookingsPage() {
     event.preventDefault();
     (async () => {
       if (await bookingIdIsValid(formData.bookingId)) {
-        navigate('/MyBookings2Page', {state: formData});
+        navigate('/MyBookingsInfo', {state: formData});
       }
     })();
     setIdIsValid(false);
@@ -37,7 +37,7 @@ function MyBookingsPage() {
 
   // we make a call to the api to check if the booking is there. We are only looking for the response.
   async function bookingExists(id) {
-    return await fetch(`/api/booking/${id}`)
+    return await fetch(`/api/Booking/${id}`)
       .then(response => {
         return response.ok;
       });

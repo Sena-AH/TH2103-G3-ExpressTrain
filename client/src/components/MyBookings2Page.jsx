@@ -15,6 +15,7 @@ function MyBookings2Page() {
   const [stations, setStations] = useState([]);
   const [platforms, setPlatforms] = useState([]);
   const [error, setError] = useState(null);
+  const [bookingDeleted, setBookingDeleted] = useState(false);
 
   // using hooks, trying to prevent the code running a million times. we use the hook so if the bookingId changes then it will run the code(setbooking)
   useEffect(() => {
@@ -57,12 +58,25 @@ function MyBookings2Page() {
     return !(Object.keys(state).length === 0);
   }
 
-  function handleClick() {
-    navigate("/MyBookings3Page");
+  function handleClick(event) {
+    if (event.target.id === 'cancel-booking-btn') {
+      deleteBooking();
+      if (error === null) {
+        setBookingDeleted(true);
+      }
+    }
+    if (event.target.id === 'home-page-btn') {
+      navigate('/');
+    }
+  }
+
+  async function deleteBooking() {
+    console.log('deleteBooking-bookingid: ' + bookingId);
+    return await deleteUrl(`/api/Booking/${bookingId}`, "Couldn't delete booking.", 'delete');
   }
 
   async function fetchBooking() {
-    return await fetchUrl(`/api/booking/${bookingId}`, 'booking');
+    return await fetchUrl(`/api/Booking/${bookingId}`, 'booking');
   }
 
   async function fetchTraveller(id) {
@@ -70,7 +84,7 @@ function MyBookings2Page() {
   }
 
   async function fetchStages() {
-    return await fetchUrl(`/api/ScheduleStage/booking/${bookingId}`, 'stages');
+    return await fetchUrl(`/api/ScheduleStage/Booking/${bookingId}`, 'stages');
   }
 
   async function fetchSchedules(stages) {
@@ -114,9 +128,10 @@ function MyBookings2Page() {
     }
     return platforms;
   }
-
-  async function fetchUrl(url, errorMessage = 'unknown') {
-    return await fetch(url)
+  async function fetchUrl(url, errorMessage = 'unknown', method = 'GET') {
+    return await fetch(url, {
+      method: method
+    })
       .then(response => {
         if (!response.ok) {
           // error 404 etc
@@ -130,6 +145,10 @@ function MyBookings2Page() {
         // more developer errors
         // setError(`${error} (${errorMessage})`);
       });
+  }
+
+  async function deleteUrl(url, errorMessage = 'unknown') {
+    return fetchUrl(url, errorMessage, 'DELETE');
   }
 
   function Itinerary() {
@@ -222,7 +241,7 @@ function MyBookings2Page() {
       </div>
 
       <div className="search-btn">
-        <button type="button" onClick={handleClick}>Avboka bokningen</button>
+        <button type="button" id="cancel-booking-btn" onClick={handleClick}>Avboka bokningen</button>
       </div>
     </>);
   }
@@ -237,8 +256,31 @@ function MyBookings2Page() {
     </>);
   }
 
-  return (<main>
-    {error ? <Error/> : <Booking/>}
+  function DeleteBookingConfirmation() {
+    return (
+      <>
+        <div>
+        <p>
+          Din bokning är nu avbokad
+        </p>
+        </div>
+        <div className="search-btn">
+          <button type="button" id="home-page-btn" onClick={handleClick}>Back to Start</button>
+        </div>
+      </>
+    )
+  }
+
+  function MainContent() {
+    if (error) return <Error />;
+    if (bookingDeleted) return <DeleteBookingConfirmation />;
+    return <Booking/>;
+  }
+
+  return (
+  <main>
+    <MainContent />
+    {/* {error ? <Error/> : bookingDeleted ? <DeleteBookingConfirmation /> : <Booking/>} */}
   </main>);
 }
 
