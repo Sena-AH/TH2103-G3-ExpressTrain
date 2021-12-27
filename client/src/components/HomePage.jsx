@@ -7,7 +7,7 @@ function HomePage() {
   let navigate = useNavigate();
 
   function handleClick() {
-    navigate("/SearchResultsPage");
+    navigate("/SearchResults");
   }
 
 
