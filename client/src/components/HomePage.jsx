@@ -1,6 +1,14 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 
+function Tickets(props) {
+  let ticketOptions = [];
+  let amount = props.amount
+  for (let i = 0; i < amount; i++) {
+    ticketOptions.push(<option value="{i+1}">{i+1} Biljett</option>);
+  }
+  return ticketOptions;
+}
 
 function HomePage() {
 
@@ -43,14 +51,7 @@ function HomePage() {
 
         <div className="input-tickets">
           <select className="input-color" name="tickets" id="tickets">
-            <option value="1">1 Biljett</option>
-            <option value="2">2 Biljett</option>
-            <option value="3">3 Biljett</option>
-            <option value="4">4 Biljett</option>
-            <option value="5">5 Biljett</option>
-            <option value="6">6 Biljett</option>
-            <option value="7">7 Biljett</option>
-            <option value="8">8 Biljett</option>
+            <Tickets amount="8"/>
           </select>
         </div>
 
