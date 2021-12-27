@@ -10,9 +10,6 @@ function HomePage() {
     navigate("/SearchResults");
   }
 
-
-
-
   return (
     <main>
       <div className="wrapper">

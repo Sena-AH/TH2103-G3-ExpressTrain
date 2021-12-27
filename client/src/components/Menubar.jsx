@@ -21,18 +21,18 @@ function Menubar() {
           </div>
           <div className="header-icon">
             <IconContext.Provider value={{ color: '#fff' }}/>
-            <Link to="#" className='header-bars'>
-                <FaIcons.FaBars onClick={showSidebar} />
-            </Link>
+            {/* <Link to="#" className='header-bars'> */}
+                <FaIcons.FaBars className="showHandCursor header-bars" onClick={showSidebar} />
+            {/* </Link> */}
           </div>
         </div>
                 
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
           <ul className='nav-menu-items' onClick={showSidebar}>
               <li className="navbar-toggle">
-                  <Link to="#" className='menu-bars'>
-                      <AiIcons.AiOutlineClose />
-                  </Link>
+                  {/* <Link to="#" className='menu-bars'> */}
+                      <AiIcons.AiOutlineClose className="showHandCursor menu-bars" />
+                  {/* </Link> */}
               </li>
               {SidebarData.map((item, index) => {
                   return (
