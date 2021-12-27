@@ -20,8 +20,9 @@ function SeatsPage() {
                 PhoneNumber: '456456456'
             }
         });
+        context.TravellerAmount = '2'
         console.log(context);
-        navigate('/SeatsViewSeats');
+        //navigate('/SeatsViewSeats');
     }
 
     return (

@@ -10,16 +10,7 @@ function SeatsViewSeats() {
 
     function GetContext() {
         // Denna update bara för utveckling, detta skall sättas i bokningsinformation
-        updateContext({
-            TravellerAmount: '1',
-            Schedules: ['3'],
-            Traveller: {
-                FirstName: 'Sofie',
-                Lastname: 'Bäverstrand',
-                Email: 'sofie@sofie.se',
-                PhoneNumber: '456456456'
-            }
-        });
+      
         console.log(context);
         navigate('/SeatsViewSeats');
     }

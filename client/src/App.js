@@ -18,6 +18,7 @@ import Footer from './components/Footer';
 import MyBookingsPage from './components/MyBookingsPage';
 import BookingConfirmationPage from './components/BookingConfirmationPage';
 import SeatsPage from './components/SeatsPage';
+import SeatsViewSeats from './components/SeatsViewSeats';
 import MyBookings2Page from './components/MyBookings2Page';
 import MyBookings3Page from './components/MyBookings3Page';
 import SearchResultsPage from './components/SearchResultsPage';
@@ -75,6 +76,7 @@ function App() {
         <Route path="/ContactPage" element={<ContactPage />} />
         <Route path="/BookingConfirmation" element={<BookingConfirmationPage />} />
         <Route path="/SeatsPage" element={<SeatsPage />} />
+        <Route path="/SeatsViewSeats" element={<SeatsViewSeats />} />
         <Route path="/SearchResultsPage" element={<SearchResultsPage />} />
         <Route path="/BookingInformationPage" element={<BookingInformationPage />} />
         <Route path="/PaymentPage" element={<PaymentPage />} />
