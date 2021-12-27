@@ -62,6 +62,7 @@ function HomePage() {
         <div className="search-btn">
           <button type="button" onClick={handleClick}>Sök</button>
         </div>
+
       </div>
     </main>
   );
