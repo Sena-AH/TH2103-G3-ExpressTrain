@@ -31,24 +31,12 @@ function App() {
   // use a state handled variable
   // as the value of our context
   const [contextVal, setContext] = useState({
-    TravellerAmount: '',
-    Schedules: [''],
-    Price: '',
-    Traveller: {
-      FirstName: '',
-      Lastname: '',
-      Email: '',
-      PhoneNumber: ''
-    },
-    TakenSeats: [{
-      ScheduleId: '',
-      SeatNumber: ''
-    }],
-    ScheduleStages: [{
-      ScheduleId: '',
-      SeatNumber: ''
-    }]
-
+    weather: 'sunny',
+    coolness: 'mega-cool',
+    options: {
+      weather: ['sunny', 'cloudy', 'rainy', 'windy', 'snowy'],
+      coolness: ['mega-cool', 'kinda cool', 'uncool']
+    }
   })
 
   // setContext replaces the whole context

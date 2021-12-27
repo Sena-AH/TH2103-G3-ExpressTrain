@@ -4,7 +4,7 @@ import { Context } from '../App'
 // In i seats från Context: TravellerAmount, Schedules, Price, Traveller
 // Sätts i Seats:
 // Skickas vidare:
-function SeatsPage() {
+function SeatsViewSeats() {
     const [context, updateContext] = useContext(Context)
   let navigate = useNavigate();
 
@@ -43,4 +43,4 @@ function SeatsPage() {
     );
 };
 
-export default SeatsPage;
+export default SeatsViewSeats;
