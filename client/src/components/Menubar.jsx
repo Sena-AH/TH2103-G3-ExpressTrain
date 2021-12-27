@@ -36,11 +36,11 @@ function Menubar() {
               </li>
               {SidebarData.map((item, index) => {
                   return (
-                      <li key={index} className={item.cName}>
-                          <Link to={item.path}>
-                              <span>{item.title}</span>
-                          </Link>
-                      </li>
+                    <li key={index} className={item.cName}>
+                        <Link to={item.path}>
+                            <span>{item.title}</span>
+                        </Link>
+                    </li>
                   )
               })}
           </ul>
