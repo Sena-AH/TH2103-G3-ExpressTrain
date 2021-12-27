@@ -1,8 +1,19 @@
 class DbInitializer {
   // # means private.
   #database;
-  constructor(databasePath = 'database/default.db') {
-    this.#database = require('better-sqlite3')(databasePath, { verbose: console.log });
+  #pathPrefix = 'database/';
+  constructor(fileName = 'default.db') {
+    this.#CreateFolder();
+    let path = this.#pathPrefix + fileName;
+    this.#database = require('better-sqlite3')(path, { verbose: console.log });
+  }
+
+  #CreateFolder(suffix = '') {
+    const fs = require('fs');
+    const directory = this.#pathPrefix + suffix;
+    if(!fs.existsSync(directory)) {
+      fs.mkdirSync(directory);
+    }
   }
 
   Init() {

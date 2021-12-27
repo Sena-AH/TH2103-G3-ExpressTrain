@@ -5,7 +5,7 @@ const settings = require('../settings.json');
 
 // Database initialization
 const DbInitializer = require('./database/DbInitializer');
-const dbInitializer = new DbInitializer('database/' + settings.dbName);
+const dbInitializer = new DbInitializer(settings.dbName);
 dbInitializer.Init();
 // use "const db = dbInitializer.GetDatabase();" to get the database.
 
