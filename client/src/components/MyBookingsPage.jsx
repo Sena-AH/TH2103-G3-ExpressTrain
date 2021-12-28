@@ -1,34 +1,66 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-
-
-
+import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import '../css/myBookingsPage.css';
 
 function MyBookingsPage() {
-
-
   let navigate = useNavigate();
+  const [idIsValid, setIdIsValid] = useState(true);
+  const [formData, updateFormData] = useState({
+    bookingId: ""
+  });
 
-  function handleClick() {
-    navigate("/MyBookings2Page");
+  // in order to be able to change the state we need this function. without it you can't type the Id on the input.
+  function handelChange(event) {
+    updateFormData({
+      // we are targeting the input field, the name is the key, and the value would be the value, we are telling which formdata element to change.
+      ...formData, [event.target.name]: event.target.value.trim()
+    });
+    setIdIsValid(true);
   }
 
-  return (
+  // checking if its a valid booking number, if true then it lets you go onto the next page.
+  function handleSubmit(event) {
+    // this prevents the default behavior of the form. I want the page here to only show /MyBookingsPage with no other values once a booking id is submitted.
+    event.preventDefault();
+    (async () => {
+      if (await bookingIdIsValid(formData.bookingId)) {
+        navigate('/MyBookingsInfo', {state: formData});
+      }
+    })();
+    setIdIsValid(false);
+  }
+
+  // we check if boking is valid, we use if its a number (isNaN from javascript library) and if the booking exists.
+  async function bookingIdIsValid(id) {
+    return (!isNaN(id) && await bookingExists(id));
+  }
+
+  // we make a call to the api to check if the booking is there. We are only looking for the response.
+  async function bookingExists(id) {
+    return await fetch(`/api/Booking/${id}`)
+      .then(response => {
+        return response.ok;
+      });
+  }
+
+    return (
     <main>
-      <div>
-        <h1>My Bookings</h1>
-      </div>
-
-      <div className="my-bookings-search">
-        <input></input>
-      </div>
-      <div className="search-btn">
-        <button type="button" onClick={handleClick}>My Bookings</button>
-      </div>
-
-    </main>
-
-  );
+        <div className="wrapper">
+          <div>
+            <h2 className="page-title">Min bokning</h2>
+          </div>
+          <form onSubmit={handleSubmit}>
+            <div className="my-bookings-search input-search">
+              {/* ternary; if its valid do nothing, otherwise '(Invalid booking-Id)' is printed */}
+              <input className="search-bar input" placeholder="Bokningsnummer" min="0" name="bookingId" value={formData.bookingId}
+                     onChange={handelChange}/><div className="error-message">{idIsValid ? '' : '(Ogiltig Boknings-ID)'}</div>
+            </div>
+            <div className="search-btn">
+              <input type="submit" value="Sök bokning"/>
+            </div>
+          </form>
+        </div>
+  </main>);
 };
 
 export default MyBookingsPage;

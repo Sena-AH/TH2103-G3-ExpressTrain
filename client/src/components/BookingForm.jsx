@@ -23,21 +23,55 @@ function saveData()
   })
 }
   return (
-    <div className="bookingform">
-      <div className="input-booking"> 
-        <input type="text" name="FirstName" value={FirstName} onChange={(e)=>{setFirstName(e.target.value)}}  /> <br /> <br />
+    <div className="wrapper">
+      <h2>Booking Information</h2>
+      <div className="input-search"> 
+        <input 
+        className="input" 
+        type="text" 
+        name="FirstName" 
+        placeholder="Förnamn"
+        value={FirstName} 
+        onChange={(e)=>{setFirstName(e.target.value)}}  />
+        
+         <br /> 
+         <br />
       </div>  
 
-      <div className="input-booking"> 
-        <input type="text" name="LastName"  value={LastName} onChange={(e)=>{setLastName(e.target.value)}} /> <br /> <br />
+      <div className="input-search"> 
+        <input 
+        className="input" 
+        type="text" 
+        name="LastName"  
+        placeholder="Efternamn"
+        value={LastName} 
+        onChange={(e)=>{setLastName(e.target.value)}} /> 
+        <br /> 
+        <br />
       </div>
       
-      <div className="input-booking"> 
-        <input type="text" name="Email"  value={Email} onChange={(e)=>{setEmail(e.target.value)}}/> <br /> <br />
+      <div className="input-search"> 
+        <input 
+        className="input" 
+        type="text" 
+        name="Email"  
+        placeholder="E-mail"
+        value={Email} 
+        onChange={(e)=>{setEmail(e.target.value)}}/> 
+        <br /> 
+        <br />
       </div>
       
-      <div className="input-booking"> 
-        <input type="text" name="PhoneNumber"  value={PhoneNumber} onChange={(e)=>{setPhoneNumber(e.target.value)}}/> <br /> <br />
+      <div className="input-search"> 
+        <input 
+        className="input" 
+        type="text" 
+        name="PhoneNumber"  
+        placeholder="Telefonnummer"
+        value={PhoneNumber} 
+        onChange={(e)=>{setPhoneNumber(e.target.value)}}/> 
+        <br /> 
+        <br />
       </div> 
 
       <div className="current-total-price-div">

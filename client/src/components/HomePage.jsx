@@ -1,6 +1,15 @@
+import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react'
 
+function Tickets(props) {
+  let ticketOptions = [];
+  let amount = props.amount
+  for (let i = 0; i < amount; i++) {
+    ticketOptions.push(<option value="{i+1}">{i+1} Biljett</option>);
+  }
+  return ticketOptions;
+}
 
 function HomePage() {
   
@@ -10,51 +19,55 @@ function HomePage() {
   let navigate = useNavigate();
 
   function handleClick() {
-    navigate("/SearchResultsPage");
+    navigate("/SearchResults");
   }
 
   return (
     <main>
-      <div className="input-search">
-        <input type="text" value={DepartureInput} placeholder="Vart vill du åka från?" onChange={(e)=>setDepartureinput(e.target.value)}></input>
-      </div>
-      <div className="input-search">
-        <input type="text" value={ArrivalInput} placeholder="Vart vill du åka till?" onChange={(e)=>setArrivalInput(e.target.value)}></input>
-      </div>
-
-      <form className="input-form" action="">
-        <div>
-          <input type="radio" id="oneWay" name="travelWay" value="oneWay" />
-          <label htmlFor="oneWay">Enkelresa</label>
+      <div className="wrapper">
+        <div className="input-search">
+          <input className="input" placeholder="Till:" />
         </div>
-        <div>
-          <input type="radio" id="roundTrip" name="travelWay" value="roundTrip" />
-          <label htmlFor="roundTrip">Tur & Retur</label>
-
+        <div className="input-search">
+          <input className="input" placeholder="Från:" />
         </div>
-      </ form>
 
-      <div className="input-tickets">
-        <select name="tickets" id="tickets">
-          <option value="1">1 biljett</option>
-          <option value="2">2 biljett</option>
-          <option value="3">3 biljett</option>
-          <option value="4">4 biljett</option>
-          <option value="5">5 biljett</option>
-          <option value="6">6 biljett</option>
-          <option value="7">7 biljett</option>
-          <option value="8">8 biljett</option>
-        </select>
+        <form className="input-form" action="">
+          <div className="switch">
+                    <input type="radio"
+                           className="switch-input"
+                           name="view"
+                           value="oneway"
+                           id="oneway"
+                    />
+                    <label htmlFor="oneway" className="switch-label switch-label-off">Enkelresa</label>
+
+                    <input type="radio"
+                           className="switch-input"
+                           name="view"
+                           value="roundtrip"
+                           id="roundtrip"
+                    />
+                    <label htmlFor="roundtrip" className="switch-label switch-label-on">Tur & retur</label>
+                    <span className="switch-selection"></span>
+          </div>
+        </ form>
+
+        <div className="input-tickets">
+          <select className="input-color" name="tickets" id="tickets">
+            <Tickets amount="8"/>
+          </select>
+        </div>
+
+        <div className="input-date">
+          <input className="input-color" type="date"></input>
+        </div>
+
+        <div className="search-btn">
+          <button type="button" onClick={handleClick}>Sök</button>
+        </div>
+
       </div>
-
-      <div className="input-date">
-        <input type="date"></input>
-      </div>
-
-      <div className="search-btn">
-        <button type="button" onClick={handleClick}>Search</button>
-      </div>
-
     </main>
   );
 };

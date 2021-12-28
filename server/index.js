@@ -1,13 +1,13 @@
 // server/index.js
 
-// Database initialization
-const DbInitializer = require('./database/DbInitializer');
-const dbInitializer = new DbInitializer('database/TrainDB2.db');
-dbInitializer.Init();
-// use "const db = dbInitializer.GetDatabase();" to get the database.
-
 // Read settings
 const settings = require('../settings.json');
+
+// Database initialization
+const DbInitializer = require('./database/DbInitializer');
+const dbInitializer = new DbInitializer(settings.dbName);
+dbInitializer.Init();
+// use "const db = dbInitializer.GetDatabase();" to get the database.
 
 // NOTE: No ACL 
 // (access - control / user credentials) yet!
@@ -38,12 +38,12 @@ webServer.listen(settings.port,
   ));
 
 // require the sqlite driver better-sqlite3
-const driver = require('better-sqlite3');
+// const driver = require('better-sqlite3');
 
 // connect to a database (call the connection db)
-const db = driver(path.join(require('path').resolve(__dirname, '..'),
-  'database', settings.dbName));
-
+// const db = driver(path.join(require('path').resolve(__dirname, '..'),
+//   'database', settings.dbName));
+const db = dbInitializer.GetDatabase();
 
 // get the table and view names from the db 
 // so we can restrict to routes matching existing 
@@ -116,16 +116,47 @@ webServer.get('/api/:table', getMany);
 settings.allowWherePosts
   && webServer.post('/api/where/:table/', getMany);
 
+// REST ROUTE: Get one, Booking table
+// webServer.get('/api/Booking/:id', (req, res) => {
+//   req.params.table = 'Booking';
+//   runQuery(req, res, `
+//   SELECT *
+//   FROM ${ req.params.table }
+//   WHERE Id = :id
+//   `, { id: req.params.id }, true);
+// });
+
+// REST ROUTE: Get Schedule stages by bookingId
+webServer.get('/api/Schedulestage/Booking/:id', (req, res) => {
+  req.params.table = 'ScheduleStage';
+  runQuery(req, res, `
+  SELECT *
+  FROM ${ req.params.table }
+  WHERE BookingId = :id
+  `, { id: req.params.id });
+});
+
+// REST ROUTE: Get one, ScheduleStage table
+webServer.get('/api/Schedulestage/:id/:seat', (req, res) => {
+  req.params.table = 'ScheduleStage';
+  runQuery(req, res, `
+  SELECT *
+  FROM ${ req.params.table }
+  WHERE ScheduleId = :id AND SeatNumber = :seat
+  `, { id: req.params.id, seat: req.params.seat  }, true);
+});
+
 // REST ROUTE: GET one
 webServer.get('/api/:table/:id', (req, res) => {
   // run query
   runQuery(req, res, `
     SELECT *
-    FROM ${req.params.table}   
+    FROM ${req.params.table}
     WHERE id = :id
   `, { id: req.params.id }, true
   );
 });
+
 
 // REST ROUTE: POST
 webServer.post('/api/:table', (req, res) => {
