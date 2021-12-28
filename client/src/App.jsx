@@ -33,7 +33,17 @@ function App() {
   // as the value of our context
   const [contextVal, setContext] = useState({
     TravellerAmount: '',
-    Schedules: [''],
+    Schedules: [{
+      ScheduleId: '',
+      CartId: '',
+      SeatNumbers: [''],
+      DepartureTrainStationId: '',
+      DeparturePlatformId: '',
+      DestinationTrainStationId: '',
+      DestinationPlatformId: '',
+      DepartureTime: '',
+      ArrivalTime: ''
+  }],
     Price: '',
     Traveller: {
       FirstName: '',
@@ -41,16 +51,17 @@ function App() {
       Email: '',
       PhoneNumber: ''
     },
-    TakenSeats: [{
+    SeatInformation: [{
       ScheduleId: '',
-      SeatNumber: ''
+      CartId: '',
+      NoOfSeats: '',
+      TakenSeats: ['']
     }],
-    ScheduleStages: [{
+    ScheduleStage: [{
       ScheduleId: '',
       SeatNumber: ''
     }]
-
-  })
+    })
 
   // setContext replaces the whole context
   // create a method that let us update it instead
@@ -59,6 +70,7 @@ function App() {
       ...contextVal,
       ...updates
     })
+    console.log(updates);
   }
 
 

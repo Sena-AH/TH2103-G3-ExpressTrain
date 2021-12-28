@@ -6,11 +6,12 @@ import { Context } from '../App'
 // Skickas vidare:
 function SeatsViewSeats() {
     const [context, updateContext] = useContext(Context)
-  let navigate = useNavigate();
+    let navigate = useNavigate();
+
 
     function GetContext() {
         // Denna update bara för utveckling, detta skall sättas i bokningsinformation
-      
+
         console.log(context);
         navigate('/SeatsViewSeats');
     }
