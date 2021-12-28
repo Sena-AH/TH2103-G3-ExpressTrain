@@ -21,26 +21,23 @@ function Menubar() {
           </div>
           <div className="header-icon">
             <IconContext.Provider value={{ color: '#fff' }}/>
-            <Link to="#" className='header-bars'>
-                <FaIcons.FaBars onClick={showSidebar} />
-            </Link>
+              <FaIcons.FaBars className="showPointer header-bars" onClick={showSidebar} />
           </div>
         </div>
                 
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
           <ul className='nav-menu-items' onClick={showSidebar}>
               <li className="navbar-toggle">
-                  <Link to="#" className='menu-bars'>
-                      <AiIcons.AiOutlineClose />
-                  </Link>
+                    <AiIcons.AiOutlineClose className="showPointer menu-bars" />
+
               </li>
               {SidebarData.map((item, index) => {
                   return (
-                      <li key={index} className={item.cName}>
-                          <Link to={item.path}>
-                              <span>{item.title}</span>
-                          </Link>
-                      </li>
+                    <li key={index} className={item.cName}>
+                        <Link to={item.path}>
+                            <span>{item.title}</span>
+                        </Link>
+                    </li>
                   )
               })}
           </ul>
