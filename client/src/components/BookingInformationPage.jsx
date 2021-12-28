@@ -6,7 +6,7 @@ function BookingInformationPage() {
 
   return (
     <main>
-      <h2>Booking Information</h2>
+      
 
       <BookingForm />
 
