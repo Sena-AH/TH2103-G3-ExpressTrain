@@ -6,17 +6,17 @@ export const SidebarData = [
     },
     {
         title: 'About',
-        path: '/AboutPage',
+        path: '/About',
         cName: 'nav-text'
     },
     {
         title: 'My Bookings',
-        path: '/MyBookingsPage',
+        path: '/MyBookings',
         cName: 'nav-text'
     },
     {
         title: 'Contact',
-        path: '/ContactPage',
+        path: '/Contact',
         cName: 'nav-text'
     },
 ]

@@ -1,8 +1,19 @@
 class DbInitializer {
   // # means private.
   #database;
-  constructor(databasePath = 'database/default.db') {
-    this.#database = require('better-sqlite3')(databasePath, { verbose: console.log });
+  #pathPrefix = 'database/';
+  constructor(fileName = 'default.db') {
+    this.#CreateFolder();
+    let path = this.#pathPrefix + fileName;
+    this.#database = require('better-sqlite3')(path, { verbose: console.log });
+  }
+
+  #CreateFolder(suffix = '') {
+    const fs = require('fs');
+    const directory = this.#pathPrefix + suffix;
+    if(!fs.existsSync(directory)) {
+      fs.mkdirSync(directory);
+    }
   }
 
   Init() {
@@ -79,7 +90,7 @@ class DbInitializer {
     const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'ScheduleStage'(
       'ScheduleId' INTEGER REFERENCES 'Schedule' NOT NULL,
       'SeatNumber' INTEGER NOT NULL,
-      'BookingId' INTEGER REFERENCES 'Booking' NOT NULL,
+      'BookingId' INTEGER REFERENCES 'Booking' ON DELETE CASCADE NOT NULL,
       PRIMARY KEY ('ScheduleId', 'SeatNumber'));`
       );
       statement.run();
@@ -87,10 +98,11 @@ class DbInitializer {
 
   #CreateBookingTable() {
     const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'Booking'(
-      'BookingCodeId' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+      'Id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
       'TravellerId' INTEGER NOT NULL REFERENCES 'Traveller',
       'Price' DECIMAL NOT NULL);`
     );
+
     statement.run();
   }
 
@@ -206,7 +218,7 @@ class DbInitializer {
   }
 
   #SeedBookingsTables() {
-    const insert = this.#database.prepare(`INSERT OR REPLACE INTO 'Booking' (BookingCodeId, TravellerId, Price)
+    const insert = this.#database.prepare(`INSERT OR REPLACE INTO 'Booking' (Id, TravellerId, Price)
     VALUES ('1', '1', '400.00'),
     ('2', '2', '500.00'),
     ('3', '2', '1500.00'),

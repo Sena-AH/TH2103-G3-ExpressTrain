@@ -20,7 +20,6 @@ import BookingConfirmationPage from './components/BookingConfirmationPage';
 import SeatsPage from './components/SeatsPage';
 import SeatsViewSeats from './components/SeatsViewSeats';
 import MyBookings2Page from './components/MyBookings2Page';
-import MyBookings3Page from './components/MyBookings3Page';
 import SearchResultsPage from './components/SearchResultsPage';
 import BookingInformationPage from './components/BookingInformationPage';
 
@@ -81,11 +80,10 @@ function App() {
       <Menubar />
       <Routes>
         <Route path="/" element={<HomePage />} exact />
-        <Route path="/AboutPage" element={<AboutPage />} />
-        <Route path="/MyBookingsPage" element={<MyBookingsPage />} />
-        <Route path="/MyBookings2Page" element={<MyBookings2Page />} />
-        <Route path="/MyBookings3Page" element={<MyBookings3Page />} />
-        <Route path="/ContactPage" element={<ContactPage />} />
+        <Route path="/About" element={<AboutPage />} />
+        <Route path="/MyBookings" element={<MyBookingsPage />} />
+        <Route path="/MyBookingsInfo" element={<MyBookings2Page />} />
+        <Route path="/Contact" element={<ContactPage />} />
         <Route path="/BookingConfirmation" element={<BookingConfirmationPage />} />
         <Route path="/SeatsPage" element={<SeatsPage />} />
         <Route path="/SeatsViewSeats" element={<SeatsViewSeats />} />

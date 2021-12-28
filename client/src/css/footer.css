@@ -4,9 +4,9 @@ footer {
   height: min-content;
   display: grid;
   grid-template-columns: 1fr;
-  position: fixed;
   bottom: 0;
   width: 100%;
+  position: fixed;
 }
 
 footer p {
