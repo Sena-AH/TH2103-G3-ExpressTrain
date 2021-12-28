@@ -26,3 +26,4 @@ yarn-error.log*
 .DB
 .db
 .sqlite3
+database/TrainDB2.db
