@@ -6,6 +6,7 @@ footer {
   grid-template-columns: 1fr;
   bottom: 0;
   width: 100%;
+  position: fixed;
 }
 
 footer p {
