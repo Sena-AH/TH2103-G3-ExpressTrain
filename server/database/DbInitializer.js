@@ -100,7 +100,9 @@ class DbInitializer {
     const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'Booking'(
       'Id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
       'TravellerId' INTEGER NOT NULL REFERENCES 'Traveller',
-      'Price' DECIMAL NOT NULL);`
+      'Price' DECIMAL NOT NULL,
+      'BookingCode' NVARCHAR(6),
+      'ManipulationCode' NVARCHAR(8));`
     );
 
     statement.run();
@@ -218,11 +220,11 @@ class DbInitializer {
   }
 
   #SeedBookingsTables() {
-    const insert = this.#database.prepare(`INSERT OR REPLACE INTO 'Booking' (Id, TravellerId, Price)
-    VALUES ('1', '1', '400.00'),
-    ('2', '2', '500.00'),
-    ('3', '2', '1500.00'),
-    ('4', '3', '200.00');`
+    const insert = this.#database.prepare(`INSERT OR REPLACE INTO 'Booking' (Id, TravellerId, Price, BookingCode, ManipulationCode)
+    VALUES ('1', '1', '400.00', 'A01BC4', '4CV34RT6'),
+    ('2', '2', '500.00', 'B123G5', '95TVFD34'),
+    ('3', '2', '1500.00', 'P99G43', 'SA2I3P91'),
+    ('4', '3', '200.00', '1PK6TR', 'LU7FV8HG');`
     );
     insert.run();
   }

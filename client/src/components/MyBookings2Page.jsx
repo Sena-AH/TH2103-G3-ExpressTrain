@@ -19,9 +19,11 @@ function MyBookings2Page() {
 
   // using hooks, trying to prevent the code running a million times. we use the hook so if the bookingId changes then it will run the code(setbooking)
   useEffect(() => {
+    if(!bookingId) return;
     (async () => {
       setBooking(await fetchBooking());
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bookingId]);
 
   useEffect(() => {
@@ -29,6 +31,7 @@ function MyBookings2Page() {
     (async () => {
       setTraveller(await fetchTraveller(booking.TravellerId));
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [booking]);
 
   useEffect(() => {
@@ -36,6 +39,7 @@ function MyBookings2Page() {
     (async () => {
       setStages(await fetchStages());
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [traveller]);
 
   useEffect(() => {
@@ -43,6 +47,7 @@ function MyBookings2Page() {
     (async () => {
       setSchedules(await fetchSchedules(stages));
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stages]);
 
   useEffect(() => {
@@ -51,6 +56,7 @@ function MyBookings2Page() {
       setStations(await fetchStations(schedules));
       setPlatforms(await fetchPlatforms(schedules));
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [schedules]);
 
   // if its empty then it doesnt get loaded.
@@ -71,7 +77,6 @@ function MyBookings2Page() {
   }
 
   async function deleteBooking() {
-    console.log('deleteBooking-bookingid: ' + bookingId);
     return await deleteUrl(`/api/Booking/${bookingId}`, "Couldn't delete booking.", 'delete');
   }
 
@@ -160,8 +165,6 @@ function MyBookings2Page() {
       let destinationStation = stations[schedule.DestinationTrainStationId].Name ?? 'unknown';
       let departurePlatform = platforms[schedule.DeparturePlatformId].Name ?? 'unknown';
       let departureDate = formatDate(schedule.DepartureTime) ?? 'unknown';
-      console.log('schedule.DepartureTime: ' + schedule.DepartureTime);
-      console.log('departureDate:' + departureDate);
       let departureTime = formatTime(schedule.DepartureTime) ?? 'unknown';
       let arrivalTime = formatTime(schedule.ArrivalTime) ?? 'unknown';
       let seat = stages[i].SeatNumber ?? 'unknown';
@@ -272,7 +275,7 @@ function MyBookings2Page() {
   }
 
   function MainContent() {
-    if (error) return <Error />;
+    if (!bookingId || error) return <Error />;
     if (bookingDeleted) return <DeleteBookingConfirmation />;
     return <Booking/>;
   }
