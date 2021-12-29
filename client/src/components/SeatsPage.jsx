@@ -9,15 +9,16 @@ function SeatsPage() {
     let navigate = useNavigate();
 
     const [cart, setCart] = useState([]);
-    //const [takenSeats, setTakenSeats] = useState(['']);
-    //const [cart, setCart] = useState([]);
+    const [stages, setStages] = useState([]);
+    const [takenSeats, setTakenSeats] = useState([]);
+    const [scheduleId, setScheduleId] = useState();
 
     function GetContext() {
         // Denna update bara för utveckling, detta skall sättas i bokningsinformation
         updateContext({
             TravellerAmount: '1',
             Schedules: [{
-                Id: '3',
+                ScheduleId: '3',
                 CartId: '1',
                 DepartureTrainStationId: '3',
                 DeparturePlatformId: '2',
@@ -33,18 +34,43 @@ function SeatsPage() {
                 PhoneNumber: '46706888888'
             }
         });
-        console.log('Getcontext');
+        console.log(context);
 
+        // skapa och uppdatera seatInfo per tur
         context.Schedules.forEach(schedule => {
             console.log(schedule);
-            // skapa och uppdatera seatInfo
+            // hämta cart till denna schedule för att hitta number of seats
             (async () => { setCart(await fetchCart(schedule.CartId)); })();
             console.log('cartId:' + schedule.CartId);
             console.log(cart.SeatAmount);
+
+            // hämta alla schedulestage för att hitta taken seats
+            setScheduleId(schedule.ScheduleId);
+            console.log(scheduleId);
+            (async () => { setStages(await fetchStages(scheduleId)); })();
+            // stages.forEach(stage => {
+            //     const seatnumber = stage.SeatNumber;
+            //     takenSeats.push(seatnumber);
+            // })
+
+            //uppdatera context igen
+            updateContext({
+                SeatInformation: [{
+                    ScheduleId: schedule.ScheduleId,
+                    CartId: schedule.CartId,
+                    NoOfSeats: cart.SeatAmount,
+                    TakenSeats: takenSeats
+                  }]
+            });
         });
+        console.log(context);
 
 
         //navigate('/SeatsViewSeats');
+    }
+
+    async function fetchStages(id) {
+        return await fetchInfo(`/api/Schedulestage/ScheduleId/${id}`, 'scheduleStages');
     }
 
     async function fetchCart(id) {
@@ -59,6 +85,7 @@ function SeatsPage() {
                 return response.json();
             })
             .then(result => {
+                console.log(result)
                 return result;
             }, error => {
             });
