@@ -36,38 +36,45 @@ function SeatsPage() {
         //     }
         // });
         setSchedules(context.Schedules)
-console.log(context)
+        console.log(context)
         // skapa och uppdatera seatInfo per tur
         schedules.forEach(schedule => {
-            console.log(schedule);
+            console.log('kattjävel');
             // hämta cart till denna schedule för att hitta number of seats
             (async () => { setCart(await fetchCart(schedule.CartId)); })();
-            console.log('cartId:' + schedule.CartId);
+            console.log(schedule.CartId);
             console.log(cart.SeatAmount);
 
             // hämta alla schedulestage för att hitta taken seats
             setScheduleId(schedule.ScheduleId);
             console.log(scheduleId);
             (async () => { setStages(await fetchStages(scheduleId)); })();
-            // stages.forEach(stage => {
-            //     const seatnumber = stage.SeatNumber;
-            //     takenSeats.push(seatnumber);
-            // })
 
-            //uppdatera context igen
+            stages.forEach(stage => {
+                console.log(stages);
+                const seatnumber = stage.SeatNumber;
+                takenSeats.push(seatnumber);
+            });
+
+            //uppdatera context
             updateContext({
                 SeatInformation: [{
                     ScheduleId: schedule.ScheduleId,
                     CartId: schedule.CartId,
                     NoOfSeats: cart.SeatAmount,
                     TakenSeats: takenSeats
-                  }]
+                }]
             });
         });
         console.log(context);
 
 
         //navigate('/SeatsViewSeats');
+    }
+
+    function ContextPrint() {
+        console.log(context);
+        console.log(takenSeats);
     }
 
     async function fetchStages(id) {
@@ -97,6 +104,8 @@ console.log(context)
             <button className="TotalPriceContinueButton" onClick={() => GetContext()}>
                 Hämta tillgängliga sittplatser</button>
 
+            <button className="TotalPriceContinueButton" onClick={() => ContextPrint()}>
+                Hämta tillgängliga sittplatser</button>
             <div className="TrainCarts">
 
             </div>
