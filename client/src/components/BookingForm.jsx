@@ -12,7 +12,6 @@ function BookingForm() {
   const [PhoneNumber, setPhoneNumber] = useState("");
 
   function saveData() {
-    let data = { FirstName, LastName, Email, PhoneNumber }
 
     updateContext({
       TravellerAmount: '1',
@@ -25,6 +24,16 @@ function BookingForm() {
         DestinationPlatformId: '3',
         DepartureTime: '2021-12-26 17:30:00',
         ArrivalTime: '2021-12-26 20:15:00'
+      },
+      {
+        ScheduleId: '2',
+        CartId: '1',
+        DepartureTrainStationId: '1',
+        DeparturePlatformId: '1',
+        DestinationTrainStationId: '3',
+        DestinationPlatformId: '4',
+        DepartureTime: '2021-12-25 09:25:00',
+        ArrivalTime: '2021-12-25 12:25:00'
       }],
       Price: 7896,
       Traveller: {

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Context } from '../App'
 // In i seats från Context: TravellerAmount, Schedules, Price, Traveller
@@ -9,72 +9,67 @@ function SeatsPage() {
     let navigate = useNavigate();
 
     const [cart, setCart] = useState([]);
-    const [schedules, setSchedules] = useState([]);
+    const [schedules, setSchedules] = useState(context.Schedules);
     const [stages, setStages] = useState([]);
     const [takenSeats, setTakenSeats] = useState([]);
     const [scheduleId, setScheduleId] = useState();
+    const [seatInformation, setSeatInformation] = useState([]);
 
-    function GetContext() {
-        // Denna update bara för utveckling, detta skall sättas i bokningsinformation
-        // updateContext({
-        //     TravellerAmount: '1',
-        //     Schedules: [{
-        //         ScheduleId: '3',
-        //         CartId: '1',
-        //         DepartureTrainStationId: '3',
-        //         DeparturePlatformId: '2',
-        //         DestinationTrainStationId: '2',
-        //         DestinationPlatformId: '3',
-        //         DepartureTime: '2021-12-26 17:30:00',
-        //         ArrivalTime: '2021-12-26 20:15:00'
-        //     }],
-        //     Traveller: {
-        //         FirstName: 'Sofie',
-        //         Lastname: 'Bäverstrand',
-        //         Email: 'sofie@sofie.se',
-        //         PhoneNumber: '46706888888'
-        //     }
-        // });
-        setSchedules(context.Schedules)
-        console.log(context)
-        // skapa och uppdatera seatInfo per tur
-        schedules.forEach(schedule => {
-            console.log('kattjävel');
-            // hämta cart till denna schedule för att hitta number of seats
-            (async () => { setCart(await fetchCart(schedule.CartId)); })();
-            console.log(schedule.CartId);
-            console.log(cart.SeatAmount);
+    useEffect(() => {
+        (async () => {
+            for (let i = 0; i < schedules.length; i++) {
+                console.log('kattjävel');
+                // hämta cart till denna schedule för att hitta number of seats
+                (async () => { setCart(await fetchCart(schedules[i].CartId)); })();
+                console.log(schedules[i].CartId);
+                console.log(cart.SeatAmount);
 
-            // hämta alla schedulestage för att hitta taken seats
-            setScheduleId(schedule.ScheduleId);
-            console.log(scheduleId);
-            (async () => { setStages(await fetchStages(scheduleId)); })();
+                // hämta alla schedulestage för att hitta taken seats
+                setScheduleId(schedules[i].ScheduleId);
+                console.log(scheduleId);
+                (async () => { setStages(await fetchStages(scheduleId)); })();
 
-            stages.forEach(stage => {
-                console.log(stages);
-                const seatnumber = stage.SeatNumber;
-                takenSeats.push(seatnumber);
-            });
+                stages.forEach(stage => {
+                    console.log(stages);
+                    const seatnumber = stage.SeatNumber;
+                    takenSeats.push(seatnumber);
+                    console.log(takenSeats);
+                });
 
-            //uppdatera context
-            updateContext({
-                SeatInformation: [{
-                    ScheduleId: schedule.ScheduleId,
-                    CartId: schedule.CartId,
-                    NoOfSeats: cart.SeatAmount,
-                    TakenSeats: takenSeats
-                }]
-            });
-        });
-        console.log(context);
+                //spara info i lista
+                const seatinfo = [];
+                seatinfo.ScheaduleId = scheduleId;
+                seatinfo.Cartid = schedules[i].CartId;
+                seatinfo.NoOfSeats = cart.SeatAmount;
+                seatinfo.TakenSeats = takenSeats;
 
+                seatInformation.push(seatinfo);
+                console.log(seatInformation);
+                // updateContext({
+                //     SeatInformation: [{
+                //         ScheduleId: schedule.ScheduleId,
+                //         CartId: schedule.CartId,
+                //         NoOfSeats: cart.SeatAmount,
+                //         TakenSeats: takenSeats
+                //     }]
+                // });
+            };
+        })();
+        console.log('context efter manipulation:')
+    console.log(context);
+    }, []);
 
-        //navigate('/SeatsViewSeats');
+    
+
+    async function GetContext() {
+
     }
 
     function ContextPrint() {
         console.log(context);
         console.log(takenSeats);
+        console.log(seatInformation);
+
     }
 
     async function fetchStages(id) {
