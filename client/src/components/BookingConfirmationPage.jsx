@@ -1,146 +1,259 @@
-import React, { useState } from 'react'
-
+import React, { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom';
+import '../css/myBookings2Page.css';
 
 function BookingConfirmationPage() {
-    const [FirstName, setFirstName] = useState("");
-    const [LastName, setLastName] = useState("");
-    const [Email, setEmail] = useState("");
-    const [PhoneNumber, setPhoneNumber] = useState("");
-    const [BookingId, setBookingId] = useState("");
-    const [Price, setPrice] = useState("");
-    const [SeatNumber, setSeatNumber] = useState("");
-    const [DepartureTrainStationName, setDepartureTrainStationName] = useState("");
-    const [DepartureTime, setDepartureTime] = useState("");
-    const [ArrivalTrainStationName, setArrivalTrainStationName] = useState("");
-    const [ArrivalTime, setArrivalTime] = useState("");
+    // const navigate = useNavigate();
+    // useLocation holds several items, we grab the {state} and then we can access it by state.bookingId
+    const { state } = useLocation();
+    const bookingId = 3;
 
+    const [booking, setBooking] = useState([]);
+    const [traveller, setTraveller] = useState([]);
+    const [stages, setStages] = useState([]);
+    const [schedules, setSchedules] = useState([]);
+    const [stations, setStations] = useState([]);
+    const [platforms, setPlatforms] = useState([]);
+    const [error, setError] = useState(null);
 
+    // using hooks, trying to prevent the code running a million times. we use the hook so if the bookingId changes then it will run the code(setbooking)
+    useEffect(() => {
+        (async () => {
+            setBooking(await fetchBooking());
+        })();
+    }, [bookingId]);
 
-    async function getTravellerData() {
-        console.log('Traveller Data')
-        const response = await fetch('/api/Traveller');
-        const travellerData = await response.json();
-        console.log("only data: ", travellerData);
-        setFirstName(travellerData[4].FirstName);
-        setLastName(travellerData[4].LastName);
-        setEmail(travellerData[4].Email);
-        setPhoneNumber(travellerData[4].PhoneNumber);
+    useEffect(() => {
+        if (!isObjLoaded(booking)) return;
+        (async () => {
+            setTraveller(await fetchTraveller(booking.TravellerId));
+        })();
+    }, [booking]);
 
-        for (let i = 0; i < travellerData.length; i++) {
-            console.log("data split up: ", travellerData[i]);
-        }
-        return travellerData;
+    useEffect(() => {
+        if (!isObjLoaded(traveller)) return;
+        (async () => {
+            setStages(await fetchStages());
+        })();
+    }, [traveller]);
+
+    useEffect(() => {
+        if (!isObjLoaded(stages)) return;
+        (async () => {
+            setSchedules(await fetchSchedules(stages));
+        })();
+    }, [stages]);
+
+    useEffect(() => {
+        if (!isObjLoaded(schedules)) return;
+        (async () => {
+            setStations(await fetchStations(schedules));
+            setPlatforms(await fetchPlatforms(schedules));
+        })();
+    }, [schedules]);
+
+    // if its empty then it doesnt get loaded.
+    function isObjLoaded(state) {
+        return !(Object.keys(state).length === 0);
     }
 
-    async function getBookingData() {
-        console.log('Booking Data')
-        const response = await fetch('/api/Booking');
-        const bookingData = await response.json();
-        console.log("only data: ", bookingData);
-        setBookingId(bookingData[1].BookingCodeId);
-        setPrice(bookingData[1].Price);
-        for (let i = 0; i < bookingData.length; i++) {
-            console.log("data split up: ", bookingData[i]);
-        }
-        return bookingData;
+
+
+
+
+    async function fetchBooking() {
+        return await fetchUrl(`/api/Booking/${bookingId}`, 'booking');
     }
 
-    async function getScheduleStageData() {
-        console.log('Schedule Stage Data')
-        const response = await fetch('/api/ScheduleStage');
-        const scheduleStageData = await response.json();
-        console.log("only data: ", scheduleStageData);
-        setSeatNumber(scheduleStageData[0].SeatNumber);
-        for (let i = 0; i < scheduleStageData.length; i++) {
-            console.log("data split up: ", scheduleStageData[i]);
-        }
-        return scheduleStageData;
+    async function fetchTraveller(id) {
+        return await fetchUrl(`/api/Traveller/${id}`, 'traveller');
     }
 
-    async function getScheduleData() {
-        console.log('Schedule Data')
-        const response = await fetch('/api/Schedule');
-        const scheduleData = await response.json();
-        console.log("only data: ", scheduleData);
-        setDepartureTime(scheduleData[0].DepartureTime);
-        setArrivalTime(scheduleData[0].ArrivalTime);
-        for (let i = 0; i < scheduleData.length; i++) {
-            console.log("data split up: ", scheduleData[i]);
-        }
-        return scheduleData;
+    async function fetchStages() {
+        return await fetchUrl(`/api/ScheduleStage/Booking/${bookingId}`, 'stages');
     }
 
-    async function getTrainStationData() {
-        console.log('Train Station Data')
-        const response = await fetch('/api/TrainStation');
-        const trainStationData = await response.json();
-        console.log("only data: ", trainStationData);
-        setDepartureTrainStationName(trainStationData[0].Name)
-        setArrivalTrainStationName(trainStationData[1].Name)
-
-        for (let i = 0; i < trainStationData.length; i++) {
-            console.log("data split up: ", trainStationData[i]);
+    async function fetchSchedules(stages) {
+        let schedules = [];
+        for (const stage of stages) {
+            const schedule = await fetchUrl(`/api/Schedule/${stage.ScheduleId}`, 'schedules');
+            schedule.DepartureTime = new Date(schedule.DepartureTime);
+            schedule.ArrivalTime = new Date(schedule.ArrivalTime);
+            schedules.push(schedule);
         }
-        return trainStationData;
+        return schedules;
+    }
+
+    async function fetchStations(schedules) {
+        let stations = {};
+        for (const schedule of schedules) {
+            const departureStationId = schedule.DepartureTrainStationId;
+            // we only add it to the dictionary if it is missing to avoid duplicate api calls.
+            if (!(departureStationId in stations)) {
+                const departureStation = await fetchUrl(`/api/TrainStation/${departureStationId}`, 'stations');
+                //         key                        value
+                stations[departureStation.Id] = departureStation;
+            }
+            const destinationStationId = schedule.DestinationTrainStationId;
+            if (!(destinationStationId in stations)) {
+                const destinationStation = await fetchUrl(`/api/TrainStation/${destinationStationId}`, 'stations');
+                stations[destinationStation.Id] = destinationStation;
+            }
+        }
+        return stations;
+    }
+
+    async function fetchPlatforms(schedules) {
+        let platforms = {};
+        for (const schedule of schedules) {
+            const platformId = schedule.DeparturePlatformId;
+            if (!(platformId in platforms)) {
+                const platform = await fetchUrl(`/api/TrainStationPlatform/${platformId}`, 'platforms');
+                platforms[platform.Id] = platform;
+            }
+        }
+        return platforms;
+    }
+    async function fetchUrl(url, errorMessage = 'unknown', method = 'GET') {
+        return await fetch(url, {
+            method: method
+        })
+            .then(response => {
+                if (!response.ok) {
+                    // error 404 etc
+                    setError(`${response.status} (${errorMessage})`);
+                }
+                return response.json();
+            })
+            .then(result => {
+                return result;
+            }, error => {
+                // more developer errors
+                // setError(`${error} (${errorMessage})`);
+            });
+    }
+
+    async function deleteUrl(url, errorMessage = 'unknown') {
+        return fetchUrl(url, errorMessage, 'DELETE');
+    }
+
+    function Itinerary() {
+        let itineraries = [];
+        for (let i = 0; i < schedules.length; i++) {
+            const schedule = schedules[i];
+            // if its null then return 'unknown'
+            let departureStation = stations[schedule.DepartureTrainStationId].Name ?? 'unknown';
+            let destinationStation = stations[schedule.DestinationTrainStationId].Name ?? 'unknown';
+            let departurePlatform = platforms[schedule.DeparturePlatformId].Name ?? 'unknown';
+            let departureDate = formatDate(schedule.DepartureTime) ?? 'unknown';
+            console.log('schedule.DepartureTime: ' + schedule.DepartureTime);
+            console.log('departureDate:' + departureDate);
+            let departureTime = formatTime(schedule.DepartureTime) ?? 'unknown';
+            let arrivalTime = formatTime(schedule.ArrivalTime) ?? 'unknown';
+            let seat = stages[i].SeatNumber ?? 'unknown';
+
+            itineraries.push(<div key={schedule.Id} className="itinerary-result">
+                {departureDate}<br />
+                {departureTime} - {departureStation} (Platform {departurePlatform} - Seat {seat})<br />
+                {arrivalTime} - {destinationStation} (Platform {departurePlatform} - Seat {seat})
+      </div>);
+        }
+        return itineraries;
+    }
+
+    function itineraryIsLoaded() {
+        return (isObjLoaded(stations) && isObjLoaded(platforms));
+    }
+
+    function formatDate(date) {
+        const [day, month, year] = [to2Digits(date.getDate()), to2Digits(date.getMonth() + 1), date.getFullYear()];
+        return `${year}-${month}-${day}`;
+    }
+
+    function formatTime(date) {
+        const [hour, minutes] = [to2Digits(date.getHours()), to2Digits(date.getMinutes())];
+        return `${hour}:${minutes}`;
+    }
+
+    function to2Digits(value) {
+        // making sure that the time has a 0, so if AM, then 02, but because maybe minutes has 12 it would try to add a 0, so the slice removes that 0. 012 => 12
+        return ("0" + value).slice(-2);
+    }
+
+    function Booking() {
+        const travelDate = isObjLoaded(schedules) ? formatDate((schedules[0].DepartureTime)) : 'laddar...';
+        return (<>
+            <div>
+                <h1>Tack för att du bokade hos oss!</h1>
+                <h2>Du får bokningsbekräftelsen skickad till den inskrivna epost adressen med Boknings ID. </h2>
+                <h2>Ha en trevlig resa!</h2>
+            </div>
+            <div>
+                <h3>Boknings ID: {bookingId}</h3>
+
+                <div className="travel-date">
+                    <br />
+                    <div className="travel-date-title">Resdatum:</div>
+                    <div className="travel-date-result">{travelDate}</div>
+                </div>
+
+                <div className="itinerary">
+                    <br />
+                    <div className="itinerary-title">Resväg:</div>
+                    {itineraryIsLoaded() ? <Itinerary /> : 'laddar...'}
+                </div>
+
+                <div className="name">
+                    <br />
+                    <div className="name-title">Namn:</div>
+                    <div className="name-result">{traveller.FirstName} {traveller.LastName}</div>
+                </div>
+
+                <div className="email">
+                    <br />
+                    <div className="email-title">E-post:</div>
+                    <div className="email-result">{traveller.Email}</div>
+                </div>
+
+                <div className="phoneNumber">
+                    <br />
+                    <div className="phoneNumber-title">Telefonnummer:</div>
+                    <div className="phoneNumber-result">{traveller.PhoneNumber}</div>
+                </div>
+
+                <div className="price">
+                    <br />
+                    <div className="price-title">Totalbelopp:</div>
+                    <div className="price-result">{booking.Price} kr</div>
+                </div>
+            </div>
+
+
+        </>);
+    }
+
+    // if we get error then it goes here, it's not checking a specific thing at the moment.
+    function Error() {
+        return (<>
+            <div>
+                Seems like something went wrong!<br />
+        Error: {error}
+            </div>
+        </>);
+    }
+
+
+
+    function MainContent() {
+        if (error) return <Error />;
+
+        return <Booking />;
     }
 
     return (
-        <main >
-            <div>
-                <h1 className="Title">Konfirmation av bokning</h1>
-                <br></br>
-
-                <p className="EmailText">Tack för ditt köp! En bokningskonfirmation har skickats till din Email.</p>
-                <br></br>
-                <button type="button" onClick={getTravellerData}>getTravellerData</button>
-                <button type="button" onClick={getBookingData}>getBookingData</button>
-                <button type="button" onClick={getScheduleStageData}>getScheduleStageData</button>
-                <button type="button" onClick={getScheduleData}>getScheduleData</button>
-                <button type="button" onClick={getTrainStationData}>getTrainStationData</button>
-
-                <p className="BookingId">Boknings ID: {BookingId}</p>
-                <br></br>
-            </div>
-            <div className="ConfirmationDetails">
-                <div>
-                    <p>Resemål:</p>
-                    <p>{DepartureTrainStationName} - {ArrivalTrainStationName}</p>
-                    <br></br>
-                </div>
-                <div>
-                    <p>Avgångs tid och ankomst tid:</p>
-                    <p>{DepartureTime} - {ArrivalTime}</p>
-                    <br></br>
-                </div>
-                <div>
-                    <p>Sittplats nummer:</p>
-                    <p>{SeatNumber}</p>
-                    <br></br>
-                </div>
-                <div>
-                    <p>Namn:</p>
-                    <p>{FirstName} {LastName}</p>
-                    <br></br>
-                </div>
-                <div>
-                    <p>Email:</p>
-                    <p>{Email}</p>
-                    <br></br>
-                </div>
-                <div>
-                    <p>Telefon nummer:</p>
-                    <p>{PhoneNumber}</p>
-                    <br></br>
-                </div>
-                <div>
-                    <p className="TotalPriceText">Totalt pris:</p>
-                    <p className="TotalPriceAmount">{Price} KR</p>
-                </div>
-            </div>
-        </main>
-    );
-};
-/* Todo: for webbrowser version (focusing on mobile only 16-12-2021) on web-browser needs a scroll added because the page cuts out after email. mobile version is fine.
-        Footer (mobile) however looks weird. something to explore*/
-
+        <main>
+            <MainContent />
+            {/* {error ? <Error/> : bookingDeleted ? <DeleteBookingConfirmation /> : <Booking/>} */}
+        </main>);
+}
 export default BookingConfirmationPage
