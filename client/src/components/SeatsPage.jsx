@@ -9,35 +9,36 @@ function SeatsPage() {
     let navigate = useNavigate();
 
     const [cart, setCart] = useState([]);
+    const [schedules, setSchedules] = useState([]);
     const [stages, setStages] = useState([]);
     const [takenSeats, setTakenSeats] = useState([]);
     const [scheduleId, setScheduleId] = useState();
 
     function GetContext() {
         // Denna update bara för utveckling, detta skall sättas i bokningsinformation
-        updateContext({
-            TravellerAmount: '1',
-            Schedules: [{
-                ScheduleId: '3',
-                CartId: '1',
-                DepartureTrainStationId: '3',
-                DeparturePlatformId: '2',
-                DestinationTrainStationId: '2',
-                DestinationPlatformId: '3',
-                DepartureTime: '2021-12-26 17:30:00',
-                ArrivalTime: '2021-12-26 20:15:00'
-            }],
-            Traveller: {
-                FirstName: 'Sofie',
-                Lastname: 'Bäverstrand',
-                Email: 'sofie@sofie.se',
-                PhoneNumber: '46706888888'
-            }
-        });
-        console.log(context);
-
+        // updateContext({
+        //     TravellerAmount: '1',
+        //     Schedules: [{
+        //         ScheduleId: '3',
+        //         CartId: '1',
+        //         DepartureTrainStationId: '3',
+        //         DeparturePlatformId: '2',
+        //         DestinationTrainStationId: '2',
+        //         DestinationPlatformId: '3',
+        //         DepartureTime: '2021-12-26 17:30:00',
+        //         ArrivalTime: '2021-12-26 20:15:00'
+        //     }],
+        //     Traveller: {
+        //         FirstName: 'Sofie',
+        //         Lastname: 'Bäverstrand',
+        //         Email: 'sofie@sofie.se',
+        //         PhoneNumber: '46706888888'
+        //     }
+        // });
+        setSchedules(context.Schedules)
+console.log(context)
         // skapa och uppdatera seatInfo per tur
-        context.Schedules.forEach(schedule => {
+        schedules.forEach(schedule => {
             console.log(schedule);
             // hämta cart till denna schedule för att hitta number of seats
             (async () => { setCart(await fetchCart(schedule.CartId)); })();
@@ -85,7 +86,6 @@ function SeatsPage() {
                 return response.json();
             })
             .then(result => {
-                console.log(result)
                 return result;
             }, error => {
             });
@@ -102,7 +102,7 @@ function SeatsPage() {
             </div>
 
             <div className="TotalPrice">
-                <p className="TotalPriceText">TOTAL PRICE: XXX KR</p>
+                <p className="TotalPriceText">TOTAL PRICE: {context.Price} KR</p>
                 <button className="TotalPriceContinueButton">Continue</button>
 
             </div>
