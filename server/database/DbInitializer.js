@@ -101,7 +101,7 @@ class DbInitializer {
       'Id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
       'TravellerId' INTEGER NOT NULL REFERENCES 'Traveller',
       'Price' DECIMAL NOT NULL,
-      'BookingCode' NVARCHAR(6),
+      'BookingCode' NVARCHAR(6) UNIQUE,
       'ManipulationCode' NVARCHAR(8));`
     );
 

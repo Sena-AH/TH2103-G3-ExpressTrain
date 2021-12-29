@@ -6,7 +6,7 @@ function MyBookingsPage() {
   let navigate = useNavigate();
   const [idIsValid, setIdIsValid] = useState(true);
   const [formData, updateFormData] = useState({
-    bookingId: ""
+    bookingCode: ""
   });
 
   // in order to be able to change the state we need this function. without it you can't type the Id on the input.
@@ -23,21 +23,16 @@ function MyBookingsPage() {
     // this prevents the default behavior of the form. I want the page here to only show /MyBookingsPage with no other values once a booking id is submitted.
     event.preventDefault();
     (async () => {
-      if (await bookingIdIsValid(formData.bookingId)) {
+      if (await bookingExists(formData.bookingCode)) {
         navigate('/MyBookingsInfo', {state: formData});
       }
     })();
     setIdIsValid(false);
   }
 
-  // we check if boking is valid, we use if its a number (isNaN from javascript library) and if the booking exists.
-  async function bookingIdIsValid(id) {
-    return (!isNaN(id) && await bookingExists(id));
-  }
-
   // we make a call to the api to check if the booking is there. We are only looking for the response.
-  async function bookingExists(id) {
-    return await fetch(`/api/Booking/${id}`)
+  async function bookingExists(code) {
+    return await fetch(`/api/Booking/BookingCode/${code}`)
       .then(response => {
         return response.ok;
       });
@@ -52,7 +47,7 @@ function MyBookingsPage() {
           <form onSubmit={handleSubmit}>
             <div className="my-bookings-search">
               {/* ternary; if its valid do nothing, otherwise '(Invalid booking-Id)' is printed */}
-              <input className="search-bar" placeholder="Bokningsnummer" min="0" name="bookingId" value={formData.bookingId}
+              <input className="search-bar" placeholder="Bokningsnummer" min="0" name="bookingCode" value={formData.bookingCode}
                      onChange={handelChange}/><div className="error-message">{idIsValid ? '' : '(Ogiltig Boknings-ID)'}</div>
             </div>
             <div className="search-btn">

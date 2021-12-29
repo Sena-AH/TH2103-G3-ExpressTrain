@@ -116,15 +116,15 @@ webServer.get('/api/:table', getMany);
 settings.allowWherePosts
   && webServer.post('/api/where/:table/', getMany);
 
-// REST ROUTE: Get one, Booking table
-// webServer.get('/api/Booking/:id', (req, res) => {
-//   req.params.table = 'Booking';
-//   runQuery(req, res, `
-//   SELECT *
-//   FROM ${ req.params.table }
-//   WHERE Id = :id
-//   `, { id: req.params.id }, true);
-// });
+// REST ROUTE: GET by BookingCode
+webServer.get('/api/Booking/BookingCode/:bookingCode', (req, res) => {
+  req.params.table = 'Booking';
+  runQuery(req, res, `
+  SELECT *
+  FROM ${ req.params.table }
+  WHERE BookingCode = :bookingCode
+  `, { bookingCode: req.params.bookingCode }, true);
+});
 
 // REST ROUTE: Get Schedule stages by bookingId
 webServer.get('/api/Schedulestage/Booking/:id', (req, res) => {

@@ -4,9 +4,9 @@ import '../css/myBookings2Page.css';
 
 function MyBookings2Page() {
   const navigate = useNavigate();
-  // useLocation holds several items, we grab the {state} and then we can access it by state.bookingId
+  // useLocation holds several items, we grab the {state} and then we can access it by state.bookingCode
   const {state} = useLocation();
-  const bookingId = state.bookingId;
+  const bookingCode = state.bookingCode;
 
   const [booking, setBooking] = useState([]);
   const [traveller, setTraveller] = useState([]);
@@ -17,14 +17,15 @@ function MyBookings2Page() {
   const [error, setError] = useState(null);
   const [bookingDeleted, setBookingDeleted] = useState(false);
 
-  // using hooks, trying to prevent the code running a million times. we use the hook so if the bookingId changes then it will run the code(setbooking)
+  // using hooks, trying to prevent the code running a million times. we use the hook so if the bookingCode changes then it will run the code(setbooking)
   useEffect(() => {
-    if(!bookingId) return;
+    console.clear();
+    if(!bookingCode) return;
     (async () => {
       setBooking(await fetchBooking());
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bookingId]);
+  }, [bookingCode]);
 
   useEffect(() => {
     if (!isObjLoaded(booking)) return;
@@ -77,11 +78,11 @@ function MyBookings2Page() {
   }
 
   async function deleteBooking() {
-    return await deleteUrl(`/api/Booking/${bookingId}`, "Couldn't delete booking.", 'delete');
+    return await deleteUrl(`/api/Booking/${booking.Id}`, "Couldn't delete booking.", 'delete');
   }
 
   async function fetchBooking() {
-    return await fetchUrl(`/api/Booking/${bookingId}`, 'booking');
+    return await fetchUrl(`/api/Booking/BookingCode/${bookingCode}`, 'booking');
   }
 
   async function fetchTraveller(id) {
@@ -89,7 +90,7 @@ function MyBookings2Page() {
   }
 
   async function fetchStages() {
-    return await fetchUrl(`/api/ScheduleStage/Booking/${bookingId}`, 'stages');
+    return await fetchUrl(`/api/ScheduleStage/Booking/${booking.Id}`, 'stages');
   }
 
   async function fetchSchedules(stages) {
@@ -204,7 +205,7 @@ function MyBookings2Page() {
         <h1>Min bokning</h1>
       </div>
       <div>
-        <h3>Boking ID: {bookingId}</h3>
+        <h3>Boking Code: {bookingCode}</h3>
 
         <div className="travel-date">
           <br/>
@@ -275,7 +276,7 @@ function MyBookings2Page() {
   }
 
   function MainContent() {
-    if (!bookingId || error) return <Error />;
+    if (!bookingCode || error) return <Error />;
     if (bookingDeleted) return <DeleteBookingConfirmation />;
     return <Booking/>;
   }
