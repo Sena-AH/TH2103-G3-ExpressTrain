@@ -17,7 +17,7 @@ function MyBookingsPage() {
     });
     setIdIsValid(true);
   }
-
+ 
   // checking if its a valid booking number, if true then it lets you go onto the next page.
   function handleSubmit(event) {
     // this prevents the default behavior of the form. I want the page here to only show /MyBookingsPage with no other values once a booking id is submitted.
@@ -48,7 +48,7 @@ function MyBookingsPage() {
             <div className="my-bookings-search">
               {/* ternary; if its valid do nothing, otherwise '(Invalid booking-Id)' is printed */}
               <input className="search-bar" placeholder="Bokningsnummer" min="0" name="bookingCode" value={formData.bookingCode}
-                     onChange={handelChange}/><div className="error-message">{idIsValid ? '' : '(Ogiltig Boknings-ID)'}</div>
+                     onChange={handelChange}/><div className="error-message">{idIsValid ? '' : '(Ogiltig Bokningsnummer)'}</div>
             </div>
             <div className="search-btn">
               <input type="submit" value="Sök bokning"/>

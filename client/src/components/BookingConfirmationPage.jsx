@@ -1,7 +1,12 @@
+import React, {useState, useEffect} from 'react';
+import {useLocation, useNavigate} from 'react-router-dom';
+import BookingInfo from './MyBookings2Page';
+
 function BookingConfirmationPage() {
     return(
         <main>
-            <div>
+            <BookingInfo bookingCode="P99G43"/>
+            {/* <div>
                 <h1 class="Title">BOOKING CONFIRMATION</h1>
                 <br></br>
 
@@ -46,7 +51,7 @@ function BookingConfirmationPage() {
                     <p class="TotalPriceText">TOTAL PRICE:</p>
                     <p class="TotalPriceAmount">XXXX KR</p>
                 </div>
-            </div>
+            </div> */}
         </main>
     );
 };

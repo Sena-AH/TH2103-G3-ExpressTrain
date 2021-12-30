@@ -2,20 +2,23 @@ import React, {useState, useEffect} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import '../css/myBookings2Page.css';
 
-function MyBookings2Page() {
+function MyBookings2Page(props) {
   const navigate = useNavigate();
   // useLocation holds several items, we grab the {state} and then we can access it by state.bookingCode
   const {state} = useLocation();
-  const bookingCode = state.bookingCode;
+  const bookingCode = props.bookingCode ?? state.bookingCode;
 
   const [booking, setBooking] = useState([]);
-  const [traveller, setTraveller] = useState([]);
-  const [stages, setStages] = useState([]);
-  const [schedules, setSchedules] = useState([]);
-  const [stations, setStations] = useState([]);
-  const [platforms, setPlatforms] = useState([]);
   const [error, setError] = useState(null);
-  const [bookingDeleted, setBookingDeleted] = useState(false);
+  const [isBookingDeleted, setIsBookingDeleted] = useState(false);
+  const [isValidationCodeRequired,setIsValidationCodeRequired] = useState(null);
+  const [isCodeValid, setIsCodeValid] = useState(true);
+  const [manipulationCode, setManipulationCode] = useState("");
+  const [platforms, setPlatforms] = useState([]);
+  const [schedules, setSchedules] = useState([]);
+  const [stages, setStages] = useState([]);
+  const [stations, setStations] = useState([]);
+  const [traveller, setTraveller] = useState([]);
 
   // using hooks, trying to prevent the code running a million times. we use the hook so if the bookingCode changes then it will run the code(setbooking)
   useEffect(() => {
@@ -65,20 +68,45 @@ function MyBookings2Page() {
     return !(Object.keys(state).length === 0);
   }
 
+  function handleChange(event) {
+    if (event.target.id === "verification-code-input") {
+      setManipulationCode(event.target.value.trim());
+      setIsCodeValid(true);
+    }
+  }
+
+  function handleSubmit(event) {
+    // this prevents the default behavior of the form. I want the page here to only show /MyBookingsPage with no other values once a booking id is submitted.
+    event.preventDefault();
+    if (event.target.id === 'validate-cancellation-form') {
+      // attempt to delete, if deletebooking gives an error, like its the wrong code then tell the user. if codes match then delete
+      (async () => {
+        const response = await deleteBooking();
+        if (error === null && response.changes > 0) {
+          setIsBookingDeleted(true);
+          setIsValidationCodeRequired(false);
+        }
+        if (error === null && response.changes === 0) {
+          setIsCodeValid(false);
+        }
+      })();
+    }
+  }
+
   function handleClick(event) {
     if (event.target.id === 'cancel-booking-btn') {
-      deleteBooking();
-      if (error === null) {
-        setBookingDeleted(true);
-      }
+      setIsValidationCodeRequired(true);
     }
+    
+    
+
     if (event.target.id === 'home-page-btn') {
       navigate('/');
     }
   }
 
   async function deleteBooking() {
-    return await deleteUrl(`/api/Booking/${booking.Id}`, "Couldn't delete booking.", 'delete');
+    return await fetchDeleteWithBody(`/api/Booking/${booking.Id}`, { ManipulationCode: manipulationCode },"Couldn't delete booking.");
   }
 
   async function fetchBooking() {
@@ -134,6 +162,30 @@ function MyBookings2Page() {
     }
     return platforms;
   }
+
+  async function fetchDeleteWithBody(url, body, errorMessage = 'unknown') {
+    return await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    })
+      .then(response => {
+        if (!response.ok) {
+          // error 404 etc
+          setError(`${response.status} (${errorMessage})`);
+        }
+        return response.json();
+      })
+      .then(result => {
+        return result;
+      }, error => {
+        // more developer errors
+        // setError(`${error} (${errorMessage})`);
+      });
+  }
+
   async function fetchUrl(url, errorMessage = 'unknown', method = 'GET') {
     return await fetch(url, {
       method: method
@@ -260,6 +312,19 @@ function MyBookings2Page() {
     </>);
   }
 
+  function ValidateDeletion() {
+    return (
+      <div className="" id="">
+          <div>Vi behöver din veriferings kod för att kunna gör andringar till din bokning</div>
+
+          <label htmlFor="verification-code-input">Veriferings kod</label>
+          <input id="verification-code-input" value={manipulationCode} onChange={handleChange}/>
+          <div className="error-message">{isCodeValid ? '' : '(Veriferings kod)'}</div>
+          <button id="validate-cancellation-btn" onClick={handleClick}>Avboka bokningen</button>
+      </div>
+    )
+  }
+
   function DeleteBookingConfirmation() {
     return (
       <>
@@ -275,12 +340,28 @@ function MyBookings2Page() {
     )
   }
 
+  function ValidateDeletion() {
+    return (
+      <div className="" id="">
+          <div>Vi behöver din veriferings kod för att kunna gör andringar till din bokning</div>
+          <form id="validate-cancellation-form" onSubmit={handleSubmit}>
+            <label htmlFor="verification-code-input">Veriferings kod</label>
+            <input id="verification-code-input" defaultValue={manipulationCode} onBlur={handleChange} autoFocus />
+            <div className="error-message">{isCodeValid ? '' : '(Fel Veriferingskod)'}</div>
+            <input type="submit" id="validate-cancellation-btn" value="Avboka bokningen" />
+          </form>
+      </div>
+    )
+  }
+
   function MainContent() {
     if (!bookingCode || error) return <Error />;
-    if (bookingDeleted) return <DeleteBookingConfirmation />;
+    if (isBookingDeleted) return <DeleteBookingConfirmation />;
+    if (isValidationCodeRequired) return <ValidateDeletion />;
     return <Booking/>;
   }
 
+  console.log("yep");
   return (
   <main>
     <MainContent />
