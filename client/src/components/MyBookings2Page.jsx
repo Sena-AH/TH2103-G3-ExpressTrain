@@ -19,7 +19,7 @@ function MyBookings2Page(props) {
   const [stages, setStages] = useState([]);
   const [stations, setStations] = useState([]);
   const [traveller, setTraveller] = useState([]);
-
+  
   // using hooks, trying to prevent the code running a million times. we use the hook so if the bookingCode changes then it will run the code(setbooking)
   useEffect(() => {
     console.clear();
@@ -76,14 +76,13 @@ function MyBookings2Page(props) {
   }
 
   function handleSubmit(event) {
-    // this prevents the default behavior of the form. I want the page here to only show /MyBookingsPage with no other values once a booking id is submitted.
-    event.preventDefault();
+    console.log('Submit clicked!');
     if (event.target.id === 'validate-cancellation-form') {
       // attempt to delete, if deletebooking gives an error, like its the wrong code then tell the user. if codes match then delete
       (async () => {
         const response = await deleteBooking();
         if (error === null && response.changes > 0) {
-          setIsBookingDeleted(true);
+        setIsBookingDeleted(true);
           setIsValidationCodeRequired(false);
         }
         if (error === null && response.changes === 0) {
@@ -91,14 +90,13 @@ function MyBookings2Page(props) {
         }
       })();
     }
+    event.preventDefault();
   }
 
   function handleClick(event) {
     if (event.target.id === 'cancel-booking-btn') {
       setIsValidationCodeRequired(true);
-    }
-    
-    
+    }    
 
     if (event.target.id === 'home-page-btn') {
       navigate('/');
@@ -163,6 +161,25 @@ function MyBookings2Page(props) {
     return platforms;
   }
 
+  async function fetchUrl(url, errorMessage = 'unknown', method = 'GET') {
+    return await fetch(url, {
+      method: method
+    })
+      .then(response => {
+        if (!response.ok) {
+          // error 404 etc
+          setError(`${response.status} (${errorMessage})`);
+        }
+        return response.json();
+      })
+      .then(result => {
+        return result;
+      }, error => {
+        // more developer errors
+        // setError(`${error} (${errorMessage})`);
+      });
+  }
+
   async function fetchDeleteWithBody(url, body, errorMessage = 'unknown') {
     return await fetch(url, {
       method: 'DELETE',
@@ -184,29 +201,6 @@ function MyBookings2Page(props) {
         // more developer errors
         // setError(`${error} (${errorMessage})`);
       });
-  }
-
-  async function fetchUrl(url, errorMessage = 'unknown', method = 'GET') {
-    return await fetch(url, {
-      method: method
-    })
-      .then(response => {
-        if (!response.ok) {
-          // error 404 etc
-          setError(`${response.status} (${errorMessage})`);
-        }
-        return response.json();
-      })
-      .then(result => {
-        return result;
-      }, error => {
-        // more developer errors
-        // setError(`${error} (${errorMessage})`);
-      });
-  }
-
-  async function deleteUrl(url, errorMessage = 'unknown') {
-    return fetchUrl(url, errorMessage, 'DELETE');
   }
 
   function Itinerary() {
@@ -333,9 +327,9 @@ function MyBookings2Page(props) {
           <div>Vi behöver din veriferings kod för att kunna gör andringar till din bokning</div>
           <form id="validate-cancellation-form" onSubmit={handleSubmit}>
             <label htmlFor="verification-code-input">Veriferings kod</label>
-            <input id="verification-code-input" defaultValue={manipulationCode} onBlur={handleChange} autoFocus />
+            <input id="verification-code-input" value={manipulationCode} onChange={handleChange} autoFocus />
             <div className="error-message">{isCodeValid ? '' : '(Fel Veriferingskod)'}</div>
-            <input type="submit" id="validate-cancellation-btn" value="Avboka bokningen" />
+            <input type="submit" value="Avboka bokningen" />
           </form>
       </div>
     )
@@ -348,7 +342,7 @@ function MyBookings2Page(props) {
     return <Booking/>;
   }
 
-  console.log("yep");
+  console.log("page rendered (again)");
   return (
   <main>
     <MainContent />
