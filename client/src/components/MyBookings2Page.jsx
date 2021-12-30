@@ -310,20 +310,7 @@ function MyBookings2Page(props) {
         Error: {error}
       </div>
     </>);
-  }
-
-  function ValidateDeletion() {
-    return (
-      <div className="" id="">
-          <div>Vi behöver din veriferings kod för att kunna gör andringar till din bokning</div>
-
-          <label htmlFor="verification-code-input">Veriferings kod</label>
-          <input id="verification-code-input" value={manipulationCode} onChange={handleChange}/>
-          <div className="error-message">{isCodeValid ? '' : '(Veriferings kod)'}</div>
-          <button id="validate-cancellation-btn" onClick={handleClick}>Avboka bokningen</button>
-      </div>
-    )
-  }
+  }  
 
   function DeleteBookingConfirmation() {
     return (
