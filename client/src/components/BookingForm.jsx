@@ -12,30 +12,30 @@ function BookingForm() {
   const [PhoneNumber, setPhoneNumber] = useState("");
 
   function saveData() {
+    //let data = { FirstName, LastName, Email, PhoneNumber }
 
     updateContext({
-      TravellerAmount: '1',
-      Schedules: [{
-        ScheduleId: '3',
-        CartId: '1',
-        DepartureTrainStationId: '3',
-        DeparturePlatformId: '2',
-        DestinationTrainStationId: '2',
-        DestinationPlatformId: '3',
-        DepartureTime: '2021-12-26 17:30:00',
-        ArrivalTime: '2021-12-26 20:15:00'
+      // TravellerAmount: '1',
+      // Schedules: [{
+      //   ScheduleId: '3',
+      //   CartId: '1',
+      //   DepartureTrainStationId: '3',
+      //   DeparturePlatformId: '2',
+      //   DestinationTrainStationId: '2',
+      //   DestinationPlatformId: '3',
+      //   DepartureTime: '2021-12-26 17:30:00',
+      //   ArrivalTime: '2021-12-26 20:15:00'
+      // }],
+      // Price: 7896,
+      TravellerAmount: 2,
+      FirstTrip: {
+        ScheduleId: 3,
+        Price: 599
       },
-      {
-        ScheduleId: '2',
-        CartId: '1',
-        DepartureTrainStationId: '1',
-        DeparturePlatformId: '1',
-        DestinationTrainStationId: '3',
-        DestinationPlatformId: '4',
-        DepartureTime: '2021-12-25 09:25:00',
-        ArrivalTime: '2021-12-25 12:25:00'
-      }],
-      Price: 7896,
+      SecondTrip: {
+        ScheduleId: 2,
+        Price: 985
+      },
       Traveller: {
         FirstName: FirstName,
         Lastname: LastName,
@@ -50,7 +50,7 @@ function BookingForm() {
 
   return (
     <div className="wrapper">
-      <h2>Booking Information</h2>
+      <h2>Bokningsinformation</h2>
       <div className="input-search">
         <input
           className="input"
