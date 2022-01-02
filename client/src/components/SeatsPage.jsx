@@ -13,13 +13,13 @@ function SeatsPage() {
 
     const [firstCart, setFirstCart] = useState([]);
     const [firstSchedule, setFirstSchedule] = useState();
-    const firstTakenSeats = useState([]);
+    const [firstTakenSeats] = useState([]);
     const [firstStages, setFirstStages] = useState([]);
     const [firstChosenSeats] = useState([]);
 
     const [secondCart, setSecondCart] = useState([]);
     const [secondSchedule, setSecondSchedule] = useState();
-    const secondTakenSeats = useState([]);
+    const [secondTakenSeats] = useState([]);
     const [secondStages, setSecondStages] = useState([]);
     const [secondChosenSeats] = useState([]);
 
@@ -71,7 +71,7 @@ function SeatsPage() {
             console.log(`har hämtat startstation med namn: ${res.Name}`);
             setStartStation(res.Name);
         })();
-    // eslint-disable-next-line
+        // eslint-disable-next-line
     }, [firstSchedule]);
 
     //sätt målstation
