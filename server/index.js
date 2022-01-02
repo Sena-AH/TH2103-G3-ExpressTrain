@@ -167,6 +167,16 @@ webServer.get('/api/:table/:id', (req, res) => {
   );
 });
 
+// REST ROUTE: GET one
+webServer.get('/api/Schedule/:id', (req, res) => {
+  // run query
+  runQuery(req, res, `
+    SELECT *
+    FROM ${req.params.table}
+    WHERE id = :id
+  `, { id: req.params.id }, true
+  );
+});
 
 // REST ROUTE: POST
 webServer.post('/api/:table', (req, res) => {

@@ -1,67 +1,166 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Context } from '../App'
 // In i seats från Context: TravellerAmount, Schedules, Price, Traveller
 // Sätts i Seats:
 // Skickas vidare:
 function SeatsPage() {
     const [context, updateContext] = useContext(Context)
+    const firstScheduleId = context.FirstTrip.ScheduleId;
+    const [secondScheduleId, setSecondScheduleId] = useState(0);
+    
     let navigate = useNavigate();
 
-    const [cart, setCart] = useState([]);
-    const [schedules, setSchedules] = useState([]);
+    const [firstCart, setFirstCart] = useState([]);
+    const [firstSchedule, setFirstSchedule] = useState();
+    const [firstTakenSeats, setFirstTakenSeats] = useState([]);
+    const [firstStages, setFirstStages] = useState([]);
+    const [firstChosenSeats] = useState([]);
+
+    const [secondCart, setSecondCart] = useState([]);
+    const [secondSchedule, setSecondSchedule] = useState();
+    const [secondTakenSeats, setSecondTakenSeats] = useState([]);
+    const [secondStages, setSecondStages] = useState([]);
+    const [secondChosenSeats] = useState([]);
+
+    const [error, setError] = useState(null);
+    const [startStation, setStartStation] = useState([]);
+    const [destinationStation, setDestinationStation] = useState([]);
     const [stages, setStages] = useState([]);
-    const [takenSeats, setTakenSeats] = useState([]);
-    const [scheduleId, setScheduleId] = useState();
-  const [error, setError] = useState(null);
-  const [startStation, setStartStation] = useState([]);
-  const [destinationStation, setDestinationStation] = useState([]);
+    const [schedules, setSchedules] = useState([]);
 
+    // Utresa
+    // hämta schedule
+    useEffect(() => {
+        //if (!isObjectLoaded(firstScheduleId)) return;
+        (async () => {
+            console.log('hämta schedule');
+            console.log(firstScheduleId);
+            let res = await fetchSchedule(firstScheduleId);
+            console.log(`har hämtat ${res.DeparturePlatformId}`);
+            setFirstSchedule(res);
+        })();
 
-    async function GetContext() {
-        setSchedules(context.Schedules)
-        console.log(context)
-        // skapa och uppdatera seatInfo per tur
-        schedules.forEach(schedule => {
-            console.log('kattjävel');
-            // hämta cart till denna schedule för att hitta number of seats
-            (async () => { setCart(await fetchCart(schedule.CartId)); })();
-            console.log(schedule.CartId);
-            console.log(cart.SeatAmount);
+    }, [firstScheduleId]);
 
-            // hämta alla schedulestage för att hitta taken seats
-            setScheduleId(schedule.ScheduleId);
-            console.log(scheduleId);
-            (async () => { setStages(await fetchStages(scheduleId)); })();
+    // hämta stages
+    useEffect(() => {
+        if (!isObjectLoaded(firstSchedule)) return;
+        (async () => {
+            console.log('stages hämtas...')
+            let res = await fetchStages(firstScheduleId);
+            console.log(`har hämtat stages med ScheduleId: ${res[0].ScheduleId}`);
+            setFirstStages(res);
+        })();
+    }, [firstSchedule]);
 
-            stages.forEach(stage => {
-                console.log(stages);
-                const seatnumber = stage.SeatNumber;
-                takenSeats.push(seatnumber);
-            });
-
-            //uppdatera context
-            updateContext({
-                SeatInformation: [{
-                    ScheduleId: schedule.ScheduleId,
-                    CartId: schedule.CartId,
-                    NoOfSeats: cart.SeatAmount,
-                    TakenSeats: takenSeats
-                }]
-            });
+    // sätt taken seats
+    useEffect(() => {
+        if (!isObjectLoaded(firstStages)) return;
+        firstStages.forEach(stage => {
+            firstTakenSeats.push(stage.SeatNumber);
+            console.log(`ett av takenseats är: ${firstTakenSeats[0]}`);
         });
+    }, [firstStages]);
 
+    // sätt startstation
+    useEffect(() => {
+        if (!isObjectLoaded(firstSchedule)) return;
+        (async () => {
+            console.log('sätter startStation...')
+            let res = await fetchStation(firstSchedule.DeparturePlatformId);
+            console.log(`har hämtat startstation med namn: ${res.Name}`);
+            setStartStation(res.Name);
+        })();
+    }, [firstSchedule]);
 
-        //navigate('/SeatsViewSeats');
-    }
+    //sätt målstation
+    useEffect(() => {
+        if (!isObjectLoaded(firstSchedule)) return;
+        (async () => {
+            console.log('sätter målstation...')
+            let res = await fetchStation(firstSchedule.DestinationPlatformId);
+            console.log(`har hämtat målstation med namn: ${res.Name}`);
+            setDestinationStation(res.Name);
+        })();
+    }, [firstSchedule]);
 
-    function ContextPrint() {
-        console.log('finally - context')
-        console.log(context);
-    }
+    // hämta cart
+    useEffect(() => {
+        if (!isObjectLoaded(firstSchedule)) return;
+        (async () => {
+            console.log('cart hämtas...')
+            let res = await fetchCart(firstSchedule.CartId);
+            console.log(`har hämtat cart med såhär många säten: ${res.SeatAmount}`);
+            setFirstCart(res);
+        })();
+    }, [firstSchedule]);
+
+    // Returresa
+    // Sätt secondScheduleId
+    useEffect(() => {
+        if (!isObjectLoaded(firstSchedule)) return;
+        if(context.SecondTrip != undefined){
+            setSecondScheduleId(context.SecondTrip.ScheduleId);
+        }
+    
+    }, [firstSchedule]);
+    
+    // hämta schedule
+    useEffect(() => {
+        (async () => {
+            console.log('hämta schedule för retur');
+            console.log(secondScheduleId);
+            let res = await fetchSchedule(secondScheduleId);
+            console.log(`har hämtat ${res.DeparturePlatformId}`);
+            setSecondSchedule(res);
+        })();
+    }, [secondScheduleId]);
+
+    // hämta stages
+    useEffect(() => {
+        if (!isObjectLoaded(secondSchedule)) return;
+        (async () => {
+            console.log('stages för retur hämtas...')
+            let res = await fetchStages(secondScheduleId);
+            console.log(`har hämtat stages `);
+            setSecondStages(res);
+        })();
+    }, [secondSchedule]);
+
+    // sätt taken seats
+    useEffect(() => {
+        if (!isObjectLoaded(secondStages)) return;
+        secondStages.forEach(stage => {
+            secondTakenSeats.push(stage.SeatNumber);
+            console.log(`ett av takenseats på returresan`);
+        });
+    }, [secondStages]);
+
+    // hämta cart
+    useEffect(() => {
+        if (!isObjectLoaded(secondSchedule)) return;
+        (async () => {
+            console.log('cart för returresan hämtas...')
+            let res = await fetchCart(secondSchedule.CartId);
+            console.log(`har hämtat cart returresan`);
+            setSecondCart(res);
+        })();
+    }, [secondSchedule]);
 
     async function fetchStages(id) {
+
         return await fetchInfo(`/api/Schedulestage/ScheduleId/${id}`, 'scheduleStages');
+    }
+
+    async function fetchSchedule(id) {
+        
+        return await fetchInfo(`/api/Schedule/${id}`);
+    }
+
+    async function fetchStation(id) {
+        
+        return await fetchInfo(`/api/TrainStation/${id}`);
     }
 
     async function fetchCart(id) {
@@ -81,92 +180,64 @@ function SeatsPage() {
             });
     }
 
-    // if its empty then it doesnt get loaded.
     function isObjectLoaded(state) {
+        console.log(state);
+        if (state == null) return false;
+        if (state == undefined) return false;
         return !(Object.keys(state).length === 0);
     }
-
-    // function Booking() {
-    //     const travelDate = isObjectLoaded(schedules) ? formatDate((schedules[0].DepartureTime)) : 'laddar...';
-    //     return (<>
-    //         <div>
-    //             <h1>Min bokning</h1>
-    //         </div>
-    //         <div>
-    //             <h3>Boking ID: {bookingId}</h3>
-
-    //             <div className="travel-date">
-    //                 <br />
-    //                 <div className="travel-date-title">Resdatum:</div>
-    //                 <div className="travel-date-result">{travelDate}</div>
-    //             </div>
-
-    //             <div className="itinerary">
-    //                 <br />
-    //                 <div className="itinerary-title">Resväg:</div>
-    //                 {isRenderSeatsLoaded() ? <Itinerary /> : 'laddar...'}
-    //             </div>
-
-    //             <div className="name">
-    //                 <br />
-    //                 <div className="name-title">Namn:</div>
-    //                 <div className="name-result">{traveller.FirstName} {traveller.LastName}</div>
-    //             </div>
-
-    //             <div className="email">
-    //                 <br />
-    //                 <div className="email-title">E-post:</div>
-    //                 <div className="email-result">{traveller.Email}</div>
-    //             </div>
-
-    //             <div className="phoneNumber">
-    //                 <br />
-    //                 <div className="phoneNumber-title">Telefonnummer:</div>
-    //                 <div className="phoneNumber-result">{traveller.PhoneNumber}</div>
-    //             </div>
-
-    //             <div className="price">
-    //                 <br />
-    //                 <div className="price-title">Totalbelopp:</div>
-    //                 <div className="price-result">{booking.Price} kr</div>
-    //             </div>
-    //         </div>
-
-    //         <div className="search-btn">
-    //             <button type="button" id="cancel-booking-btn" onClick={handleClick}>Avboka bokningen</button>
-    //         </div>
-    //     </>);
-    // }
 
     function TakenSeat() {
         alert("Upptagen!");
     }
-    function VacantSeat() {
-        // if chosenseats.length == travellerAmount 
-        // lägg till nya klicket på chosenseats[0]
-        // else lägg bara till i listan
+
+    function VacantSeatFirst(seatNumber) {
+        if (firstChosenSeats.length == context.TravellerAmount) {
+            console.log('firstChosenSeats')
+            console.log(firstChosenSeats);
+            alert("Du har redan valt sittplats(er)");
+        }
+        else if (firstChosenSeats.includes(seatNumber)) {
+            alert("Du har redan valt den här platsen!")
+        }
+        else {
+            firstChosenSeats.includes(seatNumber)
+            console.log('firstChosenSeats')
+            console.log(firstChosenSeats);
+            firstChosenSeats.push(seatNumber);
+        }
 
         // byt färg på knappen eller nåt
     }
 
-    function RenderCart(data) {
+    function VacantSeatSecond(seatNumber) {
+        if (secondChosenSeats.length == context.TravellerAmount) {
+            console.log('secondChosenSeats')
+            console.log(secondChosenSeats);
+            alert("Du har redan valt sittplats(er)");
+        }
+        else if (secondChosenSeats.includes(seatNumber)) {
+            alert("Du har redan valt den här platsen!")
+        }
+        else {
+            console.log('secondChosenSeats')
+            console.log(secondChosenSeats);
+            secondChosenSeats.push(seatNumber);
+        }
+
+        // byt färg på knappen eller nåt
+    }
+
+    function RenderFirstCart() {
         let cartSeats = [];
-        setScheduleId(data.ScheduleId);
-
-        // hämta antal sittplatser
-        useEffect(() => {
-            if (!isObjectLoaded(scheduleId)) return;
-            (async () => {
-                setCart(await fetchCart(scheduleId));
-            })();
-        }, [cart]);
-
+        console.log(firstTakenSeats[0]);
         // hämta upptagna platser
 
         // skapa divar med knappar
-        for (let i = 1; i = cart.seatAmount; i++) {
+        for (let i = 1; i <= firstCart.SeatAmount; i++) {
             // if takenseats.contains {i}
-            if (takenSeats.includes(i)) {
+
+            if (firstTakenSeats.includes(i)) {
                 cartSeats.push(
                     <div key={i} className='seat'>
                         <button className='takenSeat' onClick={() => TakenSeat()}>
@@ -178,40 +249,114 @@ function SeatsPage() {
             else {
                 cartSeats.push(
                     <div key={i} className='seat'>
-                        <button className='availableSeat' onClick={() => VacantSeat()}>
+                        <button className='availableSeat' onClick={() => VacantSeatFirst(i)}>
                             {i}, <br />
                             Ledig</button>
                     </div >
                 )
             }
-
         }
-// return (returnera cartseats
-//     )
+
+        console.log(cartSeats);
+        return cartSeats;
+    }
+
+    function RenderSecondCart() {
+        let cartSeats = [];
+        console.log(secondTakenSeats[0]);
+        // skapa divar med knappar
+        for (let i = 1; i <= secondCart.SeatAmount; i++) {
+            if (secondTakenSeats.includes(i)) {
+                cartSeats.push(
+                    <div key={i} className='seat'>
+                        <button className='takenSeat' onClick={() => TakenSeat()}>
+                            {i}, <br />
+                            Upptagen</button>
+                    </div >
+                )
+            }
+            else {
+                cartSeats.push(
+                    <div key={i} className='seat'>
+                        <button className='availableSeat' onClick={() => VacantSeatSecond(i)}>
+                            {i}, <br />
+                            Ledig</button>
+                    </div >
+                )
+            }
+        }
+
+        console.log(cartSeats);
+        return cartSeats;
+    }
+
+    function SaveTripSeats() {
+        if(secondScheduleId == 0) {
+            updateContext({
+                FirstTripSeats: firstChosenSeats
+            });
+        }
+        else {
+            updateContext({
+                FirstTripSeats: firstChosenSeats,
+                SecondTripSeats: secondChosenSeats
+            });
+        }
+        navigate('/PaymentPage');
     }
 
     function RenderAllSeats() {
         // en if-sats kollar om det finns innehåll i context.firstTrip och context.secondTrip och skickar till RenderCart
-RenderCart(context.FirstTrip)
+        // if(context.FirstTrip){
+        //     RenderCart(context.FirstTrip)
+        // }
+        // if (context.SecondTrip == null || context.SecondTrip == undefined) {
+            if (secondScheduleId == 0) {
+            console.log('enkelresa')
+            return (<div className="WholePage">
+                <h1 className="Title">Sittplatser {startStation} - {destinationStation}</h1>
+                <div className="TrainCart">
+                    {isRenderedFirstSeatsLoaded() ? <RenderFirstCart /> : 'laddar...'}
+
+                </div>
+                <div className="TotalPrice">
+                    <div className="search-btn">
+                        <button type="button" onClick={() => SaveTripSeats()}>Spara och Fortsätt</button>
+                    </div>
+                </div>
+            </div>)
+        }
+
+        else {
+            console.log('tur och retur')
+            return (<div className="WholePage">
+                <h1 className="Title">Sittplatser {startStation} - {destinationStation}</h1>
+                <div className="TrainCart">
+                    {isRenderedFirstSeatsLoaded() ? <RenderFirstCart /> : 'laddar...'}
+                </div>
+                <h1 className="Title">Sittplatser {destinationStation} - {startStation}</h1>
+                <div className="TrainCart">
+                    {isRenderedSecondSeatsLoaded() ? <RenderSecondCart /> : 'laddar...'}
+                </div>
+                <div className="TotalPrice">
+                    <div className="search-btn">
+                        <button type="button" onClick={() => SaveTripSeats()}>Spara och Fortsätt</button>
+                    </div>
+                </div>
+            </div>
+            )
+        }
+
     }
 
-    function isRenderedSeatsLoaded() {
-        return (isObjectLoaded(scheduleId) && isObjectLoaded(cart));
+    function isRenderedFirstSeatsLoaded() {
+        return (isObjectLoaded(firstCart));
     }
 
-    function SeatsPage() {
-        <div className="wrapper">
-            <h2>Välj plats(er)</h2>
-            <div className="chooseSeats">
-                <br />
-                <div className="chooseSeats-title"></div>
-                {isRenderedSeatsLoaded() ? <RenderAllSeats /> : 'laddar...'}
-            </div>
-            <div className="search-btn">
-                {/* <button type="button" onClick={saveData}>Spara och Fortsätt</button> */}
-            </div>
-        </div>
+    function isRenderedSecondSeatsLoaded() {
+        return (isObjectLoaded(secondCart));
     }
+
     // if we get error then it goes here, it's not checking a specific thing at the moment.
     function Error() {
         return (<>
@@ -224,13 +369,12 @@ RenderCart(context.FirstTrip)
 
     function MainContent() {
         if (error) return <Error />;
-        return <Booking />;
+        // return <Booking />;
     }
 
     return (
         <main>
-            <MainContent />
-            {/* {error ? <Error/> : bookingDeleted ? <DeleteBookingConfirmation /> : <Booking/>} */}
+            <RenderAllSeats />
         </main>);
 }
 
