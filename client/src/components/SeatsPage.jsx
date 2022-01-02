@@ -37,7 +37,7 @@ function SeatsPage() {
             console.log(`har hämtat ${res.DeparturePlatformId}`);
             setFirstSchedule(res);
         })();
-
+// eslint-disable-next-line
     }, [firstScheduleId]);
 
     // hämta stages
@@ -49,6 +49,7 @@ function SeatsPage() {
             console.log(`har hämtat stages med ScheduleId: ${res[0].ScheduleId}`);
             setFirstStages(res);
         })();
+        // eslint-disable-next-line
     }, [firstSchedule]);
 
     // sätt taken seats
@@ -58,6 +59,7 @@ function SeatsPage() {
             firstTakenSeats.push(stage.SeatNumber);
             console.log(`ett av takenseats är: ${firstTakenSeats[0]}`);
         });
+        // eslint-disable-next-line
     }, [firstStages]);
 
     // sätt startstation
@@ -69,6 +71,7 @@ function SeatsPage() {
             console.log(`har hämtat startstation med namn: ${res.Name}`);
             setStartStation(res.Name);
         })();
+    // eslint-disable-next-line
     }, [firstSchedule]);
 
     //sätt målstation
@@ -80,6 +83,7 @@ function SeatsPage() {
             console.log(`har hämtat målstation med namn: ${res.Name}`);
             setDestinationStation(res.Name);
         })();
+        // eslint-disable-next-line
     }, [firstSchedule]);
 
     // hämta cart
@@ -91,6 +95,7 @@ function SeatsPage() {
             console.log(`har hämtat cart med såhär många säten: ${res.SeatAmount}`);
             setFirstCart(res);
         })();
+        // eslint-disable-next-line
     }, [firstSchedule]);
 
     // Returresa
@@ -100,7 +105,7 @@ function SeatsPage() {
         if (context.SecondTrip !== undefined) {
             setSecondScheduleId(context.SecondTrip.ScheduleId);
         }
-
+// eslint-disable-next-line
     }, [firstSchedule]);
 
     // hämta schedule
@@ -112,6 +117,7 @@ function SeatsPage() {
             console.log(`har hämtat ${res.DeparturePlatformId}`);
             setSecondSchedule(res);
         })();
+        // eslint-disable-next-line
     }, [secondScheduleId]);
 
     // hämta stages
@@ -123,6 +129,7 @@ function SeatsPage() {
             console.log(`har hämtat stages `);
             setSecondStages(res);
         })();
+        // eslint-disable-next-line
     }, [secondSchedule]);
 
     // sätt taken seats
@@ -132,6 +139,7 @@ function SeatsPage() {
             secondTakenSeats.push(stage.SeatNumber);
             console.log(`ett av takenseats på returresan`);
         });
+        // eslint-disable-next-line
     }, [secondStages]);
 
     // hämta cart
@@ -143,6 +151,7 @@ function SeatsPage() {
             console.log(`har hämtat cart returresan`);
             setSecondCart(res);
         })();
+        // eslint-disable-next-line
     }, [secondSchedule]);
 
     async function fetchStages(id) {
