@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Context } from '../App'
 // In i seats från Context: TravellerAmount, Schedules, Price, Traveller
 // Sätts i Seats:
@@ -8,26 +8,23 @@ function SeatsPage() {
     const [context, updateContext] = useContext(Context)
     const firstScheduleId = context.FirstTrip.ScheduleId;
     const [secondScheduleId, setSecondScheduleId] = useState(0);
-    
+
     let navigate = useNavigate();
 
     const [firstCart, setFirstCart] = useState([]);
     const [firstSchedule, setFirstSchedule] = useState();
-    const [firstTakenSeats, setFirstTakenSeats] = useState([]);
+    const firstTakenSeats = useState([]);
     const [firstStages, setFirstStages] = useState([]);
     const [firstChosenSeats] = useState([]);
 
     const [secondCart, setSecondCart] = useState([]);
     const [secondSchedule, setSecondSchedule] = useState();
-    const [secondTakenSeats, setSecondTakenSeats] = useState([]);
+    const secondTakenSeats = useState([]);
     const [secondStages, setSecondStages] = useState([]);
     const [secondChosenSeats] = useState([]);
 
-    const [error, setError] = useState(null);
     const [startStation, setStartStation] = useState([]);
     const [destinationStation, setDestinationStation] = useState([]);
-    const [stages, setStages] = useState([]);
-    const [schedules, setSchedules] = useState([]);
 
     // Utresa
     // hämta schedule
@@ -100,12 +97,12 @@ function SeatsPage() {
     // Sätt secondScheduleId
     useEffect(() => {
         if (!isObjectLoaded(firstSchedule)) return;
-        if(context.SecondTrip != undefined){
+        if (context.SecondTrip !== undefined) {
             setSecondScheduleId(context.SecondTrip.ScheduleId);
         }
-    
+
     }, [firstSchedule]);
-    
+
     // hämta schedule
     useEffect(() => {
         (async () => {
@@ -154,12 +151,12 @@ function SeatsPage() {
     }
 
     async function fetchSchedule(id) {
-        
+
         return await fetchInfo(`/api/Schedule/${id}`);
     }
 
     async function fetchStation(id) {
-        
+
         return await fetchInfo(`/api/TrainStation/${id}`);
     }
 
@@ -182,8 +179,8 @@ function SeatsPage() {
 
     function isObjectLoaded(state) {
         console.log(state);
-        if (state == null) return false;
-        if (state == undefined) return false;
+        if (state === null) return false;
+        if (state === undefined) return false;
         return !(Object.keys(state).length === 0);
     }
 
@@ -192,7 +189,7 @@ function SeatsPage() {
     }
 
     function VacantSeatFirst(seatNumber) {
-        if (firstChosenSeats.length == context.TravellerAmount) {
+        if (firstChosenSeats.length === context.TravellerAmount) {
             console.log('firstChosenSeats')
             console.log(firstChosenSeats);
             alert("Du har redan valt sittplats(er)");
@@ -211,7 +208,7 @@ function SeatsPage() {
     }
 
     function VacantSeatSecond(seatNumber) {
-        if (secondChosenSeats.length == context.TravellerAmount) {
+        if (secondChosenSeats.length === context.TravellerAmount) {
             console.log('secondChosenSeats')
             console.log(secondChosenSeats);
             alert("Du har redan valt sittplats(er)");
@@ -291,7 +288,7 @@ function SeatsPage() {
     }
 
     function SaveTripSeats() {
-        if(secondScheduleId == 0) {
+        if (secondScheduleId === 0) {
             updateContext({
                 FirstTripSeats: firstChosenSeats
             });
@@ -306,12 +303,7 @@ function SeatsPage() {
     }
 
     function RenderAllSeats() {
-        // en if-sats kollar om det finns innehåll i context.firstTrip och context.secondTrip och skickar till RenderCart
-        // if(context.FirstTrip){
-        //     RenderCart(context.FirstTrip)
-        // }
-        // if (context.SecondTrip == null || context.SecondTrip == undefined) {
-            if (secondScheduleId == 0) {
+        if (secondScheduleId === 0) {
             console.log('enkelresa')
             return (<div className="WholePage">
                 <h1 className="Title">Sittplatser {startStation} - {destinationStation}</h1>
@@ -355,21 +347,6 @@ function SeatsPage() {
 
     function isRenderedSecondSeatsLoaded() {
         return (isObjectLoaded(secondCart));
-    }
-
-    // if we get error then it goes here, it's not checking a specific thing at the moment.
-    function Error() {
-        return (<>
-            <div>
-                Seems like something went wrong!<br />
-                Error: {error}
-            </div>
-        </>);
-    }
-
-    function MainContent() {
-        if (error) return <Error />;
-        // return <Booking />;
     }
 
     return (
