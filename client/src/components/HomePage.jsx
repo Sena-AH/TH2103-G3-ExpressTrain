@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 function Tickets(props) {
   let ticketOptions = [];
@@ -20,12 +20,30 @@ function HomePage() {
   
   const [DepartureInput, setDepartureinput]=useState("");
   const [ArrivalInput, setArrivalInput]=useState("");
+  const [ListOfStations, setListOfStations]=useState([]);
 
   let navigate = useNavigate();
 
   function handleClick() {
     navigate("/SearchResults");
   }
+
+  useEffect(()=>{
+    const url = "api/TrainStation/";
+    
+    const fetchData = async () => {
+      try {
+        const response = await fetch(url);
+        const json = await response.json();
+        console.log(json);
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
+    
+    
+    fetchData();
+  },[]);
 
   return (
     <main>
