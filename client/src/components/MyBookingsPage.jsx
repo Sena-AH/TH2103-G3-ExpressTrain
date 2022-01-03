@@ -40,6 +40,7 @@ function MyBookingsPage() {
         return response.ok;
       });
   }
+  
 
     return (
     <main>
