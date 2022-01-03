@@ -200,7 +200,7 @@ function BookingConfirmationPage() {
             <div className="review-square">
                 <div className="thank-you-text">
                     <h1>Tack för att du bokade hos oss!</h1>
-                    <h2>Du får bokningsbekräftelsen skickad till den inskrivna epost adressen med Boknings ID. </h2>
+                    <h2>Du får bokningsbekräftelsen skickad till den inskrivna epost adressen med Bokningsnummer. </h2>
                     <h2>Ha en trevlig resa!</h2>
                 </div>
                 <div>

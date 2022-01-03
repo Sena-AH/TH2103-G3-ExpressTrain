@@ -50,7 +50,7 @@ background: #26375C;
 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 border-radius: 5px;
 padding-bottom: 4vw;
-align-items: center;
+text-align: center;
 }
 
 .itinerary{
