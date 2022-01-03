@@ -10,7 +10,7 @@ function MyBookingsPage() {
   });
 
   // in order to be able to change the state we need this function. without it you can't type the Id on the input.
-  function handelChange(event) {
+  function handleChange(event) {
     updateFormData({
       // we are targeting the input field, the name is the key, and the value would be the value, we are telling which formdata element to change.
       ...formData, [event.target.name]: event.target.value.trim()
@@ -24,10 +24,13 @@ function MyBookingsPage() {
     event.preventDefault();
     (async () => {
       if (await bookingExists(formData.bookingCode)) {
+        // navigate('/MyBookingsInfo', {state: formData});
         navigate('/MyBookingsInfo', {state: formData});
+        return;
+      } else {
+        setIdIsValid(false);
       }
     })();
-    setIdIsValid(false);
   }
 
   // we make a call to the api to check if the booking is there. We are only looking for the response.
@@ -40,15 +43,14 @@ function MyBookingsPage() {
 
     return (
     <main>
-        <div>
+        <div className="wrapper">
           <div>
             <h1 className="page-title">Min bokning</h1>
           </div>
           <form onSubmit={handleSubmit}>
-            <div className="my-bookings-search">
-              {/* ternary; if its valid do nothing, otherwise '(Invalid booking-Id)' is printed */}
-              <input className="search-bar" placeholder="Bokningsnummer" min="0" name="bookingCode" value={formData.bookingCode}
-                     onChange={handelChange}/><div className="error-message">{idIsValid ? '' : '(Ogiltig Bokningsnummer)'}</div>
+            <div className="my-bookings-search input-search">
+              <input className="search-bar input" placeholder="Bokningsnummer" min="0" name="bookingCode" value={formData.bookingCode}
+                     onChange={handleChange}/><div className="error-message">{idIsValid ? '' : '(Ogiltig Bokningsnummer)'}</div>
             </div>
             <div className="search-btn">
               <input type="submit" value="Sök bokning"/>
