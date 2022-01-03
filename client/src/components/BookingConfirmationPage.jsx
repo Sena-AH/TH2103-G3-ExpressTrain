@@ -17,7 +17,7 @@ function BookingConfirmationPage() {
                 <br></br>
             </div>
             <div class="ConfirmationDetails">
-                <div>
+                <div> hi
                     <p>TRIP LOCATION:</p>
                     <p>XXXXXXXX - XXXXXXXXX</p>
                     <br></br>
