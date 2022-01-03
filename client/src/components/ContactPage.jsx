@@ -1,9 +1,11 @@
 
 function ContactPage() {
     return (
-      <div>
-        <p>hello ContactPage</p>
-      </div>
+      <main>
+        <div className="wrapper">
+        <h2>Kontakt</h2>
+        </div>
+      </main>
     );
   };
 

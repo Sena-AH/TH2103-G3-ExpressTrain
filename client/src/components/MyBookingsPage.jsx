@@ -46,7 +46,7 @@ function MyBookingsPage() {
         <div className="wrapper">
           
           <div>
-            <h1 className="page-title">Min bokning</h1>
+            <h2 className="page-title">Min bokning</h2>
           </div>
           <form onSubmit={handleSubmit}>
             <div className="my-bookings-search input-search">

@@ -13,6 +13,7 @@ main {
 .wrapper {
   background-color: #fff;
   margin: -1.5rem 1.5rem;
+  margin-bottom: 8rem;
   /*
   Shadow
   */
@@ -27,6 +28,9 @@ main {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
+}
+.wrapper h2 {
+  padding: 1rem 1rem;
 }
 
 /*
@@ -157,6 +161,23 @@ Input mall - color
 }
 .search-btn button:hover,
 .search-btn input[type=submit]:hover {
+.search-btn input {
+  text-align: center;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+
+  background-color: #1a883d;
+  border-radius: 5px;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 24px;
+  padding: 10px 31px;
+  text-decoration: none;
+  border: none;
+}
+.search-btn button:hover {
   background-color: #5cbf2a;
 }
 .search-btn button:active

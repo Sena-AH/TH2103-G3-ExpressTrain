@@ -24,7 +24,7 @@ const webServer = express();
 // tell the web server to serve
 // all files (static content)
 // that are inside the folder "frontend"
-webServer.use(express.static('frontend'));
+webServer.use(express.static('client'));
 
 // make it possible to read req bodies
 // (needed for post and put reqs)
@@ -136,6 +136,16 @@ webServer.get('/api/Schedulestage/Booking/:id', (req, res) => {
   `, { id: req.params.id });
 });
 
+// REST ROUTE: Get Schedule stages by ScheduleId
+webServer.get('/api/Schedulestage/ScheduleId/:id', (req, res) => {
+  req.params.table = 'ScheduleStage';
+  runQuery(req, res, `
+  SELECT *
+  FROM ${ req.params.table }
+  WHERE ScheduleId = :id
+  `, { id: req.params.id });
+});
+
 // REST ROUTE: Get one, ScheduleStage table
 webServer.get('/api/Schedulestage/:id/:seat', (req, res) => {
   req.params.table = 'ScheduleStage';
@@ -157,6 +167,16 @@ webServer.get('/api/:table/:id', (req, res) => {
   );
 });
 
+// REST ROUTE: GET one
+webServer.get('/api/Schedule/:id', (req, res) => {
+  // run query
+  runQuery(req, res, `
+    SELECT *
+    FROM ${req.params.table}
+    WHERE id = :id
+  `, { id: req.params.id }, true
+  );
+});
 
 // REST ROUTE: POST
 webServer.post('/api/:table', (req, res) => {
