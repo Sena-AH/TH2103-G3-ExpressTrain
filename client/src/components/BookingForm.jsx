@@ -12,21 +12,8 @@ function BookingForm() {
   const [PhoneNumber, setPhoneNumber] = useState("");
 
   function saveData() {
-    //let data = { FirstName, LastName, Email, PhoneNumber }
 
     updateContext({
-      // TravellerAmount: '1',
-      // Schedules: [{
-      //   ScheduleId: '3',
-      //   CartId: '1',
-      //   DepartureTrainStationId: '3',
-      //   DeparturePlatformId: '2',
-      //   DestinationTrainStationId: '2',
-      //   DestinationPlatformId: '3',
-      //   DepartureTime: '2021-12-26 17:30:00',
-      //   ArrivalTime: '2021-12-26 20:15:00'
-      // }],
-      // Price: 7896,
       TravellerAmount: 2,
       FirstTrip: {
         ScheduleId: 3,
@@ -42,7 +29,6 @@ function BookingForm() {
         Email: Email,
         PhoneNumber: PhoneNumber
       }
-
 
     });
     navigate('/SeatsPage');
@@ -101,7 +87,6 @@ function BookingForm() {
       </div>
 
       <div className="current-total-price-div">
-        <p>Total price: {context.Price}KR</p>
         <div className="search-btn">
           <button type="button" onClick={saveData}>Spara och Fortsätt</button>
         </div>
