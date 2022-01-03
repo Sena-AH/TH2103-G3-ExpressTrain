@@ -27,6 +27,8 @@
   font-size: 24px;
   line-height: 28px;
   text-align: center;
+  margin: 2vw 5vw;
+  margin-bottom: 7vw;
 }
 
 .booking-id-title, .travel-date-title, .itinerary-title{
