@@ -44,6 +44,7 @@ function MyBookingsPage() {
     return (
     <main>
         <div className="wrapper">
+          
           <div>
             <h1 className="page-title">Min bokning</h1>
           </div>
