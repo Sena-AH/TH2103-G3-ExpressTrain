@@ -33,14 +33,13 @@ function MyBookingsPage() {
     })();
   }
 
-  // we make a call to the api to check if the booking is there. We are only looking for the response.
+  // We make a call to the api to check if the booking is there. We are only looking for the response. 
   async function bookingExists(code) {
     return await fetch(`/api/Booking/BookingCode/${code}`)
       .then(response => {
         return response.ok;
       });
-  }
-  
+  }  
 
     return (
     <main>
