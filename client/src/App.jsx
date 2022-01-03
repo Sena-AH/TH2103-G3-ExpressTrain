@@ -1,4 +1,4 @@
-import React , { useState, createContext } from 'react';
+import React, { useState, createContext } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import './css/Navigation.css';
 import './css/header.css';
@@ -43,10 +43,9 @@ function App() {
     console.log(updates);
   }
 
-
-
   return (
     <Context.Provider value={[contextVal, updateContext]}>
+
     <div className="App">
       <Menubar />
       <Routes>
@@ -64,6 +63,7 @@ function App() {
       </Routes>
       <Footer />
     </div>
+
     </Context.Provider>
   );
 }
