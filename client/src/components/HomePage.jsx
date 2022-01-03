@@ -22,9 +22,9 @@ function HomePage() {
   const [context, updateContext] = useContext(Context)
 
   const [DepartureInput, setDepartureInput] = useState("");
-  const [DepartureStation, setDepartureStation] = useState();
+  const [DepartureStation, setDepartureStation] = useState([]);
   const [DestinationInput, setDestinationInput] = useState("");
-  const [DestinationStation, setDestinationStation] = useState();
+  const [DestinationStation, setDestinationStation] = useState([]);
   const [ArrayOfStations, setArrayOfStations] = useState([]);
 
   const [ArrayOfTrips, setArrayOfTrips] = useState([]);
@@ -35,37 +35,63 @@ function HomePage() {
   const [ArrayOfPossibleDepartures, setArrayOfPossibleDepartures] = useState([]);
 
   const [TypeOfTrip, setTypeOfTrip] = useState('oneway');
+  const [Trips, setTrips] = useState([]);
 
   let navigate = useNavigate();
 
   function handleClick() {
 
-    let trip = [];
-
-    console.log(WantedDateOfTrip)
-
+    
+    console.log(ArrayOfStations)
+    
+    ArrayOfStations.forEach(station => {
+      console.log(station);
+      if (station.Location == DepartureInput) {
+        setDepartureStation(station)
+      } else if (station.Location == DestinationInput) {
+        setDestinationStation(station)
+      };
+    });
+    
+    
     ArrayOfSchedules.forEach(schedule => {
+      
+      let trip = [];
 
-      let tempDate = schedule.DepartureTime;
+      let tempTime = new Date(WantedDateOfTrip + ' 00:00:00');
+      let tempTime2 = new Date(schedule.DepartureTime);
+      let tempTime3 = new Date();
+      tempTime3.setDate(tempTime3.getDate()+ 8);  
 
-      if (schedule.DepartureTime >= WantedDateOfTrip
+      // console.log(schedule.DepartureTrainStationId);
+      // console.log(DepartureStation.Id);
+      // console.log(schedule.DestinationTrainStationId);
+      // console.log(DestinationStation.Id);
+
+      if (tempTime2 >= tempTime
+        && tempTime2 < tempTime3
         && schedule.DepartureTrainStationId === DepartureStation.Id
         && schedule.DestinationTrainStationId === DestinationStation.Id) {
 
-        ArrayOfSchedules.push(schedule);
+          trip = schedule;
+          
+          ArrayOfStations.forEach(station => {
+            
+            if (schedule.DepartureTrainStationId === station.Id) {
+              trip.DepartureStationName = station.Name;
+            }
+            if (schedule.DestinationTrainStationId === station.Id) {
+              trip.DestinationStationName = station.Name;
+            }
+            
+          ArrayOfPossibleDepartures.push(trip);
 
-        ArrayOfStations.forEach(station => {
-
-          if (schedule.DepartureTrainStationId === station.Id) {
-            trip.DepartureStationName = station.Name;
-          }
-          if (schedule.DestinationTrainStationId === station.Id) {
-            trip.DestinationStationName = station.Name;
-          }
+          
         });
       };
     });
-
+    console.log(ArrayOfPossibleDepartures);
+    
   }
 
   function createTrips() {
@@ -113,15 +139,7 @@ function HomePage() {
         const response = await fetch(url);
         const json = await response.json();
 
-        ArrayOfStations.forEach(station => {
-          if (station.Location === DepartureInput) {
-            setDepartureStation(station)
-            console.log(station);
-          } else if (station.Location === DestinationInput) {
-            setDestinationStation(station)
-            console.log(station);
-          };
-        });
+        
 
         setArrayOfSchedules(json);
 
