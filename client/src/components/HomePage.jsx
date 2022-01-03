@@ -1,12 +1,17 @@
-import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react'
 
 function Tickets(props) {
   let ticketOptions = [];
   let amount = props.amount
+  let severalTickets;
   for (let i = 0; i < amount; i++) {
-    ticketOptions.push(<option value="{i+1}">{i+1} Biljett</option>);
+    if(i === 0){
+      severalTickets = 'Biljett';
+    } else {
+      severalTickets = 'Biljetter';
+    }
+    ticketOptions.push(<option value="{i+1}">{i+1} {severalTickets}</option>);
   }
   return ticketOptions;
 }
