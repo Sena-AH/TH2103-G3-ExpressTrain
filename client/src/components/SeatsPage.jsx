@@ -1,9 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Context } from '../App'
-// In i seats från Context: TravellerAmount, Schedules, Price, Traveller
-// Sätts i Seats:
-// Skickas vidare:
+
 function SeatsPage() {
     const [context, updateContext] = useContext(Context)
     const firstScheduleId = context.FirstTrip.ScheduleId;
@@ -37,7 +35,7 @@ function SeatsPage() {
             console.log(`har hämtat ${res.DeparturePlatformId}`);
             setFirstSchedule(res);
         })();
-// eslint-disable-next-line
+        // eslint-disable-next-line
     }, [firstScheduleId]);
 
     // hämta stages
@@ -74,7 +72,7 @@ function SeatsPage() {
         // eslint-disable-next-line
     }, [firstSchedule]);
 
-    //sätt målstation
+    // sätt målstation
     useEffect(() => {
         if (!isObjectLoaded(firstSchedule)) return;
         (async () => {
@@ -105,7 +103,7 @@ function SeatsPage() {
         if (context.SecondTrip !== undefined) {
             setSecondScheduleId(context.SecondTrip.ScheduleId);
         }
-// eslint-disable-next-line
+        // eslint-disable-next-line
     }, [firstSchedule]);
 
     // hämta schedule
@@ -182,7 +180,7 @@ function SeatsPage() {
             })
             .then(result => {
                 return result;
-            }, error => {
+            }, () => {
             });
     }
 
