@@ -5,7 +5,7 @@ function Tickets(props) {
   let ticketOptions = [];
   let amount = props.amount
   for (let i = 0; i < amount; i++) {
-    ticketOptions.push(<option value="{i+1}">{i+1} Biljett</option>);
+    ticketOptions.push(<option value={i+1} key={i+1}>{i+1} Biljett</option>);
   }
   return ticketOptions;
 }

@@ -142,7 +142,8 @@ Input mall - color
   width: 90%;
   padding: 1rem;
 }
-.search-btn button {
+.search-btn button,
+.search-btn input[type=submit] {
   text-align: center;
   width: 90%;
   margin-left: auto;
@@ -158,6 +159,7 @@ Input mall - color
   text-decoration: none;
   border: none;
 }
+
 .search-btn input {
   text-align: center;
   width: 90%;
@@ -174,10 +176,12 @@ Input mall - color
   text-decoration: none;
   border: none;
 }
-.search-btn button:hover {
+.search-btn button:hover,
+.search-btn input[type=submit]:hover {
   background-color: #5cbf2a;
 }
-.search-btn button:active {
+.search-btn button:active
+.search-btn input[type=submit]:active {
   position: relative;
   top: 1px;
 }
@@ -194,4 +198,39 @@ Input mall - color
 }
 .input-booking input {
   width: 100%;
+}
+
+.page-title {
+  color: #28475d;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  width: 90%;
+  padding: .5rem 1rem;
+}
+
+.page-subtitle {
+  color: #28475d;
+  font-size: 24px;
+  padding-bottom: .5rem;
+}
+
+.page-content{
+  display: flex;
+  flex-direction: column;
+  color: #28475d;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: .5rem 1rem;
+}
+
+.section-title{
+  font-weight: bold;
+  font-size: 20px;
+  padding: .5rem 0 0.2rem 0;
+}
+
+.section-content{
+  padding: .3rem;
 }

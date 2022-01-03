@@ -63,17 +63,17 @@ let tablesAndViewsInDb = [...tablesInDb, ...viewsInDb];
 // helper function to run query, catch errors & return result
 function runQuery(req, res, query, params = {}, one = false) {
   let result, table = req.params.table;
-  let select = query.trim().toUpperCase().indexOf('SELECT') === 0;
+  let isSelect = query.trim().toUpperCase().indexOf('SELECT') === 0;
   // check if table or view name exists in db
-  if (select && !tablesAndViewsInDb.includes(table)) {
+  if (isSelect && !tablesAndViewsInDb.includes(table)) {
     result = { error: 'No such table or view.' }
   }
-  if (!select && !tablesInDb.includes(table)) {
+  if (!isSelect && !tablesInDb.includes(table)) {
     result = { error: 'No such table.' }
   }
   // run query (and catch any errors)
   try {
-    result = result || db.prepare(query)[select ? 'all' : 'run'](params);
+    result = result || db.prepare(query)[isSelect ? 'all' : 'run'](params);
   } catch (e) { result = { error: e + '' }; }
   // unwrap object from array if one = true
   one && result instanceof Array && (result = result[0]);
@@ -116,15 +116,15 @@ webServer.get('/api/:table', getMany);
 settings.allowWherePosts
   && webServer.post('/api/where/:table/', getMany);
 
-// REST ROUTE: Get one, Booking table
-// webServer.get('/api/Booking/:id', (req, res) => {
-//   req.params.table = 'Booking';
-//   runQuery(req, res, `
-//   SELECT *
-//   FROM ${ req.params.table }
-//   WHERE Id = :id
-//   `, { id: req.params.id }, true);
-// });
+// REST ROUTE: GET by BookingCode
+webServer.get('/api/Booking/BookingCode/:bookingCode', (req, res) => {
+  req.params.table = 'Booking';
+  runQuery(req, res, `
+  SELECT *
+  FROM ${ req.params.table }
+  WHERE BookingCode = :bookingCode
+  `, { bookingCode: req.params.bookingCode }, true);
+});
 
 // REST ROUTE: Get Schedule stages by bookingId
 webServer.get('/api/Schedulestage/Booking/:id', (req, res) => {
@@ -204,6 +204,18 @@ let putOrPatch = (req, res) => {
 };
 webServer.put('/api/:table/:id', putOrPatch);
 webServer.patch('/api/:table/:id', putOrPatch);
+
+// REST ROUTE: DELETE
+webServer.delete("/api/Booking/:id", (req, res) => {
+  req.params.table = 'Booking';
+  console.log(req.body);
+  runQuery(req, res, `
+    DELETE FROM ${req.params.table} 
+    WHERE Id = :id AND ManipulationCode = :manipulationCode
+    
+  `, { id: req.params.id, manipulationCode: req.body.ManipulationCode }
+  );
+});
 
 // REST ROUTE: DELETE
 webServer.delete('/api/:table/:id', (req, res) => {
