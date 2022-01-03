@@ -39,77 +39,6 @@ function HomePage() {
 
   let navigate = useNavigate();
 
-  function handleClick() {
-
-    
-    console.log(ArrayOfStations)
-    
-    ArrayOfStations.forEach(station => {
-      console.log(station);
-      if (station.Location == DepartureInput) {
-        setDepartureStation(station)
-      } else if (station.Location == DestinationInput) {
-        setDestinationStation(station)
-      };
-    });
-    
-    
-    ArrayOfSchedules.forEach(schedule => {
-      
-      let trip = [];
-
-      let tempTime = new Date(WantedDateOfTrip + ' 00:00:00');
-      let tempTime2 = new Date(schedule.DepartureTime);
-      let tempTime3 = new Date();
-      tempTime3.setDate(tempTime3.getDate()+ 8);  
-
-      // console.log(schedule.DepartureTrainStationId);
-      // console.log(DepartureStation.Id);
-      // console.log(schedule.DestinationTrainStationId);
-      // console.log(DestinationStation.Id);
-
-      if (tempTime2 >= tempTime
-        && tempTime2 < tempTime3
-        && schedule.DepartureTrainStationId === DepartureStation.Id
-        && schedule.DestinationTrainStationId === DestinationStation.Id) {
-
-          trip = schedule;
-          
-          ArrayOfStations.forEach(station => {
-            
-            if (schedule.DepartureTrainStationId === station.Id) {
-              trip.DepartureStationName = station.Name;
-            }
-            if (schedule.DestinationTrainStationId === station.Id) {
-              trip.DestinationStationName = station.Name;
-            }
-            
-          ArrayOfPossibleDepartures.push(trip);
-
-          
-        });
-      };
-    });
-    console.log(ArrayOfPossibleDepartures);
-    
-  }
-
-  function createTrips() {
-    let trips = [];
-    ArrayOfSchedules.forEach(schedule => {
-
-      trips.push(
-
-        <div>
-          {schedule}<br></br>
-        </div>
-
-      );
-
-
-    });
-  }
-
   useEffect(() => {
     const url = "api/TrainStation/";
 
@@ -139,7 +68,7 @@ function HomePage() {
         const response = await fetch(url);
         const json = await response.json();
 
-        
+
 
         setArrayOfSchedules(json);
 
@@ -152,14 +81,95 @@ function HomePage() {
     fetchData();
   }, []);
 
+  function handleClick() {
+
+    console.log(ArrayOfStations)
+
+    ArrayOfStations.forEach(station => {
+      console.log(station);
+      if (station.Location == DepartureInput) {
+        setDepartureStation(station)
+      } else if (station.Location == DestinationInput) {
+        setDestinationStation(station)
+      };
+    });
+
+    ArrayOfSchedules.forEach(schedule => {
+
+      let trip = [];
+
+      let tempTime = new Date(WantedDateOfTrip + ' 00:00:00');
+      let tempTime2 = new Date(schedule.DepartureTime);
+      let tempTime3 = new Date();
+      tempTime3.setDate(tempTime3.getDate() + 8);
+
+      if (tempTime2 >= tempTime
+        && tempTime2 < tempTime3
+        && schedule.DepartureTrainStationId === DepartureStation.Id
+        && schedule.DestinationTrainStationId === DestinationStation.Id) {
+
+        trip = schedule;
+
+        ArrayOfStations.forEach(station => {
+
+          if (schedule.DepartureTrainStationId === station.Id) {
+            trip.DepartureStationName = station.Name;
+          }
+          if (schedule.DestinationTrainStationId === station.Id) {
+            trip.DestinationStationName = station.Name;
+          }
+
+          // ArrayOfPossibleDepartures.push(trip);
+
+// 2Do tisdag:
+// - korta antalet dagar?
+// - kolla antalet lediga platser?
+// - klippa ut avresedatum för sig och avresetid för sig till trip (split??)
+// - bestämma hur vi ska sätta pris
+// - hitta ett sätt att sänka priset vid tidig bokning (ytterligare en temptime med plus massa dagar och jämföra?)
+
+          ArrayOfPossibleDepartures.push(
+            <div className="PossibleDeparture">
+              <h2 className='StationNames'>{trip.DepartureStationName} - {trip.DestinationStationName}</h2>
+              <br />
+              <div className='DepartureDate'></div>
+              <br />
+              <div className='DepartureAndArrival'></div>
+              <div className='Price'></div>
+            </div>
+          )
+
+        });
+      };
+    });
+    console.log(ArrayOfPossibleDepartures);
+
+  }
+
+  function createTrips() {
+    let trips = [];
+    ArrayOfSchedules.forEach(schedule => {
+
+      trips.push(
+
+        <div>
+          {schedule}<br></br>
+        </div>
+
+      );
+
+
+    });
+  }
+
   return (
     <main>
       <div className="wrapper">
         <div className="input-search">
-          <input className="input" placeholder="Till:" value={DepartureInput} onChange={(e) => { setDepartureInput(e.target.value) }} />
+          <input className="input" placeholder="Från:" value={DepartureInput} onChange={(e) => { setDepartureInput(e.target.value) }} />
         </div>
         <div className="input-search">
-          <input className="input" placeholder="Från:" value={DestinationInput} onChange={(e) => { setDestinationInput(e.target.value) }} />
+          <input className="input" placeholder="Till:" value={DestinationInput} onChange={(e) => { setDestinationInput(e.target.value) }} />
         </div>
 
         <form className="input-form" action="" method="post">
