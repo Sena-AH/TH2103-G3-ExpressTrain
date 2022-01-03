@@ -159,8 +159,7 @@ Input mall - color
   text-decoration: none;
   border: none;
 }
-.search-btn button:hover,
-.search-btn input[type=submit]:hover {
+
 .search-btn input {
   text-align: center;
   width: 90%;
@@ -177,7 +176,8 @@ Input mall - color
   text-decoration: none;
   border: none;
 }
-.search-btn button:hover {
+.search-btn button:hover,
+.search-btn input[type=submit]:hover {
   background-color: #5cbf2a;
 }
 .search-btn button:active
