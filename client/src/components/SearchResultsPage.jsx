@@ -178,7 +178,17 @@ function SearchResultsPage() {
     if (state === undefined) return false;
     return !(Object.keys(state).length === 0);
   }
-
+  if (TypeOfTrip != 'oneway') {
+    return (
+      //Load roundtrip schedules
+      <main>
+        <div className='wrapper'>
+          {isLoadschedulesLoaded() ? <LoadSchedules /> : 'laddar...'}
+          {isLoadRoundtripLoaded() ? <LoadRoundtrip /> : 'laddar...'}
+        </div>
+      </main>
+    )
+  }
   return (
     <main>
       <div className="wrapper">
