@@ -48,19 +48,23 @@ function App() {
 
     <div className="App">
       <Menubar />
-      <Routes>
-        <Route path="/" element={<HomePage />} exact />
-        <Route path="/About" element={<AboutPage />} />
-        <Route path="/MyBookings" element={<MyBookingsPage />} />
-        <Route path="/MyBookingsInfo" element={<MyBookings2Page />} />
-        <Route path="/Contact" element={<ContactPage />} />
-        <Route path="/BookingConfirmation" element={<BookingConfirmationPage />} />
-        <Route path="/SeatsPage" element={<SeatsPage />} />
-        <Route path="/SearchResultsPage" element={<SearchResultsPage />} />
-        <Route path="/BookingInformationPage" element={<BookingInformationPage />} />
-        <Route path="/PaymentPage" element={<PaymentPage />} />
-        <Route element={Error} />
-      </Routes>
+      <main>
+        <div className="wrapper">
+          <Routes>
+            <Route path="/" element={<HomePage />} exact />
+            <Route path="/About" element={<AboutPage />} />
+            <Route path="/MyBookings" element={<MyBookingsPage />} />
+            <Route path="/MyBookingsInfo" element={<MyBookings2Page />} />
+            <Route path="/Contact" element={<ContactPage />} />
+            <Route path="/BookingConfirmation" element={<BookingConfirmationPage />} />
+            <Route path="/SeatsPage" element={<SeatsPage />} />
+            <Route path="/SearchResultsPage" element={<SearchResultsPage />} />
+            <Route path="/BookingInformationPage" element={<BookingInformationPage />} />
+            <Route path="/Payment" element={<PaymentPage />} />
+            <Route element={Error} />
+          </Routes>
+        </div>
+      </main>
       <Footer />
     </div>
 
