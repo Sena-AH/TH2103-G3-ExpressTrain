@@ -76,7 +76,7 @@ function HomePage() {
 
 
     fetchData();
-  }, [ArrayOfStations]);
+  }, []);
 
   function handleClick() {
 
@@ -98,14 +98,18 @@ function HomePage() {
       let tempTime = new Date(WantedDateOfTrip + ' 00:00:00');
       let tempTime2 = new Date(schedule.DepartureTime);
       let tempTime3 = new Date();
-      tempTime3.setDate(tempTime3.getDate() + 8);
+      tempTime3.setDate(tempTime.getDate() + 8);
       
+      console.log(tempTime)
+      console.log(tempTime2)
 
+      console.log(tempTime3)
+
+      
       if (tempTime2 >= tempTime
         && tempTime2 < tempTime3
         && schedule.DepartureTrainStationId === DepartureStation.Id
         && schedule.DestinationTrainStationId === DestinationStation.Id){
-
         let trip = schedule;
 
         ArrayOfStations.forEach(station => {
@@ -140,27 +144,28 @@ function HomePage() {
 
         });
       };
+      console.log(ArrayOfPossibleDepartures);
     });
-    createTrips();
+    // createTrips();
 
   }
 
-  function createTrips() {
-    return (<div>
+  // function createTrips() {
+  //   return (<div>
       
-        <ArrayOfPossibleDepartures />
+  //       <ArrayOfPossibleDepartures />
       
-      </div>)
-  }
+  //     </div>)
+  // }
 
   return (
     <main>
       <div className="wrapper">
         <div className="input-search">
-          <input className="input" placeholder="Till:" value={DestinationInput} onChange={(e) => { setDestinationInput(e.target.value) }} />
+          <input className="input" placeholder="Från:" value={DepartureInput} onChange={(e) => { setDepartureInput(e.target.value) }} />
         </div>
         <div className="input-search">
-          <input className="input" placeholder="Från:" value={DepartureInput} onChange={(e) => { setDepartureInput(e.target.value) }} />
+          <input className="input" placeholder="Till:" value={DestinationInput} onChange={(e) => { setDestinationInput(e.target.value) }} />
         </div>
 
         <form className="input-form" action="" method="post">
