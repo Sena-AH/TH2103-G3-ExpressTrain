@@ -21,14 +21,14 @@ function SearchResultsPage() {
 
   const [context, updateContext] = useContext(Context)
 
-  const [DepartureInput, setDepartureInput] = useState("");
+  const [DepartureInput, setDepartureInput] = useState("Göteborg");
   const [DepartureStation, setDepartureStation] = useState([]);
-  const [DestinationInput, setDestinationInput] = useState("");
+  const [DestinationInput, setDestinationInput] = useState("Stockholm");
   const [DestinationStation, setDestinationStation] = useState([]);
   const [ArrayOfStations, setArrayOfStations] = useState([]);
 
   const [ArrayOfTrips, setArrayOfTrips] = useState([]);
-  const [WantedDateOfTrip, setWantedDateOfTrip] = useState();
+  const [WantedDateOfTrip, setWantedDateOfTrip] = useState(new Date('2021-01-20 00:00:00'));
 
   const [ArrayOfSchedules, setArrayOfSchedules] = useState([]);
   const [ScheduleId, setScheduleId] = useState();
@@ -78,10 +78,9 @@ function SearchResultsPage() {
     fetchData();
   }, []);
 
-  function handleClick() {
+  function loadSchedules() {
 
     ArrayOfStations.forEach(station => {
-      console.log(station);
       if (station.Location == DepartureInput) {
         setDepartureStation(station)
       } else if (station.Location == DestinationInput) {
@@ -100,10 +99,12 @@ function SearchResultsPage() {
       let tempTime3 = new Date();
       tempTime3.setDate(tempTime.getDate() + 8);
    
-      if (tempTime2 >= tempTime
-        && tempTime2 < tempTime3
-        && schedule.DepartureTrainStationId === DepartureStation.Id
-        && schedule.DestinationTrainStationId === DestinationStation.Id){
+      // if (tempTime2 >= tempTime
+      //   && tempTime2 < tempTime3
+      //   && schedule.DepartureTrainStationId === DepartureStation.Id
+      //   && schedule.DestinationTrainStationId === DestinationStation.Id)
+        if ( schedule.DepartureTrainStationId === DepartureStation.Id
+          && schedule.DestinationTrainStationId === DestinationStation.Id){
         let trip = schedule;
 
         ArrayOfStations.forEach(station => {
@@ -138,66 +139,19 @@ function SearchResultsPage() {
 
         });
       };
-      console.log(ArrayOfPossibleDepartures);
     });
-    // createTrips();
-
   }
-
-  // function createTrips() {
-  //   return (<div>
-      
-  //       <ArrayOfPossibleDepartures />
-      
-  //     </div>)
-  // }
-
+  
+  function createTrips() {
+    return ArrayOfPossibleDepartures;
+  }
+  
   return (
     <main>
       <div className="wrapper">
-        <div className="input-search">
-          <input className="input" placeholder="Från:" value={DepartureInput} onChange={(e) => { setDepartureInput(e.target.value) }} />
-        </div>
-        <div className="input-search">
-          <input className="input" placeholder="Till:" value={DestinationInput} onChange={(e) => { setDestinationInput(e.target.value) }} />
-        </div>
-
-        <form className="input-form" action="" method="post">
-          <div className="switch" >
-            <input type="radio"
-              className="switch-input"
-              name="view"
-              value="oneway"
-              id="oneway"
-              onClick={(e) => { setTypeOfTrip(e.target.value) }}
-            />
-            <label htmlFor="oneway" className="switch-label switch-label-off">Enkelresa</label>
-
-            <input type="radio"
-              className="switch-input"
-              name="view"
-              value="roundtrip"
-              id="roundtrip"
-              onClick={(e) => { setTypeOfTrip(e.target.value) }}
-            />
-            <label htmlFor="roundtrip" className="switch-label switch-label-on">Tur & retur</label>
-            <span className="switch-selection"></span>
-          </div>
-        </ form>
-
-        <div className="input-tickets">
-          <select className="input-color" name="tickets" id="tickets">
-            <Tickets amount="8" />
-          </select>
-        </div>
-
-        <div className="input-date">
-          <input className="input-color" type="date" onChange={(e) => { setWantedDateOfTrip(e.target.value) }}></input>
-        </div>
-
-        <div className="search-btn">
-          <button type="button" onClick={handleClick}>Sök</button>
-        </div>
+       
+      
+        
 
       </div>
     </main>
