@@ -12,7 +12,7 @@ function Tickets(props) {
     } else {
       severalTickets = 'Biljetter';
     }
-    ticketOptions.push(<option value="{i+1}">{i + 1} {severalTickets}</option>);
+    ticketOptions.push(<option value = {i + 1} >{i + 1} {severalTickets}</option>);
   }
   return ticketOptions;
 }
@@ -22,20 +22,11 @@ function HomePage() {
   const [context, updateContext] = useContext(Context)
 
   const [DepartureInput, setDepartureInput] = useState("");
-  const [DepartureStation, setDepartureStation] = useState([]);
   const [DestinationInput, setDestinationInput] = useState("");
-  const [DestinationStation, setDestinationStation] = useState([]);
   const [ArrayOfStations, setArrayOfStations] = useState([]);
-
-  const [ArrayOfTrips, setArrayOfTrips] = useState([]);
-  const [WantedDateOfTrip, setWantedDateOfTrip] = useState();
-
-  const [ArrayOfSchedules, setArrayOfSchedules] = useState([]);
-  const [ScheduleId, setScheduleId] = useState();
-  const [ArrayOfPossibleDepartures, setArrayOfPossibleDepartures] = useState([]);
+  const [TicketAmountChoice, setTicketAmountChoice] = useState(1);
 
   const [TypeOfTrip, setTypeOfTrip] = useState('oneway');
-  const [Trips, setTrips] = useState([]);
 
   let navigate = useNavigate();
 
@@ -79,78 +70,19 @@ function HomePage() {
   }, []);
 
   function handleClick() {
+    updateContext(
+      {
+        TravellerAmount: TicketAmountChoice,
+        InputInfo: {
+          From: DepartureInput,
+          To: DestinationInput,
+          TypeOfTrip: TypeOfTrip
+        }
+      }
+    );
 
-    ArrayOfStations.forEach(station => {
-      console.log(station);
-      if (station.Location == DepartureInput) {
-        setDepartureStation(station)
-      } else if (station.Location == DestinationInput) {
-        setDestinationStation(station)
-      };
-    });
-
-    /*HÄR FINNS ALLT*/
-
-    ArrayOfSchedules.forEach(schedule => {
-
-
-      
-      let tempTime = new Date(WantedDateOfTrip + ' 00:00:00');
-      let tempTime2 = new Date(schedule.DepartureTime);
-      let tempTime3 = new Date();
-      tempTime3.setDate(tempTime.getDate() + 8);
-   
-      if (tempTime2 >= tempTime
-        && tempTime2 < tempTime3
-        && schedule.DepartureTrainStationId === DepartureStation.Id
-        && schedule.DestinationTrainStationId === DestinationStation.Id){
-        let trip = schedule;
-
-        ArrayOfStations.forEach(station => {
-
-          if (schedule.DepartureTrainStationId === station.Id) {
-            trip.DepartureStationName = station.Name;
-          }
-          if (schedule.DestinationTrainStationId === station.Id) {
-            trip.DestinationStationName = station.Name;
-          }
-
-          // ArrayOfPossibleDepartures.push(trip);
-
-          // 2Do tisdag:
-          // - korta antalet dagar?
-          // - kolla antalet lediga platser?
-          // - klippa ut avresedatum för sig och avresetid för sig till trip (split??)
-          // - bestämma hur vi ska sätta pris
-          // - hitta ett sätt att sänka priset vid tidig bokning (ytterligare en temptime med plus massa dagar och jämföra?)
-
-          ArrayOfPossibleDepartures.push(
-            <div className="PossibleDeparture">
-              <h2 className='StationNames'>Avgår från: {trip.DepartureStationName}</h2>
-              <h2 className='StationNames'>Ankommer till: {trip.DestinationStationName}</h2>
-              <br />
-              <div className='DepartureDate'>{trip.tempTime2}</div>
-              <br />
-              <div className='DepartureAndArrival'></div>
-              <div className='Price'></div>
-            </div>
-          )
-
-        });
-      };
-      console.log(ArrayOfPossibleDepartures);
-    });
-    // createTrips();
-
+    navigate('/SearchResultsPage');
   }
-
-  // function createTrips() {
-  //   return (<div>
-      
-  //       <ArrayOfPossibleDepartures />
-      
-  //     </div>)
-  // }
 
   return (
     <main>
@@ -186,13 +118,13 @@ function HomePage() {
         </ form>
 
         <div className="input-tickets">
-          <select className="input-color" name="tickets" id="tickets">
+          <select className="input-color" name="tickets" id="tickets" onChange={(e) => { setTicketAmountChoice(e.target.value);}} >
             <Tickets amount="8" />
           </select>
         </div>
 
         <div className="input-date">
-          <input className="input-color" type="date" onChange={(e) => { setWantedDateOfTrip(e.target.value) }}></input>
+          <input className="input-color" type="date" ></input>
         </div>
 
         <div className="search-btn">
