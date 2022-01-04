@@ -28,46 +28,48 @@ function HomePage() {
 
   const [TypeOfTrip, setTypeOfTrip] = useState('oneway');
 
+  const [DateOfTrip, setDateOfTrip] = useState();
+
   let navigate = useNavigate();
 
-  useEffect(() => {
-    const url = "api/TrainStation/";
+  // useEffect(() => {
+  //   const url = "api/TrainStation/";
 
-    const fetchData = async () => {
-      try {
-        const response = await fetch(url);
-        const json = await response.json();
-        for (let i = 0; i < json.length; i++) {
-          ArrayOfStations.push(json[i].Id);
-        }
-        setArrayOfStations(json);
-      } catch (error) {
-        console.log("error", error);
-      }
-    };
-
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const url = "api/Schedule/";
-
-    const fetchData = async () => {
-      try {
-        const response = await fetch(url);
-        const json = await response.json();
-
-        setArrayOfSchedules(json);
-
-      } catch (error) {
-        console.log("error", error);
-      }
-    };
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch(url);
+  //       const json = await response.json();
+  //       for (let i = 0; i < json.length; i++) {
+  //         ArrayOfStations.push(json[i].Id);
+  //       }
+  //       setArrayOfStations(json);
+  //     } catch (error) {
+  //       console.log("error", error);
+  //     }
+  //   };
 
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
+
+  // useEffect(() => {
+  //   const url = "api/Schedule/";
+
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch(url);
+  //       const json = await response.json();
+
+  //       setArrayOfSchedules(json);
+
+  //     } catch (error) {
+  //       console.log("error", error);
+  //     }
+  //   };
+
+
+  //   fetchData();
+  // }, []);
 
   function handleClick() {
     updateContext(
@@ -76,7 +78,8 @@ function HomePage() {
         InputInfo: {
           From: DepartureInput,
           To: DestinationInput,
-          TypeOfTrip: TypeOfTrip
+          TypeOfTrip: TypeOfTrip,
+          DateOfTrip: DateOfTrip,
         }
       }
     );
@@ -124,7 +127,7 @@ function HomePage() {
         </div>
 
         <div className="input-date">
-          <input className="input-color" type="date" ></input>
+          <input className="input-color" type="date" onChange={(e) => { setDateOfTrip(e.target.value) }}></input>
         </div>
 
         <div className="search-btn">
