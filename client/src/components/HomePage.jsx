@@ -99,13 +99,7 @@ function HomePage() {
       let tempTime2 = new Date(schedule.DepartureTime);
       let tempTime3 = new Date();
       tempTime3.setDate(tempTime.getDate() + 8);
-      
-      console.log(tempTime)
-      console.log(tempTime2)
-
-      console.log(tempTime3)
-
-      
+   
       if (tempTime2 >= tempTime
         && tempTime2 < tempTime3
         && schedule.DepartureTrainStationId === DepartureStation.Id
