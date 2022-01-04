@@ -50,7 +50,6 @@ function HomePage() {
           ArrayOfStations.push(json[i].Id);
         }
         setArrayOfStations(json);
-        console.log(json);
       } catch (error) {
         console.log("error", error);
       }
@@ -68,8 +67,6 @@ function HomePage() {
         const response = await fetch(url);
         const json = await response.json();
 
-
-
         setArrayOfSchedules(json);
 
       } catch (error) {
@@ -79,11 +76,9 @@ function HomePage() {
 
 
     fetchData();
-  }, []);
+  }, [ArrayOfStations]);
 
   function handleClick() {
-
-    console.log(ArrayOfStations)
 
     ArrayOfStations.forEach(station => {
       console.log(station);
@@ -94,21 +89,24 @@ function HomePage() {
       };
     });
 
+    /*HÄR FINNS ALLT*/
+
     ArrayOfSchedules.forEach(schedule => {
 
-      let trip = [];
 
+      
       let tempTime = new Date(WantedDateOfTrip + ' 00:00:00');
       let tempTime2 = new Date(schedule.DepartureTime);
       let tempTime3 = new Date();
       tempTime3.setDate(tempTime3.getDate() + 8);
+      
 
       if (tempTime2 >= tempTime
         && tempTime2 < tempTime3
         && schedule.DepartureTrainStationId === DepartureStation.Id
-        && schedule.DestinationTrainStationId === DestinationStation.Id) {
+        && schedule.DestinationTrainStationId === DestinationStation.Id){
 
-        trip = schedule;
+        let trip = schedule;
 
         ArrayOfStations.forEach(station => {
 
@@ -121,18 +119,19 @@ function HomePage() {
 
           // ArrayOfPossibleDepartures.push(trip);
 
-// 2Do tisdag:
-// - korta antalet dagar?
-// - kolla antalet lediga platser?
-// - klippa ut avresedatum för sig och avresetid för sig till trip (split??)
-// - bestämma hur vi ska sätta pris
-// - hitta ett sätt att sänka priset vid tidig bokning (ytterligare en temptime med plus massa dagar och jämföra?)
+          // 2Do tisdag:
+          // - korta antalet dagar?
+          // - kolla antalet lediga platser?
+          // - klippa ut avresedatum för sig och avresetid för sig till trip (split??)
+          // - bestämma hur vi ska sätta pris
+          // - hitta ett sätt att sänka priset vid tidig bokning (ytterligare en temptime med plus massa dagar och jämföra?)
 
           ArrayOfPossibleDepartures.push(
             <div className="PossibleDeparture">
-              <h2 className='StationNames'>{trip.DepartureStationName} - {trip.DestinationStationName}</h2>
+              <h2 className='StationNames'>Avgår från: {trip.DepartureStationName}</h2>
+              <h2 className='StationNames'>Ankommer till: {trip.DestinationStationName}</h2>
               <br />
-              <div className='DepartureDate'></div>
+              <div className='DepartureDate'>{trip.tempTime2}</div>
               <br />
               <div className='DepartureAndArrival'></div>
               <div className='Price'></div>
@@ -142,34 +141,26 @@ function HomePage() {
         });
       };
     });
-    console.log(ArrayOfPossibleDepartures);
+    createTrips();
 
   }
 
   function createTrips() {
-    let trips = [];
-    ArrayOfSchedules.forEach(schedule => {
-
-      trips.push(
-
-        <div>
-          {schedule}<br></br>
-        </div>
-
-      );
-
-
-    });
+    return (<div>
+      
+        <ArrayOfPossibleDepartures />
+      
+      </div>)
   }
 
   return (
     <main>
       <div className="wrapper">
         <div className="input-search">
-          <input className="input" placeholder="Från:" value={DepartureInput} onChange={(e) => { setDepartureInput(e.target.value) }} />
+          <input className="input" placeholder="Till:" value={DestinationInput} onChange={(e) => { setDestinationInput(e.target.value) }} />
         </div>
         <div className="input-search">
-          <input className="input" placeholder="Till:" value={DestinationInput} onChange={(e) => { setDestinationInput(e.target.value) }} />
+          <input className="input" placeholder="Från:" value={DepartureInput} onChange={(e) => { setDepartureInput(e.target.value) }} />
         </div>
 
         <form className="input-form" action="" method="post">
