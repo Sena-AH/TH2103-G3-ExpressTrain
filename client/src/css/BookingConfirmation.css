@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 10vw;
+  margin: 6vw;
   padding: 2vw;
   text-align: center;
   background: #FFFFFF;
@@ -31,13 +31,13 @@
   margin-bottom: 7vw;
 }
 
-.booking-id-title, .travel-date-title, .itinerary-title{
+.booking-id-title, .travel-date-title, .itinerary-title, .email-title, .name-title, .phoneNumber-title{
   color: rgb(210,210,210);
   font-size: 24px;
   line-height: 28px;
 }
 
-.travel-detail-div{
+.travel-detail-div, .traveller-detail-div{
   margin-top: 2vw;
   background: #3b8bc0;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -46,11 +46,13 @@
   padding: 0vw 0vw;
 
 }
-
-.price{
+.traveller-detail-div{
+  border-radius: 5px 5px 0px 0px;
+}
+.price, .traveller-blue-line{
 background: #26375C;
 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-border-radius: 5px;
+border-radius: 0px 0px 5px 5px;
 padding-bottom: 4vw;
 text-align: center;
 }
@@ -69,7 +71,7 @@ text-align: center;
   padding: 2vw;
 }
 
-.departure-and-destination-div{
+.departure-and-destination-div, .booking-traveller-title{
   text-align: left;
 font-size: 24px;
 line-height: 28px;
@@ -81,4 +83,9 @@ line-height: 28px;
   flex-wrap: wrap;
 flex-direction: row;
 align-items: flex-start;
+}
+
+.traveller-detail-div{
+  text-align: left;
+padding: 3vw;
 }

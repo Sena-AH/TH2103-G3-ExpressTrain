@@ -162,11 +162,11 @@ function BookingConfirmationPage() {
                         <div className="travel-date-title">Avgång</div>
                         <p>{departureDate}</p><br />
                         <p>Kl: {departureTime}</p>  <p>Plattform {departurePlatform}</p><br />
-                        <p>Sittplats {seat}</p>
+                        <p>Sittplats: {seat}</p>
                     </div><br />
                     <div className="destination-details-div">
                         <div className="travel-date-title">Ankomst</div>
-                        <p>Kl:{arrivalTime}</p>  <p>Plattform {departurePlatform}</p>
+                        <p>Kl: {arrivalTime}</p>  <p>Plattform {departurePlatform}</p>
                     </div>
 
                 </div>
@@ -199,9 +199,9 @@ function BookingConfirmationPage() {
         return (<>
             <div className="review-square">
                 <div className="thank-you-text">
-                    <h1>Tack för att du bokade hos oss!</h1>
-                    <h2>Du får bokningsbekräftelsen skickad till den inskrivna epost adressen med Bokningsnummer. </h2>
-                    <h2>Ha en trevlig resa!</h2>
+                    <h1>Tack för att du bokade hos oss!</h1><br />
+                    <p>Du får bokningsbekräftelsen skickad till den inskrivna epost adressen med Bokningsnummer. </p>
+                    <p>Ha en trevlig resa!</p>
                 </div>
                 <div>
                     <div className="booking-id-h3">
@@ -210,15 +210,9 @@ function BookingConfirmationPage() {
                     </div>
 
                     <div className="travel-detail-div">
-                        {/* <div className="travel-date">
-                            <br />
-                            <div className="travel-date-title">Resdatum:</div>
-                            <div className="travel-date-result">{travelDate}</div>
-                        </div> */}
 
                         <div className="itinerary">
                             <br />
-                            {/* <div className="itinerary-title">Resväg:</div> */}
                             {itineraryIsLoaded() ? <Itinerary /> : 'laddar...'}
                         </div>
 
@@ -228,25 +222,31 @@ function BookingConfirmationPage() {
                             <div className="price-result">{booking.Price} kr</div>
                         </div>
                     </div>
-                    <div className="name">
-                        <br />
-                        <div className="name-title">Namn:</div>
-                        <div className="name-result">{traveller.FirstName} {traveller.LastName}</div>
+                    <div className="traveller-detail-div">
+                        <p className="booking-traveller-title">Bokningsinformation</p>
+                        <div className="name">
+                            <br />
+                            <div className="name-title">Namn</div>
+                            <div className="name-result">{traveller.FirstName} {traveller.LastName}</div>
+                        </div>
+
+                        <div className="email">
+                            <br />
+                            <div className="email-title">E-post</div>
+                            <div className="email-result">{traveller.Email}</div>
+                        </div>
+
+                        <div className="phoneNumber">
+                            <br />
+                            <div className="phoneNumber-title">Telefonnummer</div>
+                            <div className="phoneNumber-result">{traveller.PhoneNumber}</div>
+                        </div>
+
+
                     </div>
-
-                    <div className="email">
+                    <div className="traveller-blue-line">
                         <br />
-                        <div className="email-title">E-post:</div>
-                        <div className="email-result">{traveller.Email}</div>
                     </div>
-
-                    <div className="phoneNumber">
-                        <br />
-                        <div className="phoneNumber-title">Telefonnummer:</div>
-                        <div className="phoneNumber-result">{traveller.PhoneNumber}</div>
-                    </div>
-
-
                 </div>
 
             </div>
