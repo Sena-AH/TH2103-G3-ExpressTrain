@@ -11,6 +11,8 @@ function BookingForm() {
   const [Email, setEmail] = useState("");
   const [PhoneNumber, setPhoneNumber] = useState("");
 
+  console.log(context);
+
   function saveData() {
 
     updateContext({
