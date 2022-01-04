@@ -21,17 +21,17 @@ function SearchResultsPage() {
 
   const [context, updateContext] = useContext(Context)
 
-  const [DepartureInput, setDepartureInput] = useState("Göteborg");
+  const [DepartureInput, setDepartureInput] = useState();
   const [DepartureStation, setDepartureStation] = useState([]);
-  const [DestinationInput, setDestinationInput] = useState("Stockholm");
+  const [DestinationInput, setDestinationInput] = useState();
   const [DestinationStation, setDestinationStation] = useState([]);
   const [ArrayOfStations, setArrayOfStations] = useState([]);
+  const [AmountOfTravellers, setAmountOfTravellers] = useState();
 
   const [ArrayOfTrips, setArrayOfTrips] = useState([]);
-  const [WantedDateOfTrip, setWantedDateOfTrip] = useState(new Date('2021-01-20 00:00:00'));
+  const [WantedDateOfTrip, setWantedDateOfTrip] = useState();
 
   const [ArrayOfSchedules, setArrayOfSchedules] = useState([]);
-  const [ScheduleId, setScheduleId] = useState();
   const [ArrayOfPossibleDepartures, setArrayOfPossibleDepartures] = useState([]);
 
   const [TypeOfTrip, setTypeOfTrip] = useState('oneway');
@@ -40,24 +40,24 @@ function SearchResultsPage() {
   let navigate = useNavigate();
 
   useEffect(() => {
+
+    if(!context){
+      return;
+    }
+
     const url = "api/TrainStation/";
 
     const fetchData = async () => {
       try {
         const response = await fetch(url);
         const json = await response.json();
-        for (let i = 0; i < json.length; i++) {
-          ArrayOfStations.push(json[i].Id);
-        }
         setArrayOfStations(json);
       } catch (error) {
         console.log("error", error);
       }
     };
-
-
     fetchData();
-  }, []);
+  }, [context]);
 
   useEffect(() => {
     const url = "api/Schedule/";
@@ -74,37 +74,45 @@ function SearchResultsPage() {
       }
     };
 
-
     fetchData();
-  }, []);
+  }, [ArrayOfStations]);
 
-  function loadSchedules() {
+  useEffect(() => {
+    
+    setDepartureInput(context.InputInfo.From);
+    setDestinationInput(context.InputInfo.To);
+    setTypeOfTrip(context.InputInfo.TypeOfTrip);
+    setAmountOfTravellers(context.TravellerAmount);
+    setWantedDateOfTrip(context.InputInfo.DateOfTrip + ' 00:00:00');
+    
+  }, [ArrayOfStations]);
+
+  function LoadSchedules() {
 
     ArrayOfStations.forEach(station => {
+      
       if (station.Location == DepartureInput) {
         setDepartureStation(station)
       } else if (station.Location == DestinationInput) {
         setDestinationStation(station)
       };
+
     });
 
     /*HÄR FINNS ALLT*/
 
     ArrayOfSchedules.forEach(schedule => {
 
+      let selectedTime = new Date(WantedDateOfTrip);
+      let departureTime = new Date(schedule.DepartureTime);
+      let tempTime = new Date();
+      let arrivalTime = new Date(schedule.ArrivalTime);
+      tempTime.setDate(selectedTime.getDate() + 8);
 
-      
-      let tempTime = new Date(WantedDateOfTrip + ' 00:00:00');
-      let tempTime2 = new Date(schedule.DepartureTime);
-      let tempTime3 = new Date();
-      tempTime3.setDate(tempTime.getDate() + 8);
-   
-      // if (tempTime2 >= tempTime
-      //   && tempTime2 < tempTime3
-      //   && schedule.DepartureTrainStationId === DepartureStation.Id
-      //   && schedule.DestinationTrainStationId === DestinationStation.Id)
-        if ( schedule.DepartureTrainStationId === DepartureStation.Id
-          && schedule.DestinationTrainStationId === DestinationStation.Id){
+
+      if (departureTime >= selectedTime
+        && schedule.DepartureTrainStationId === DepartureStation.Id
+        && schedule.DestinationTrainStationId === DestinationStation.Id){
         let trip = schedule;
 
         ArrayOfStations.forEach(station => {
@@ -116,6 +124,13 @@ function SearchResultsPage() {
             trip.DestinationStationName = station.Name;
           }
 
+          console.log(departureTime);
+          
+          let displayDepartureTime = `${departureTime.getHours()} : ${departureTime.getMinutes()}`
+          let displayDepartureDate = `${departureTime.toLocaleDateString()}`
+          let displayArrivalTime = `${arrivalTime.getHours()} : ${arrivalTime.getMinutes()}`
+          let displayArrivalDate = `${arrivalTime.toLocaleDateString()}`
+
           // ArrayOfPossibleDepartures.push(trip);
 
           // 2Do tisdag:
@@ -125,33 +140,47 @@ function SearchResultsPage() {
           // - bestämma hur vi ska sätta pris
           // - hitta ett sätt att sänka priset vid tidig bokning (ytterligare en temptime med plus massa dagar och jämföra?)
 
-          ArrayOfPossibleDepartures.push(
-            <div className="PossibleDeparture">
-              <h2 className='StationNames'>Avgår från: {trip.DepartureStationName}</h2>
-              <h2 className='StationNames'>Ankommer till: {trip.DestinationStationName}</h2>
-              <br />
-              <div className='DepartureDate'>{trip.tempTime2}</div>
-              <br />
-              <div className='DepartureAndArrival'></div>
-              <div className='Price'></div>
-            </div>
-          )
+          let uniqueId = true;
+
+        if(trip.DepartureStationName && trip.DestinationStationName ){
+          if(!ArrayOfPossibleDepartures.includes()){
+            ArrayOfPossibleDepartures.push(
+              <div className="PossibleDeparture" id={trip.Id}>
+                <button type="submit" border="solid">
+                <h2 className='StationNames'>Avgår från: {trip.DepartureStationName}</h2>
+                <div className='DepartureDate'>{schedule.DepartureTime}</div>
+                <h2 className='StationNames'>Ankommer till: {trip.DestinationStationName}</h2>
+                <div className='DepartureAndArrival'>{schedule.ArrivalTime}</div>
+                <br />
+                <div className='Price'>Cykeln på köpet</div> 
+                </button>
+              </div>
+            )
+          }
+        }
 
         });
       };
     });
-  }
-  
-  function createTrips() {
+    console.log(ArrayOfPossibleDepartures);
     return ArrayOfPossibleDepartures;
   }
-  
+
+  function isLoadschedulesLoaded(){
+    return (isObjectLoaded(ArrayOfSchedules))
+  }
+
+  function isObjectLoaded(state) {                
+    if (state === null) return false;         
+    if (state === undefined) return false;         
+    return !(Object.keys(state).length === 0);     
+  }
+
   return (
     <main>
       <div className="wrapper">
-       
-      
-        
+
+        {isLoadschedulesLoaded() ? <LoadSchedules/> : 'laddar...'}
 
       </div>
     </main>
