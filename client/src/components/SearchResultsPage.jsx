@@ -33,6 +33,7 @@ function SearchResultsPage() {
 
   const [ArrayOfSchedules, setArrayOfSchedules] = useState([]);
   const [ArrayOfPossibleDepartures, setArrayOfPossibleDepartures] = useState([]);
+  const [ArrayOfPossibleDepartureIds, setArrayOfPossibleDepartureIds] = useState([]);
 
   const [TypeOfTrip, setTypeOfTrip] = useState('oneway');
   const [Trips, setTrips] = useState([]);
@@ -41,7 +42,7 @@ function SearchResultsPage() {
 
   useEffect(() => {
 
-    if(!context){
+    if (!context) {
       return;
     }
 
@@ -78,19 +79,19 @@ function SearchResultsPage() {
   }, [ArrayOfStations]);
 
   useEffect(() => {
-    
+
     setDepartureInput(context.InputInfo.From);
     setDestinationInput(context.InputInfo.To);
     setTypeOfTrip(context.InputInfo.TypeOfTrip);
     setAmountOfTravellers(context.TravellerAmount);
     setWantedDateOfTrip(context.InputInfo.DateOfTrip + ' 00:00:00');
-    
-  }, [ArrayOfStations]);
+
+  }, [ArrayOfSchedules]);
 
   function LoadSchedules() {
 
     ArrayOfStations.forEach(station => {
-      
+
       if (station.Location == DepartureInput) {
         setDepartureStation(station)
       } else if (station.Location == DestinationInput) {
@@ -112,7 +113,7 @@ function SearchResultsPage() {
 
       if (departureTime >= selectedTime
         && schedule.DepartureTrainStationId === DepartureStation.Id
-        && schedule.DestinationTrainStationId === DestinationStation.Id){
+        && schedule.DestinationTrainStationId === DestinationStation.Id) {
         let trip = schedule;
 
         ArrayOfStations.forEach(station => {
@@ -125,7 +126,7 @@ function SearchResultsPage() {
           }
 
           console.log(departureTime);
-          
+
           let displayDepartureTime = `${departureTime.getHours()} : ${departureTime.getMinutes()}`
           let displayDepartureDate = `${departureTime.toLocaleDateString()}`
           let displayArrivalTime = `${arrivalTime.getHours()} : ${arrivalTime.getMinutes()}`
@@ -142,22 +143,23 @@ function SearchResultsPage() {
 
           let uniqueId = true;
 
-        if(trip.DepartureStationName && trip.DestinationStationName ){
-          if(!ArrayOfPossibleDepartures.includes()){
-            ArrayOfPossibleDepartures.push(
-              <div className="PossibleDeparture" id={trip.Id}>
-                <button type="submit" border="solid">
-                <h2 className='StationNames'>Avgår från: {trip.DepartureStationName}</h2>
-                <div className='DepartureDate'>{schedule.DepartureTime}</div>
-                <h2 className='StationNames'>Ankommer till: {trip.DestinationStationName}</h2>
-                <div className='DepartureAndArrival'>{schedule.ArrivalTime}</div>
-                <br />
-                <div className='Price'>Cykeln på köpet</div> 
-                </button>
-              </div>
-            )
+          if (trip.DepartureStationName && trip.DestinationStationName) {
+            if (!ArrayOfPossibleDepartureIds.includes(trip.Id)) {
+              ArrayOfPossibleDepartureIds.push(trip.Id)
+              ArrayOfPossibleDepartures.push(
+                <div className="PossibleDeparture" id={trip.Id}>
+                  <button type="submit" border="solid">
+                    <h2 className='StationNames'>Avgår från: {trip.DepartureStationName}</h2>
+                    <div className='DepartureDate'>{schedule.DepartureTime}</div>
+                    <h2 className='StationNames'>Ankommer till: {trip.DestinationStationName}</h2>
+                    <div className='DepartureAndArrival'>{schedule.ArrivalTime}</div>
+                    <br />
+                    <div className='Price'>Cykeln på köpet</div>
+                  </button>
+                </div>
+              )
+            }
           }
-        }
 
         });
       };
@@ -166,21 +168,22 @@ function SearchResultsPage() {
     return ArrayOfPossibleDepartures;
   }
 
-  function isLoadschedulesLoaded(){
-    return (isObjectLoaded(ArrayOfSchedules))
+  function isLoadschedulesLoaded() {
+
+    return (isObjectLoaded(ArrayOfSchedules));
   }
 
-  function isObjectLoaded(state) {                
-    if (state === null) return false;         
-    if (state === undefined) return false;         
-    return !(Object.keys(state).length === 0);     
+  function isObjectLoaded(state) {
+    if (state === null) return false;
+    if (state === undefined) return false;
+    return !(Object.keys(state).length === 0);
   }
 
   return (
     <main>
       <div className="wrapper">
 
-        {isLoadschedulesLoaded() ? <LoadSchedules/> : 'laddar...'}
+        {isLoadschedulesLoaded() ? <LoadSchedules /> : 'laddar...'}
 
       </div>
     </main>
