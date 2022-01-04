@@ -28,12 +28,23 @@ function SearchResultsPage() {
   const [ArrayOfStations, setArrayOfStations] = useState([]);
   const [AmountOfTravellers, setAmountOfTravellers] = useState();
 
+  const [ReturnTripDepartureStation, setReturnTripDepartureStation] = useState();
+  const [ReturnTripDestinationStation, setReturnTripDestinationStation] = useState();
+
   const [ArrayOfTrips, setArrayOfTrips] = useState([]);
   const [WantedDateOfTrip, setWantedDateOfTrip] = useState();
 
   const [ArrayOfSchedules, setArrayOfSchedules] = useState([]);
   const [ArrayOfPossibleDepartures, setArrayOfPossibleDepartures] = useState([]);
   const [ArrayOfPossibleDepartureIds, setArrayOfPossibleDepartureIds] = useState([]);
+  const [ArrayOfPossibleReturnDepartures, setArrayOfPossibleReturnDepartures] = useState([]);
+  const [ArrayOfPossibleReturnDepartureIds, setArrayOfPossibleReturnDepartureIds] = useState([]);
+
+  const [ChosenSchedule, setChosenSchedule] = useState([]);
+
+  const [FirstChoiceRoundTrip, setFirstChoiceRoundTrip] = useState();
+  const [SecondChoiceRoundTrip, setSecondChoiceRoundTrip] = useState();
+
 
   const [TypeOfTrip, setTypeOfTrip] = useState('oneway');
   const [Trips, setTrips] = useState([]);
@@ -85,6 +96,9 @@ function SearchResultsPage() {
     setTypeOfTrip(context.InputInfo.TypeOfTrip);
     setAmountOfTravellers(context.TravellerAmount);
     setWantedDateOfTrip(context.InputInfo.DateOfTrip + ' 00:00:00');
+    setReturnTripDepartureStation(DestinationStation);
+    setReturnTripDestinationStation(DepartureStation);
+
 
   }, [ArrayOfSchedules]);
 
@@ -99,17 +113,13 @@ function SearchResultsPage() {
       };
 
     });
-
-    /*HÄR FINNS ALLT*/
-
+    
     ArrayOfSchedules.forEach(schedule => {
 
       let selectedTime = new Date(WantedDateOfTrip);
       let departureTime = new Date(schedule.DepartureTime);
       let tempTime = new Date();
-      let arrivalTime = new Date(schedule.ArrivalTime);
       tempTime.setDate(selectedTime.getDate() + 8);
-
 
       if (departureTime >= selectedTime
         && schedule.DepartureTrainStationId === DepartureStation.Id
@@ -125,23 +135,12 @@ function SearchResultsPage() {
             trip.DestinationStationName = station.Name;
           }
 
-          console.log(departureTime);
-
-          let displayDepartureTime = `${departureTime.getHours()} : ${departureTime.getMinutes()}`
-          let displayDepartureDate = `${departureTime.toLocaleDateString()}`
-          let displayArrivalTime = `${arrivalTime.getHours()} : ${arrivalTime.getMinutes()}`
-          let displayArrivalDate = `${arrivalTime.toLocaleDateString()}`
-
-          // ArrayOfPossibleDepartures.push(trip);
-
           // 2Do tisdag:
           // - korta antalet dagar?
           // - kolla antalet lediga platser?
           // - klippa ut avresedatum för sig och avresetid för sig till trip (split??)
           // - bestämma hur vi ska sätta pris
           // - hitta ett sätt att sänka priset vid tidig bokning (ytterligare en temptime med plus massa dagar och jämföra?)
-
-          let uniqueId = true;
 
           if (trip.DepartureStationName && trip.DestinationStationName) {
             if (!ArrayOfPossibleDepartureIds.includes(trip.Id)) {
@@ -160,16 +159,67 @@ function SearchResultsPage() {
               )
             }
           }
-
+          
         });
       };
     });
-    console.log(ArrayOfPossibleDepartures);
     return ArrayOfPossibleDepartures;
+  }
+
+  function LoadRoundtrip() {
+
+    ArrayOfSchedules.forEach(schedule => {
+
+      let returnTripDate = new Date(WantedDateOfTrip);
+      let tempTime = new Date();
+      tempTime.setDate(returnTripDate.getDate() + 7);
+
+      let departureTime = new Date(schedule.DepartureTime);
+
+      if (departureTime <= tempTime
+        && ReturnTripDepartureStation.Id == schedule.DepartureTrainStationId
+        && ReturnTripDestinationStation.Id == schedule.DestinationTrainStationId) {
+        let trip = schedule;
+        let index = 0;
+
+
+        ArrayOfStations.forEach(station => {
+
+          if (schedule.DepartureTrainStationId === station.Id) {
+            trip.DepartureStationName = station.Name;
+          }
+          if (schedule.DestinationTrainStationId === station.Id) {
+            trip.DestinationStationName = station.Name;
+          }
+          if (trip.DepartureStationName && trip.DestinationStationName) {
+            if (!ArrayOfPossibleReturnDepartureIds.includes(trip.Id)) {
+              ArrayOfPossibleReturnDepartureIds.push(trip.Id);
+              ArrayOfPossibleReturnDepartures.push(
+                <div className="PossibleDeparture" id={trip.Id}>
+                  <button type="submit" border="solid" >
+                    <h2 className='StationNames'>Avgår från: {trip.DepartureStationName}</h2>
+                    <div className='DepartureDate'>{schedule.DepartureTime}</div>
+                    <h2 className='StationNames'>Ankommer till: {trip.DestinationStationName}</h2>
+                    <div className='DepartureAndArrival'>{schedule.ArrivalTime}</div>
+                    <br />
+                    <div className='Price'>Cykeln på köpet</div>
+                  </button>
+                </div>
+              )
+            }
+          }
+        });
+      };
+    })
+    return ArrayOfPossibleReturnDepartures;
   }
 
   function isLoadschedulesLoaded() {
 
+    return (isObjectLoaded(ArrayOfSchedules));
+  }
+
+  function isLoadRoundtripLoaded() {
     return (isObjectLoaded(ArrayOfSchedules));
   }
 
@@ -178,26 +228,56 @@ function SearchResultsPage() {
     if (state === undefined) return false;
     return !(Object.keys(state).length === 0);
   }
-  if (TypeOfTrip != 'oneway') {
+  if (TypeOfTrip == 'oneway') {
+    return (
+      <main>
+        <div className="wrapper">
+
+          {isLoadschedulesLoaded() ? <LoadSchedules /> : 'laddar...'}
+
+        </div>
+      </main>
+    );
+
+  } else {
     return (
       //Load roundtrip schedules
       <main>
         <div className='wrapper'>
           {isLoadschedulesLoaded() ? <LoadSchedules /> : 'laddar...'}
+          <h1>Returresor</h1>
           {isLoadRoundtripLoaded() ? <LoadRoundtrip /> : 'laddar...'}
         </div>
       </main>
     )
   }
-  return (
-    <main>
-      <div className="wrapper">
+  function handleClick(ChosenSchedule) {
+    if (TypeOfTrip == 'oneway') {
 
-        {isLoadschedulesLoaded() ? <LoadSchedules /> : 'laddar...'}
 
-      </div>
-    </main>
-  );
+      setChosenSchedule(ChosenSchedule);
+
+
+
+      //   updateContext({
+      //     DepartureStation: DepartureStation,
+      //     DestinationStation: DestinationStation,
+      //     Schedule: 
+      // }
+
+      //   )
+
+
+      navigate('/BookingInformationPage')
+
+    } else {
+      for (let i = 0; i < 2; i++) {
+
+
+      }
+      navigate('/BookingInformationPage')
+    }
+  }
 };
 
 export default SearchResultsPage;
