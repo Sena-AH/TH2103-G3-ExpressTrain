@@ -16,15 +16,15 @@ function BookingForm() {
   function saveData() {
 
     updateContext({
-      TravellerAmount: 2,
-      FirstTrip: {
-        ScheduleId: 3,
-        Price: 599
-      },
-      SecondTrip: {
-        ScheduleId: 2,
-        Price: 985
-      },
+      // TravellerAmount: 2,
+      // FirstTrip: {
+      //   ScheduleId: 3,
+      //   Price: 599
+      // },
+      // SecondTrip: {
+      //   ScheduleId: 2,
+      //   Price: 985
+      // },
       Traveller: {
         FirstName: FirstName,
         Lastname: LastName,

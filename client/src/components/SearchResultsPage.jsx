@@ -53,25 +53,29 @@ function SearchResultsPage() {
 
   let navigate = useNavigate();
 
-  function handleFirstTripClick() {
-    if (TypeOfTrip == 'oneway') {
-
-      ArrayOfPossibleDepartures.forEach(departure => {
-
-        if(departure.Id === ChosenSchedule){
-          updateContext({
-            FirstTrip: {
-              ScheduleId: ChosenSchedule,
-              Price: 0
-            }
-          })
-          navigate('/BookingInformationPage')
-        }
-
+  function handleFirstTripClick(TripId) {
+  
+  setChosenSchedule(TripId); 
+    
+//     if (TypeOfTrip == 'oneway') {
+//       ArrayOfPossibleDepartures.forEach(departure => {
+// console.log(TripId)
+// console.log(departure.props.Id)
+//         if(departure.props.Id === TripId){
+//           updateContext({
+//             FirstTrip: {
+//               ScheduleId: TripId,
+//               Price: 0
+//             }
+//           })
+//           console.log(TripId);
+//           navigate('/BookingInformationPage')
+//         }
+// GÖRA OM TILL FOR LOOP!
         
-      });
+//       });
      
-    } else {
+//     } else {
       ArrayOfPossibleDepartures.forEach(departure => {
 
         if(departure.Id === ChosenSchedule){
@@ -203,7 +207,7 @@ function SearchResultsPage() {
               ArrayOfPossibleDepartureIds.push(trip.Id)
               ArrayOfPossibleDepartures.push(
                 <div className="PossibleDeparture" id={trip.Id}>
-                  <button type="submit" border="solid" onClick={handleFirstTripClick(trip.Id)}>
+                  <button type="submit" border="solid" value={trip.Id} onClick={() => handleFirstTripClick(trip.Id)}>
                     <h2 className='StationNames'>Avgår från: {trip.DepartureStationName}</h2>
                     <div className='DepartureDate'>{schedule.DepartureTime}</div>
                     <h2 className='StationNames'>Ankommer till: {trip.DestinationStationName}</h2>
@@ -216,8 +220,10 @@ function SearchResultsPage() {
             }
           }
         });
+
       };
     });
+    console.log(ArrayOfPossibleDepartures)
     return ArrayOfPossibleDepartures;
   }
 
@@ -254,7 +260,7 @@ function SearchResultsPage() {
               ArrayOfPossibleReturnDepartureIds.push(trip.Id);
               ArrayOfPossibleReturnDepartures.push(
                 <div className="PossibleDeparture" id={trip.Id}>
-                  <button type="submit" border="solid" onClick={handleClickReturn(trip.Id)}>
+                  <button type="submit" border="solid" onClick={() => handleClickReturn(trip.Id)}>
                     <h2 className='StationNames'>Avgår från: {trip.DepartureStationName}</h2>
                     <div className='DepartureDate'>{schedule.DepartureTime}</div>
                     <h2 className='StationNames'>Ankommer till: {trip.DestinationStationName}</h2>

@@ -131,7 +131,7 @@ function HomePage() {
         </div>
 
         <div className="search-btn">
-          <button type="button" onClick={handleClick}>Sök</button>
+          <button type="button" onClick={() => handleClick()}>Sök</button>
         </div>
 
       </div>

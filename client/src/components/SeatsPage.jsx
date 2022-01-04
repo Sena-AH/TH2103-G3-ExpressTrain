@@ -40,13 +40,16 @@ function SeatsPage() {
 
     // hämta stages
     useEffect(() => {
+        
         if (!isObjectLoaded(firstSchedule)) return;
         (async () => {
             console.log('stages hämtas...')
+            console.log(context)
             let res = await fetchStages(firstScheduleId);
             console.log(`har hämtat stages med ScheduleId: ${res[0].ScheduleId}`);
             setFirstStages(res);
         })();
+        
         // eslint-disable-next-line
     }, [firstSchedule]);
 
