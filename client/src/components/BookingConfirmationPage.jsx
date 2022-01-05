@@ -6,7 +6,7 @@ function BookingConfirmationPage() {
     // const navigate = useNavigate();
     // useLocation holds several items, we grab the {state} and then we can access it by state.bookingId
     const { state } = useLocation();
-    const bookingId = 3;
+    const bookingId = state.bookingId;
 
     const [booking, setBooking] = useState([]);
     const [traveller, setTraveller] = useState([]);
@@ -56,10 +56,6 @@ function BookingConfirmationPage() {
     function isObjLoaded(state) {
         return !(Object.keys(state).length === 0);
     }
-
-
-
-
 
     async function fetchBooking() {
         return await fetchUrl(`/api/Booking/${bookingId}`, 'booking');

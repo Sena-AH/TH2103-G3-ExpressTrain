@@ -1,41 +1,39 @@
 import React, { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { Context } from '../App'
 
-function BookingForm() {
-  const [context, updateContext] = useContext(Context)
+function BookingForm(props) {
+  const [context, updateContext] = useState({
+    TravellerAmount: 2,
+    FirstTrip: {
+      ScheduleId: 3,
+      Price: 599
+    },
+    SecondTrip: {
+      ScheduleId: 2,
+      Price: 985
+    },
+    FirstTripSeats: [],
+    SecondTripSeats: [],
+    TravellerFirstName: "",
+    TravellerLastName: "",
+    TravellerEmail: "",
+    TravellerPhoneNumber: ""
+  });
   let navigate = useNavigate();
 
-  const [FirstName, setFirstName] = useState("");
-  const [LastName, setLastName] = useState("");
-  const [Email, setEmail] = useState("");
-  const [PhoneNumber, setPhoneNumber] = useState("");
-
-  function saveData() {
-
+  function handleChange(event) {
     updateContext({
-      TravellerAmount: 2,
-      FirstTrip: {
-        ScheduleId: 3,
-        Price: 599
-      },
-      SecondTrip: {
-        ScheduleId: 2,
-        Price: 985
-      },
-      Traveller: {
-        FirstName: FirstName,
-        Lastname: LastName,
-        Email: Email,
-        PhoneNumber: PhoneNumber
-      }
-
+      ...context,
+      ['Traveller' + event.target.name]: event.target.value.trim(),
     });
-    navigate('/SeatsPage');
+  }
+
+  function submitData() {
+    navigate('/SeatsPage', { state: context });
   }
 
   return (
-    <div className="wrapper">
+    <div>
       <h2>Bokningsinformation</h2>
       <div className="input-search">
         <input
@@ -43,11 +41,8 @@ function BookingForm() {
           type="text"
           name="FirstName"
           placeholder="Förnamn"
-          value={FirstName}
-          onChange={(e) => { setFirstName(e.target.value) }} />
-
-        <br />
-        <br />
+          value={context.TravellerFirstName}
+          onChange={handleChange} />
       </div>
 
       <div className="input-search">
@@ -56,10 +51,8 @@ function BookingForm() {
           type="text"
           name="LastName"
           placeholder="Efternamn"
-          value={LastName}
-          onChange={(e) => { setLastName(e.target.value) }} />
-        <br />
-        <br />
+          value={context.TravellerLastName}
+          onChange={handleChange} />
       </div>
 
       <div className="input-search">
@@ -68,10 +61,8 @@ function BookingForm() {
           type="text"
           name="Email"
           placeholder="E-mail"
-          value={Email}
-          onChange={(e) => { setEmail(e.target.value) }} />
-        <br />
-        <br />
+          value={context.TravellerEmail}
+          onChange={handleChange} />
       </div>
 
       <div className="input-search">
@@ -80,15 +71,13 @@ function BookingForm() {
           type="text"
           name="PhoneNumber"
           placeholder="Telefonnummer"
-          value={PhoneNumber}
-          onChange={(e) => { setPhoneNumber(e.target.value) }} />
-        <br />
-        <br />
+          value={context.TravellerPhoneNumber}
+          onChange={handleChange} />
       </div>
 
       <div className="current-total-price-div">
         <div className="search-btn">
-          <button type="button" onClick={saveData}>Spara och Fortsätt</button>
+          <button type="button" onClick={submitData}>Spara och Fortsätt</button>
         </div>
       </div>
     </div>
