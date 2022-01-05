@@ -21,6 +21,10 @@ const express = require('express');
 // create a new web server
 const webServer = express();
 
+// Swift
+const SwishClient = require('./swish/SwishClient');
+const swishClient = new SwishClient('server/swish/ssl');
+
 // tell the web server to serve
 // all files (static content)
 // that are inside the folder "frontend"
@@ -89,6 +93,26 @@ function runQuery(req, res, query, params = {}, one = false) {
 webServer.get('/api/db-info', (req, res) =>
   res.json({ tablesInDb, viewsInDb })
 );
+
+// REST ROUTE: GET swish/paymentresult/:id
+webServer.get('/api/swish/paymentresult/:id', async (req, res) => {
+  await swishClient.getPaymentResultAsync(res, req.params.id);
+});
+
+// REST ROUTE: PATCH swish/paymentresult/:id
+webServer.patch('/api/swish/paymentresult/:id', async (req, res) => {
+  await swishClient.cancelPaymentResultAsync(res, req.params.id);
+});
+
+// REST ROUTE: PUT swish/paymentrequest
+webServer.put('/api/swish/paymentrequest/:id', async (req, res) => {
+  await swishClient.createPaymentRequestV2Async(res, req.params.id, req.body);
+});
+
+// REST ROUTE: POST swish/paymentrequest
+webServer.post('/api/swish/paymentrequest', async (req, res) => {
+  await swishClient.createPaymentRequestV1Async(res, req.body);
+});
 
 // REST ROUTE: GET many/all
 let getMany = (req, res) => {
@@ -208,7 +232,6 @@ webServer.patch('/api/:table/:id', putOrPatch);
 // REST ROUTE: DELETE
 webServer.delete("/api/Booking/:id", (req, res) => {
   req.params.table = 'Booking';
-  console.log(req.body);
   runQuery(req, res, `
     DELETE FROM ${req.params.table} 
     WHERE Id = :id AND ManipulationCode = :manipulationCode

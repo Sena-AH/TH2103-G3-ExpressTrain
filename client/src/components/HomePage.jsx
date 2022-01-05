@@ -12,7 +12,7 @@ function Tickets(props) {
     } else {
       severalTickets = 'Biljetter';
     }
-    ticketOptions.push(<option value = {i + 1} >{i + 1} {severalTickets}</option>);
+    ticketOptions.push(<option value={i + 1} >{i + 1} {severalTickets}</option>);
   }
   return ticketOptions;
 }
@@ -31,45 +31,6 @@ function HomePage() {
   const [DateOfTrip, setDateOfTrip] = useState();
 
   let navigate = useNavigate();
-
-  // useEffect(() => {
-  //   const url = "api/TrainStation/";
-
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch(url);
-  //       const json = await response.json();
-  //       for (let i = 0; i < json.length; i++) {
-  //         ArrayOfStations.push(json[i].Id);
-  //       }
-  //       setArrayOfStations(json);
-  //     } catch (error) {
-  //       console.log("error", error);
-  //     }
-  //   };
-
-
-  //   fetchData();
-  // }, []);
-
-  // useEffect(() => {
-  //   const url = "api/Schedule/";
-
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch(url);
-  //       const json = await response.json();
-
-  //       setArrayOfSchedules(json);
-
-  //     } catch (error) {
-  //       console.log("error", error);
-  //     }
-  //   };
-
-
-  //   fetchData();
-  // }, []);
 
   function handleClick() {
     updateContext(
@@ -121,7 +82,7 @@ function HomePage() {
         </ form>
 
         <div className="input-tickets">
-          <select className="input-color" name="tickets" id="tickets" onChange={(e) => { setTicketAmountChoice(e.target.value);}} >
+          <select className="input-color" name="tickets" id="tickets" onChange={(e) => { setTicketAmountChoice(e.target.value); }} >
             <Tickets amount="8" />
           </select>
         </div>
@@ -133,10 +94,9 @@ function HomePage() {
         <div className="search-btn">
           <button type="button" onClick={() => handleClick()}>Sök</button>
         </div>
-
       </div>
     </main>
   );
-};
+}
 
 export default HomePage;

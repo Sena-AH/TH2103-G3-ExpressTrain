@@ -1,59 +1,172 @@
-import React, { useState, useContext, useEffect } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom';
-import { Context } from '../App'
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import PaymentForm from "./PaymentForm";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
-function PaymentPage(){
-    const [context, updateContext] = useContext(Context)
-    console.log('Context efter navigate');
+function PaymentPage(props) {
+  const navigate = useNavigate();
+  const { state } = useLocation();
+  const [context, updateContext] = useState(state);
 
-console.log(context);
-    return(
-        <div className="centered-text-div">
-            <div>
-            <p style={{height: 10}}>YOUR BOOKING DETAILS</p>
-                    <div className="booking-medium-div">
+  const [platforms, setPlatforms] = useState([]);
+  const [schedules, setSchedules] = useState([]);
+  const [stations, setStations] = useState([]);
 
-                            Departing from: xxxxxxxxx (Station and datetime)<br/>
-                            Arriving at: xxxxxxxx<br/>
-                            Seat Number: xx<br/>
-                            Name: xxxxxx<br/>
-                            Email: xxxxxxx<br/>
-                            Phone number: xxxxxx<br/>
-                            <br/>
+  const [travellerAmount, setTravellerAmount] = useState(
+    context.TravellerAmount
+  );
+  const [firstTrip, setTirstTrip] = useState(context.FirstTrip);
+  const [secondTrip, setSecondTrip] = useState(context.SecondTrip);
+  const [seats, setSeats] = useState([
+    context.FirstTripSeats,
+    context.SecondTripSeats,
+  ]);
+  const [scheduleIds, setScheduleIds] = useState([
+    firstTrip.ScheduleId,
+    secondTrip.ScheduleId,
+  ]);
+  const [totalPrice, setTotalPrice] = useState(
+    firstTrip.Price + secondTrip.Price
+  );
 
-                            Total cost of trip: xxxxx KR
-                            
-                            <br/><br/>
-                    </div>
-            </div>
-            <p style={{height: 10}}>CHOOSE PAYMENT METHOD</p>
-            <div className="booking-medium-div">
-                <div className="horizontally-halved-div">
-                <br/>
-                    SWISH 
-                </div>
-                <div className="horizontally-halved-div">
-                <br/>
-                    SWISH 
-                </div>
-            </div>
-            <div className="booking-medium-div">
-                <div className="horizontally-halved-div">
-                <br/>
-                    <input type="radio" name="PaymentRadio" value="KlarnaPayment"></input> Klarna Payment card or invoice
-                </div>
-                <div className="vertical-line"></div>
-                <div className="horizontally-halved-div">
-                    <input type="radio" name="PaymentRadio"></input> Pay with card
-                </div>
-                
-            </div>
+  const [bookingData, setBookingData] = useState();
 
-            <div>
-                <button>PROCEED TO PAYMENT</button> {/* Add link to next page here */}
-            </div>
+  useEffect(() => {
+    (async () => {
+      const schedules = await fetchSchedules(scheduleIds);
+      const [stations, platforms] = await Promise.all([
+        await fetchStations(schedules),
+        await fetchPlatforms(schedules),
+      ]);
+
+      setSchedules(schedules);
+      setStations(stations);
+      setPlatforms(platforms);
+    })();
+  }, []);
+
+  useEffect(() => {
+    // TODO: maybe no useEffect
+    setBookingData({
+      FirstName: context.TravellerFirstName,
+      LastName: context.TravellerLastName,
+      Email: context.TravellerEmail,
+      PhoneNumber: context.TravellerPhoneNumber,
+      Price: totalPrice,
+      ScheduleIds: getScheduleIds(schedules),
+      Seats: seats
+    })
+  }, [schedules, seats]);
+
+  async function fetchSchedules(scheduleIds) {
+    const schedulesPromises = scheduleIds.map(async (scheduleId) => {
+      const schedule = await fetchUrl(`/api/Schedule/${scheduleId}`);
+      schedule.DepartureTime = new Date(schedule.DepartureTime);
+      schedule.ArrivalTime = new Date(schedule.ArrivalTime);
+      return schedule;
+    });
+    return await Promise.all(schedulesPromises);
+  }
+
+  async function fetchStations(schedules) {
+    const stationsPromises = schedules.map(async (schedule) => {
+      return await Promise.all([
+        await fetchUrl(`/api/TrainStation/${schedule.DepartureTrainStationId}`),
+        await fetchUrl( `/api/TrainStation/${schedule.DestinationTrainStationId}`),
+      ]);
+    });
+    const unorderedStations = [].concat.apply(
+      [],
+      await Promise.all(stationsPromises)
+    );
+
+    let stations = {};
+    for (const station of unorderedStations) {
+      if (!(station.Id in stations)) {
+        stations[station.Id] = station;
+      }
+    }
+
+    return stations;
+  }
+
+  async function fetchPlatforms(schedules) {
+    const platformPromises = schedules.map(async (schedule) => {
+      return await fetchUrl(
+        `/api/TrainStationPlatform/${schedule.DeparturePlatformId}`
+      );
+    });
+    const unorderedPlatforms = await Promise.all(platformPromises);
+
+    let platforms = {};
+    for (const platform of unorderedPlatforms) {
+      if (!(platform.Id in platforms)) {
+        platforms[platform.Id] = platform;
+      }
+    }
+
+    return platforms;
+  }
+
+  async function fetchUrl(url, method = "GET") {
+    return await fetch(url, {
+      method: method,
+    }).then((response) => {
+      if (!response.ok) {
+        console.log(`${response.status}`);
+      }
+      return response.json();
+    });
+  }
+
+  function Itinerary() {
+    let itineraries = [];
+    if (schedules.length > 2) {
+      return [];
+    }
+    for (let i = 0; i < schedules.length; i++) {
+      const schedule = schedules[i];
+      let departureStation =
+        stations[schedule.DepartureTrainStationId]?.Name ?? "unknown";
+      let destinationStation =
+        stations[schedule.DestinationTrainStationId]?.Name ?? "unknown";
+      let departurePlatform =
+        platforms[schedule.DeparturePlatformId]?.Name ?? "unknown";
+      let departureDate = formatDate(schedule.DepartureTime) ?? "unknown";
+      let departureTime = formatTime(schedule.DepartureTime) ?? "unknown";
+      let arrivalTime = formatTime(schedule.ArrivalTime) ?? "unknown";
+
+      itineraries.push(
+        <div key={schedule.Id} className="itinerary-result">
+          <div className="itinerary-date">{departureDate}</div>
+          <div className="intinerary section-content">
+            {departureTime} - {departureStation} (Platform {departurePlatform} -
+            Seats: {seats[i]?.join(", ") ?? []})<br />
+            {arrivalTime} - {destinationStation} (Platform {departurePlatform})
+          </div>
         </div>
-    )        
-};
+      );
+    }
+    return itineraries.length > 0 ? (
+      itineraries
+    ) : (
+      <Skeleton count={2} height="3rem" width="100%" />
+    );
+  }
+
+  function formatDate(date) {
+    return date.toLocaleDateString("sv-SE");
+  }
+
+  function formatTime(date) {
+    return date.toLocaleTimeString("sv-SE", { timeStyle: "short" });
+  }
+
+  function getScheduleIds(schedules) {
+    return schedules.map(schedule => { return schedule.Id });
+  }
+  return <PaymentForm data={bookingData}/>; 
+}
 
 export default PaymentPage;
