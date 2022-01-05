@@ -263,7 +263,7 @@ function Booking(props) {
             </div>
           </div>
 
-          <div className="price">
+          {/* <div className="price">
             <br />
             <div className="section-title">Totalbelopp:</div>
             <div className="section-content">
@@ -273,7 +273,7 @@ function Booking(props) {
                 <Skeleton width="100%" />
               )}
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="search-btn">
         <button
