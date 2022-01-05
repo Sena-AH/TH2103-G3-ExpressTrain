@@ -26,12 +26,12 @@ function SearchResultsPage() {
   const [DestinationInput, setDestinationInput] = useState();
   const [DestinationStation, setDestinationStation] = useState([]);
   const [AmountOfTravellers, setAmountOfTravellers] = useState();
-  
+
   const [ReturnTripDepartureStation, setReturnTripDepartureStation] = useState();
   const [ReturnTripDestinationStation, setReturnTripDestinationStation] = useState();
-  
+
   const [WantedDateOfTrip, setWantedDateOfTrip] = useState();
-  
+
   const [ArrayOfStations, setArrayOfStations] = useState([]);
   const [ArrayOfSchedules, setArrayOfSchedules] = useState([]);
   const [ArrayOfPossibleDepartures, setArrayOfPossibleDepartures] = useState([]);
@@ -54,60 +54,52 @@ function SearchResultsPage() {
   let navigate = useNavigate();
 
   function handleFirstTripClick(TripId) {
-  
-  setChosenSchedule(TripId); 
-    
-//     if (TypeOfTrip == 'oneway') {
-//       ArrayOfPossibleDepartures.forEach(departure => {
-// console.log(TripId)
-// console.log(departure.props.Id)
-//         if(departure.props.Id === TripId){
-//           updateContext({
-//             FirstTrip: {
-//               ScheduleId: TripId,
-//               Price: 0
-//             }
-//           })
-//           console.log(TripId);
-//           navigate('/BookingInformationPage')
-//         }
-// GÖRA OM TILL FOR LOOP!
-        
-//       });
-     
-//     } else {
-      ArrayOfPossibleDepartures.forEach(departure => {
 
-        if(departure.Id === ChosenSchedule){
+    setChosenSchedule(TripId);
+
+    if (TypeOfTrip == 'oneway') {
+      for (let i = 0; i < ArrayOfPossibleDepartures.length; i++) {
+
+        if (ArrayOfPossibleDepartures[i].props.id === TripId) {
+
           updateContext({
             FirstTrip: {
-              ScheduleId: ChosenSchedule,
-              Price: 0
+              ScheduleId: TripId,
+              Price: 499
             }
           })
-        }
+          navigate('/BookingInformationPage')
+        } else {
+          for (let i = 0; i < ArrayOfPossibleDepartures.length; i++) {
 
-        
-      });
-      
+            if (ArrayOfPossibleDepartures[i].props.id === TripId) {
+              updateContext({
+                FirstTrip: {
+                  ScheduleId: TripId,
+                  Price: 499
+                }
+              })
+            }
+          }
+        }
+      }
     }
   }
-  function handleClickReturn(){
 
-    ArrayOfPossibleDepartures.forEach(departure => {
+  function handleClickReturn(TripId) {
+    for (let i = 0; i < ArrayOfPossibleReturnDepartures.length; i++) {
 
-      if(departure.Id === ChosenSchedule){
+      if (TripId === ArrayOfPossibleReturnDepartures[i].props.Id) {
         updateContext({
           SecondTrip: {
-            ScheduleId: ChosenSchedule,
-            Price: 0
+            ScheduleId: TripId,
+            Price: 399
           }
         })
         navigate('/BookingInformationPage')
       }
-
-      
-    });
+    }
+    console.log(context)
   }
 
   useEffect(() => {
@@ -163,6 +155,8 @@ function SearchResultsPage() {
 
   function LoadSchedules() {
 
+    console.log(context)
+
     ArrayOfStations.forEach(station => {
 
       if (station.Location == DepartureInput) {
@@ -172,7 +166,7 @@ function SearchResultsPage() {
       };
 
     });
-    
+
     ArrayOfSchedules.forEach(schedule => {
 
       let selectedTime = new Date(WantedDateOfTrip);
@@ -227,7 +221,7 @@ function SearchResultsPage() {
     return ArrayOfPossibleDepartures;
   }
 
-  function calculatePrice(){
+  function calculatePrice() {
 
   }
 
@@ -260,7 +254,7 @@ function SearchResultsPage() {
               ArrayOfPossibleReturnDepartureIds.push(trip.Id);
               ArrayOfPossibleReturnDepartures.push(
                 <div className="PossibleDeparture" id={trip.Id}>
-                  <button type="submit" border="solid" onClick={() => handleClickReturn(trip.Id)}>
+                  <button type="submit" border="solid" value={trip.Id} onClick={() => handleClickReturn(trip.Id)}>
                     <h2 className='StationNames'>Avgår från: {trip.DepartureStationName}</h2>
                     <div className='DepartureDate'>{schedule.DepartureTime}</div>
                     <h2 className='StationNames'>Ankommer till: {trip.DestinationStationName}</h2>
@@ -316,7 +310,7 @@ function SearchResultsPage() {
       </main>
     )
   }
-  
+
 };
 
 export default SearchResultsPage;
