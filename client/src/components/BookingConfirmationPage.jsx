@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom';
-import '../css/myBookings2Page.css';
+import '../css/BookingConfirmation.css';
 
 function BookingConfirmationPage() {
     // const navigate = useNavigate();
     // useLocation holds several items, we grab the {state} and then we can access it by state.bookingId
     const { state } = useLocation();
-    const bookingId = state.bookingId;
+    const bookingId = 3;
+    // const bookingCode = state.bookingCode;
 
     const [booking, setBooking] = useState([]);
     const [traveller, setTraveller] = useState([]);
@@ -22,6 +23,32 @@ function BookingConfirmationPage() {
             setBooking(await fetchBooking());
         })();
     }, [bookingId]);
+
+    // useEffect(() => {
+    //     if (!bookingCode) {
+    //         setError("Booking Code missing.");
+    //         return;
+    //     }
+
+    //     (async () => {
+    //         const booking = await fetchBooking();
+    //         const stages = await fetchStages(booking.Id);
+    //         const schedules = await fetchSchedules(stages);
+    //         const [traveller, stations, platforms] = await Promise.all([
+    //             await fetchTraveller(booking.TravellerId),
+    //             await fetchStations(schedules),
+    //             await fetchPlatforms(schedules),
+    //         ]);
+
+    //         setBooking(booking);
+    //         setTraveller(traveller);
+    //         setStages(stages);
+    //         setSchedules(schedules);
+    //         setStations(stations);
+    //         setPlatforms(platforms);
+    //     })();
+    // }, [bookingCode]);
+
 
     useEffect(() => {
         if (!isObjLoaded(booking)) return;
@@ -60,6 +87,10 @@ function BookingConfirmationPage() {
     async function fetchBooking() {
         return await fetchUrl(`/api/Booking/${bookingId}`, 'booking');
     }
+
+    // async function fetchBooking() {
+    //     return await fetchUrl(`/api/Booking/BookingCode/${bookingCode}`);
+    // }
 
     async function fetchTraveller(id) {
         return await fetchUrl(`/api/Traveller/${id}`, 'traveller');
@@ -149,10 +180,24 @@ function BookingConfirmationPage() {
             let seat = stages[i].SeatNumber ?? 'unknown';
 
             itineraries.push(<div key={schedule.Id} className="itinerary-result">
-                {departureDate}<br />
-                {departureTime} - {departureStation} (Platform {departurePlatform} - Seat {seat})<br />
-                {arrivalTime} - {destinationStation} (Platform {departurePlatform} - Seat {seat})
-      </div>);
+                <div className="travel-split-up">
+                    <div className="departure-and-destination-div">
+                        <p>{departureStation}</p> - <p>{destinationStation}</p>
+                    </div><br />
+
+                    <div className="departure-details-div">
+                        <div className="travel-date-title">Avgång</div>
+                        <p>{departureDate}</p><br />
+                        <p>Kl: {departureTime}</p>  <p>Plattform {departurePlatform}</p><br />
+                        <p>Sittplats: {seat}</p>
+                    </div><br />
+                    <div className="destination-details-div">
+                        <div className="travel-date-title">Ankomst</div>
+                        <p>Kl: {arrivalTime}</p>  <p>Plattform {departurePlatform}</p>
+                    </div>
+
+                </div>
+            </div>);
         }
         return itineraries;
     }
@@ -179,52 +224,59 @@ function BookingConfirmationPage() {
     function Booking() {
         const travelDate = isObjLoaded(schedules) ? formatDate((schedules[0].DepartureTime)) : 'laddar...';
         return (<>
-            <div>
-                <h1>Tack för att du bokade hos oss!</h1>
-                <h2>Du får bokningsbekräftelsen skickad till den inskrivna epost adressen med Boknings ID. </h2>
-                <h2>Ha en trevlig resa!</h2>
+            <div className="review-square">
+                <div className="thank-you-text">
+                    <h1>Tack för att du bokade hos oss!</h1><br />
+                    <p>Du får bokningsbekräftelsen skickad till den inskrivna epost adressen med Bokningsnummer. </p>
+                    <p>Ha en trevlig resa!</p>
+                </div>
+                <div>
+                    <div className="booking-id-h3">
+                        <p className="booking-id-title">Bokningskod</p>
+                        <p className="booking-id-result">{booking.BookingCode}</p>
+                    </div>
+
+                    <div className="travel-detail-div">
+
+                        <div className="itinerary">
+                            <br />
+                            {itineraryIsLoaded() ? <Itinerary /> : 'laddar...'}
+                        </div>
+
+                        <div className="price">
+                            <br />
+                            <div className="price-title">Totalbelopp:</div>
+                            <div className="price-result">{booking.Price} kr</div>
+                        </div>
+                    </div>
+                    <div className="traveller-detail-div">
+                        <p className="booking-traveller-title">Bokningsinformation</p>
+                        <div className="name">
+                            <br />
+                            <div className="name-title">Namn</div>
+                            <div className="name-result">{traveller.FirstName} {traveller.LastName}</div>
+                        </div>
+
+                        <div className="email">
+                            <br />
+                            <div className="email-title">E-post</div>
+                            <div className="email-result">{traveller.Email}</div>
+                        </div>
+
+                        <div className="phoneNumber">
+                            <br />
+                            <div className="phoneNumber-title">Telefonnummer</div>
+                            <div className="phoneNumber-result">{traveller.PhoneNumber}</div>
+                        </div>
+
+
+                    </div>
+                    <div className="traveller-blue-line">
+                        <br />
+                    </div>
+                </div>
+
             </div>
-            <div>
-                <h3>Boknings ID: {bookingId}</h3>
-
-                <div className="travel-date">
-                    <br />
-                    <div className="travel-date-title">Resdatum:</div>
-                    <div className="travel-date-result">{travelDate}</div>
-                </div>
-
-                <div className="itinerary">
-                    <br />
-                    <div className="itinerary-title">Resväg:</div>
-                    {itineraryIsLoaded() ? <Itinerary /> : 'laddar...'}
-                </div>
-
-                <div className="name">
-                    <br />
-                    <div className="name-title">Namn:</div>
-                    <div className="name-result">{traveller.FirstName} {traveller.LastName}</div>
-                </div>
-
-                <div className="email">
-                    <br />
-                    <div className="email-title">E-post:</div>
-                    <div className="email-result">{traveller.Email}</div>
-                </div>
-
-                <div className="phoneNumber">
-                    <br />
-                    <div className="phoneNumber-title">Telefonnummer:</div>
-                    <div className="phoneNumber-result">{traveller.PhoneNumber}</div>
-                </div>
-
-                <div className="price">
-                    <br />
-                    <div className="price-title">Totalbelopp:</div>
-                    <div className="price-result">{booking.Price} kr</div>
-                </div>
-            </div>
-
-
         </>);
     }
 

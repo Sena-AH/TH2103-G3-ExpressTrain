@@ -1,12 +1,12 @@
 footer {
-  background-color: #242424;
+background-color: #26375C;
   color: #fff;
   height: min-content;
   display: grid;
   grid-template-columns: 1fr;
   bottom: 0;
   width: 100%;
-  position: fixed;
+  position: relative;
 }
 
 footer p {
