@@ -5,7 +5,7 @@ class DbInitializer {
   constructor(fileName = 'default.db') {
     this.#CreateFolder();
     let path = this.#pathPrefix + fileName;
-    this.#database = require('better-sqlite3')(path, { verbose: console.log });
+    this.#database = require('better-sqlite3')(path); //, { verbose: console.log });
   }
 
   #CreateFolder(suffix = '') {
@@ -42,7 +42,7 @@ class DbInitializer {
       'FirstName' NVARCHAR(100) NOT NULL,
       'LastName' NVARCHAR(100) NOT NULL,
       'Email' NVARCHAR(250) NOT NULL,
-      'PhoneNumber' INTEGER NOT NULL);`);
+      'PhoneNumber' NVARCHAR(17) NOT NULL);`);
     statement.run(); 
   }
 

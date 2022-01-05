@@ -1,20 +1,19 @@
-import React, {useState, useEffect} from 'react';
-import {useLocation, useNavigate} from 'react-router-dom';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
-import '../css/myBookings2Page.css';
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import "../css/myBookings2Page.css";
 
 function Booking(props) {
   const navigate = useNavigate();
-  // useLocation holds several items, we grab the {state} and then we can access it by state.bookingCode
-  const {state} = useLocation();
+  const { state } = useLocation();
   const bookingCode = props.bookingCode ?? state.bookingCode;
 
   const [booking, setBooking] = useState([]);
   const [error, setError] = useState(null);
   const [isBookingDeleted, setIsBookingDeleted] = useState(false);
   const [isCodeValid, setIsCodeValid] = useState(true);
-  const [isManipulationCodeRequired,setIsManipulationCodeRequired] = useState(null);
+  const [isManipulationCodeRequired, setIsManipulationCodeRequired] = useState(null);
   const [manipulationCode, setManipulationCode] = useState("");
   const [platforms, setPlatforms] = useState([]);
   const [schedules, setSchedules] = useState([]);
@@ -22,13 +21,11 @@ function Booking(props) {
   const [stations, setStations] = useState([]);
   const [traveller, setTraveller] = useState([]);
 
-  // const <Skeleton /> = 'Laddar...';
-
   useEffect(() => {
-    if(!bookingCode){
-      setError('Booking Code missing.');
+    if (!bookingCode) {
+      setError("Booking Code missing.");
       return;
-    } 
+    }
 
     (async () => {
       const booking = await fetchBooking();
@@ -37,7 +34,7 @@ function Booking(props) {
       const [traveller, stations, platforms] = await Promise.all([
         await fetchTraveller(booking.TravellerId),
         await fetchStations(schedules),
-        await fetchPlatforms(schedules)
+        await fetchPlatforms(schedules),
       ]);
 
       setBooking(booking);
@@ -50,7 +47,9 @@ function Booking(props) {
   }, [bookingCode]);
 
   async function deleteBooking() {
-    return await fetchDelete(`/api/Booking/${booking.Id}`, { ManipulationCode: manipulationCode });
+    return await fetchDelete(`/api/Booking/${booking.Id}`, {
+      ManipulationCode: manipulationCode,
+    });
   }
 
   async function fetchBooking() {
@@ -79,11 +78,16 @@ function Booking(props) {
     const stationsPromises = schedules.map(async (schedule) => {
       return await Promise.all([
         await fetchUrl(`/api/TrainStation/${schedule.DepartureTrainStationId}`),
-        await fetchUrl(`/api/TrainStation/${schedule.DestinationTrainStationId}`)
+        await fetchUrl(
+          `/api/TrainStation/${schedule.DestinationTrainStationId}`
+        ),
       ]);
     });
-    const unorderedStations = [].concat.apply([], await Promise.all(stationsPromises));
-    
+    const unorderedStations = [].concat.apply(
+      [],
+      await Promise.all(stationsPromises)
+    );
+
     let stations = {};
     for (const station of unorderedStations) {
       if (!(station.Id in stations)) {
@@ -96,7 +100,9 @@ function Booking(props) {
 
   async function fetchPlatforms(schedules) {
     const platformPromises = schedules.map(async (schedule) => {
-      return await fetchUrl(`/api/TrainStationPlatform/${schedule.DeparturePlatformId}`);
+      return await fetchUrl(
+        `/api/TrainStationPlatform/${schedule.DeparturePlatformId}`
+      );
     });
     const unorderedPlatforms = await Promise.all(platformPromises);
 
@@ -110,32 +116,30 @@ function Booking(props) {
     return platforms;
   }
 
-  async function fetchDelete(url, body = '') {
+  async function fetchDelete(url, body = "") {
     return await fetch(url, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(body)
-    })
-      .then(response => {
-        if (!response.ok) {
-          setError(`${response.status}`);
-        }
-        return response.json();
-      });
+      body: JSON.stringify(body),
+    }).then((response) => {
+      if (!response.ok) {
+        setError(`${response.status}`);
+      }
+      return response.json();
+    });
   }
 
-  async function fetchUrl(url, method = 'GET') {
+  async function fetchUrl(url, method = "GET") {
     return await fetch(url, {
-      method: method
-    })
-      .then(response => {
-        if (!response.ok) {
-          setError(`${response.status}`);
-        }
-        return response.json();
-      });
+      method: method,
+    }).then((response) => {
+      if (!response.ok) {
+        setError(`${response.status}`);
+      }
+      return response.json();
+    });
   }
 
   function handleManipulationCodeChange(event) {
@@ -160,101 +164,140 @@ function Booking(props) {
     setIsManipulationCodeRequired(true);
   }
 
+  function handleCheckoutClick(event) {
+    // TODO: Implement
+  }
+
   function handleHomePageClick(event) {
-    navigate('/');
+    navigate("/");
   }
 
   function Itinerary() {
     let itineraries = [];
     for (let i = 0; i < schedules.length; i++) {
       const schedule = schedules[i];
-      let departureStation = stations[schedule.DepartureTrainStationId]?.Name ?? 'unknown';
-      let destinationStation = stations[schedule.DestinationTrainStationId]?.Name ?? 'unknown';
-      let departurePlatform = platforms[schedule.DeparturePlatformId]?.Name ?? 'unknown';
-      let departureDate = formatDate(schedule.DepartureTime) ?? 'unknown';
-      let departureTime = formatTime(schedule.DepartureTime) ?? 'unknown';
-      let arrivalTime = formatTime(schedule.ArrivalTime) ?? 'unknown';
-      let seat = stages[i].SeatNumber ?? 'unknown';
+      let departureStation =
+        stations[schedule.DepartureTrainStationId]?.Name ?? "unknown";
+      let destinationStation =
+        stations[schedule.DestinationTrainStationId]?.Name ?? "unknown";
+      let departurePlatform =
+        platforms[schedule.DeparturePlatformId]?.Name ?? "unknown";
+      let departureDate = formatDate(schedule.DepartureTime) ?? "unknown";
+      let departureTime = formatTime(schedule.DepartureTime) ?? "unknown";
+      let arrivalTime = formatTime(schedule.ArrivalTime) ?? "unknown";
+      let seat = stages[i].SeatNumber ?? "unknown";
 
-      itineraries.push(<div key={schedule.Id} className="itinerary-result">
-        <div className="itinerary-date">
-          {departureDate}
+      itineraries.push(
+        <div key={schedule.Id} className="itinerary-result">
+          <div className="itinerary-date">{departureDate}</div>
+          <div className="intinerary section-content">
+            {departureTime} - {departureStation} (Platform {departurePlatform} -
+            Seat {seat})<br />
+            {arrivalTime} - {destinationStation} (Platform {departurePlatform})
+          </div>
         </div>
-        <div className="intinerary section-content">
-          {departureTime} - {departureStation} (Platform {departurePlatform} - Seat {seat})<br/>
-          {arrivalTime} - {destinationStation} (Platform {departurePlatform} - Seat {seat})
-        </div>
-      </div>);
+      );
     }
-    return itineraries.length > 0 ? itineraries : <Skeleton count={2} height="3rem" width="100%"/>;
+    return itineraries.length > 0 ? (
+      itineraries
+    ) : (
+      <Skeleton count={2} height="3rem" width="100%" />
+    );
   }
 
   function formatDate(date) {
-    return date.toLocaleDateString('sv-SE');
+    return date.toLocaleDateString("sv-SE");
   }
 
   function formatTime(date) {
-    return date.toLocaleTimeString('sv-SE', {timeStyle: 'short'});
+    return date.toLocaleTimeString("sv-SE", { timeStyle: "short" });
   }
 
   function Booking() {
-    const travelDate = schedules[0] ? formatDate((schedules[0].DepartureTime)) : <Skeleton width="100%"/>;
+    const travelDate = schedules[0] ? (
+      formatDate(schedules[0].DepartureTime)
+    ) : (
+      <Skeleton width="100%" />
+    );
 
-    return (<>
-      <div>
-        <h1 className="page-title">Min bokning</h1>
+    return (
+      <>
+        <div>
+          <h1 className="page-title">Min bokning</h1>
+        </div>
+        <div className="page-content">
+          <h3 className="page-subtitle">Boking Code: {bookingCode}</h3>
+
+          <div className="travel-date">
+            <div className="title section-title">Resdatum:</div>
+            <div className="section-content">{travelDate}</div>
+          </div>
+
+          <div className="itinerary">
+            <div className="section-title">Resväg:</div>
+            <Itinerary />
+          </div>
+
+          <div className="name">
+            <br />
+            <div className="section-title">Namn:</div>
+            <div className="section-content">
+              {traveller.FirstName ?? <Skeleton width="100%" />}{" "}
+              {traveller.LastName}
+            </div>
+          </div>
+
+          <div className="email">
+            <br />
+            <div className="section-title">E-post:</div>
+            <div className="section-content">
+              {traveller.Email ?? <Skeleton width="100%" />}
+            </div>
+          </div>
+
+          <div className="phoneNumber">
+            <br />
+            <div className="section-title">Telefonnummer:</div>
+            <div className="section-content">
+              {traveller.PhoneNumber ?? <Skeleton width="100%" />}
+            </div>
+          </div>
+
+          <div className="price">
+            <br />
+            <div className="section-title">Totalbelopp:</div>
+            <div className="section-content">
+              {booking.Price ? (
+                booking.Price + " kr"
+              ) : (
+                <Skeleton width="100%" />
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="search-btn">
+        <button
+          type="button"
+          id="cancel-booking-btn"
+          onClick={handleCancleBookingClick}
+        >
+          Avboka bokningen
+        </button>
       </div>
-      <div className="page-content">
-        <h3 className="page-subtitle">Boking Code: {bookingCode}</h3>
-
-        <div className="travel-date">
-          <div className="title section-title">Resdatum:</div>
-          <div className="section-content">{travelDate}</div>
-        </div>
-
-        <div className="itinerary">
-          <div className="section-title">Resväg:</div>
-          <Itinerary />
-        </div>
-
-        <div className="name">
-          <br/>
-          <div className="section-title">Namn:</div>
-          <div className="section-content">{traveller.FirstName ?? <Skeleton width="100%" />} {traveller.LastName}</div>
-        </div>
-
-        <div className="email">
-          <br/>
-          <div className="section-title">E-post:</div>
-          <div className="section-content">{traveller.Email ?? <Skeleton width="100%" />}</div>
-        </div>
-
-        <div className="phoneNumber">
-          <br/>
-          <div className="section-title">Telefonnummer:</div>
-          <div className="section-content">{traveller.PhoneNumber ?? <Skeleton width="100%" />}</div>
-        </div>
-
-        <div className="price">
-          <br/>
-          <div className="section-title">Totalbelopp:</div>
-          <div className="section-content">{booking.Price ? booking.Price + ' kr' : <Skeleton width="100%" />}</div>
-        </div>
-      </div>
-
-      <div className="search-btn">
-        <button type="button" id="cancel-booking-btn" onClick={handleCancleBookingClick}>Avboka bokningen</button>
-      </div>
-    </>);
+      </>
+    );
   }
 
   function Error() {
-    return (<>
-      <div>
-        Seems like something went wrong!<br/>
-        Error: {error}
-      </div>
-    </>);
+    return (
+      <>
+        <div>
+          Seems like something went wrong!
+          <br />
+          Error: {error}
+        </div>
+      </>
+    );
   }
 
   function ManipulationCodeEntry() {
@@ -307,12 +350,18 @@ function Booking(props) {
           <h1 className="page-title">Din bokning är nu avbokad</h1>
         </div>
         <div className="search-btn">
-          <button type="button" id="home-page-btn" onClick={handleHomePageClick}>Back to Start</button>
+          <button
+            type="button"
+            id="home-page-btn"
+            onClick={handleHomePageClick}
+          >
+            Back to Start
+          </button>
         </div>
       </>
-    )
+    );
   }
-  
+
   function MainContent() {
     if (!bookingCode || error) return <Error />;
     if (isBookingDeleted) return <BookingDeletedConfirmation />;
@@ -320,13 +369,7 @@ function Booking(props) {
     return <Booking />;
   }
 
-  return (
-    <main>
-      <div className="wrapper">
-        <MainContent />
-      </div>
-    </main>
-  );
+  return <MainContent />;
 }
 
 export default Booking;
