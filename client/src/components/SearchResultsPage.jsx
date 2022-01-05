@@ -39,6 +39,10 @@ function SearchResultsPage() {
   const [ArrayOfPossibleReturnDepartures, setArrayOfPossibleReturnDepartures] = useState([]);
   const [ArrayOfPossibleReturnDepartureIds, setArrayOfPossibleReturnDepartureIds] = useState([]);
 
+  const [FirstPrice, setFirstPrice] = useState(499);
+  const [SecondPrice, setSecondPrice] = useState(399);
+
+
   const [ChosenSchedule, setChosenSchedule] = useState();
 
   const [ArrayOfChosenTrips, setArrayOfChosenTrips] = useState([]);
@@ -57,30 +61,31 @@ function SearchResultsPage() {
 
     setChosenSchedule(TripId);
 
-    if (TypeOfTrip == 'oneway') {
-      for (let i = 0; i < ArrayOfPossibleDepartures.length; i++) {
+    for (let i = 0; i < ArrayOfPossibleDepartures.length; i++) {
 
-        if (ArrayOfPossibleDepartures[i].props.id === TripId) {
+      if (ArrayOfPossibleDepartures[i].props.id === TripId) {
+        if (TypeOfTrip == 'oneway') {
 
           updateContext({
             FirstTrip: {
               ScheduleId: TripId,
-              Price: 499
+              Price: FirstPrice
             }
           })
           navigate('/BookingInformationPage')
-        } else {
-          for (let i = 0; i < ArrayOfPossibleDepartures.length; i++) {
+        }
+      } else {
+        for (let i = 0; i < ArrayOfPossibleDepartures.length; i++) {
 
-            if (ArrayOfPossibleDepartures[i].props.id === TripId) {
-              updateContext({
-                FirstTrip: {
-                  ScheduleId: TripId,
-                  Price: 499
-                }
-              })
-            }
+          if (ArrayOfPossibleDepartures[i].props.id === TripId) {
+            updateContext({
+              FirstTrip: {
+                ScheduleId: TripId,
+                Price: FirstPrice
+              }
+            })
           }
+          console.log(i)
         }
       }
     }
@@ -88,12 +93,12 @@ function SearchResultsPage() {
 
   function handleClickReturn(TripId) {
     for (let i = 0; i < ArrayOfPossibleReturnDepartures.length; i++) {
-
-      if (TripId === ArrayOfPossibleReturnDepartures[i].props.Id) {
+      if (TripId === ArrayOfPossibleReturnDepartures[i].props.id) {
+        console.log('secondtrip')
         updateContext({
           SecondTrip: {
             ScheduleId: TripId,
-            Price: 399
+            Price: SecondPrice
           }
         })
         navigate('/BookingInformationPage')
@@ -207,7 +212,7 @@ function SearchResultsPage() {
                     <h2 className='StationNames'>Ankommer till: {trip.DestinationStationName}</h2>
                     <div className='DepartureAndArrival'>{schedule.ArrivalTime}</div>
                     <br />
-                    <div className='Price'>Cykeln på köpet</div>
+                    <div className='Price'>{FirstPrice} kr</div>
                   </button>
                 </div>
               )
@@ -260,7 +265,7 @@ function SearchResultsPage() {
                     <h2 className='StationNames'>Ankommer till: {trip.DestinationStationName}</h2>
                     <div className='DepartureAndArrival'>{schedule.ArrivalTime}</div>
                     <br />
-                    <div className='Price'>Cykeln på köpet</div>
+                    <div className='Price'>{SecondPrice} kr</div>
                   </button>
                 </div>
               )
@@ -291,9 +296,8 @@ function SearchResultsPage() {
     return (
       <main>
         <div className="wrapper">
-
+          <h1>Avgångar</h1>
           {isLoadschedulesLoaded() ? <LoadSchedules /> : 'laddar...'}
-
         </div>
       </main>
     );
@@ -303,6 +307,7 @@ function SearchResultsPage() {
       //Load roundtrip schedules
       <main>
         <div className='wrapper'>
+          <h1>Utresor</h1>
           {isLoadschedulesLoaded() ? <LoadSchedules /> : 'laddar...'}
           <h1>Returresor</h1>
           {isLoadRoundtripLoaded() ? <LoadRoundtrip /> : 'laddar...'}
