@@ -201,8 +201,8 @@ function BookingConfirmationPage() {
                 </div>
                 <div>
                     <div className="booking-id-h3">
-                        <p className="booking-id-title">Bokningsnummer</p>
-                        <p className="booking-id-result">{bookingId}</p>
+                        <p className="booking-id-title">Bokningskod</p>
+                        <p className="booking-id-result">{booking.BookingCode}</p>
                     </div>
 
                     <div className="travel-detail-div">
