@@ -18,8 +18,7 @@ function Tickets(props) {
 }
 
 function SearchResultsPage() {
-
-  const [context, updateContext] = useContext(Context)
+  const [context, updateContext] = useContext(Context);
 
   const [DepartureInput, setDepartureInput] = useState();
   const [DepartureStation, setDepartureStation] = useState([]);
@@ -42,7 +41,6 @@ function SearchResultsPage() {
   const [FirstPrice, setFirstPrice] = useState(499);
   const [SecondPrice, setSecondPrice] = useState(399);
 
-
   const [ChosenSchedule, setChosenSchedule] = useState();
 
   const [ArrayOfChosenTrips, setArrayOfChosenTrips] = useState([]);
@@ -58,40 +56,21 @@ function SearchResultsPage() {
   let navigate = useNavigate();
 
   function handleFirstTripClick(TripId) {
-
     setChosenSchedule(TripId);
 
     for (let i = 0; i < ArrayOfPossibleDepartures.length; i++) {
-
       if (ArrayOfPossibleDepartures[i].props.id === TripId) {
-        if (TypeOfTrip == 'oneway') {
+        let tripInfo = [ArrayOfPossibleReturnDepartures[i], SecondPrice]
+        let price = calculatePrice(tripInfo)
 
-          let tripInfo = [ArrayOfPossibleReturnDepartures[i], SecondPrice]
-          let price = calculatePrice(tripInfo)
-
-          updateContext({
-            FirstTrip: {
-              ScheduleId: TripId,
-              Price: price
-            }
-          })
-          navigate('/BookingInformationPage')
-        }
-      } else {
-        for (let i = 0; i < ArrayOfPossibleDepartures.length; i++) {
-
-          if (ArrayOfPossibleDepartures[i].props.id === TripId) {
-
-            let tripInfo = [ArrayOfPossibleReturnDepartures[i], SecondPrice]
-            let price = calculatePrice(tripInfo)
-
-            updateContext({
-              FirstTrip: {
-                ScheduleId: TripId,
-                Price: price
-              }
-            })
+        updateContext({
+          FirstTrip: {
+            ScheduleId: TripId,
+            Price: price
           }
+        })
+        if (TypeOfTrip == 'oneway') {
+          navigate('/BookingInformationPage');
         }
       }
     }
@@ -112,11 +91,9 @@ function SearchResultsPage() {
         navigate('/BookingInformationPage')
       }
     }
-    
   }
 
   useEffect(() => {
-
     if (!context) {
       return;
     }
@@ -154,7 +131,6 @@ function SearchResultsPage() {
   }, [ArrayOfStations]);
 
   useEffect(() => {
-
     setDepartureInput(context.InputInfo.From);
     setDestinationInput(context.InputInfo.To);
     setTypeOfTrip(context.InputInfo.TypeOfTrip);
@@ -162,26 +138,20 @@ function SearchResultsPage() {
     setWantedDateOfTrip(context.InputInfo.DateOfTrip + ' 00:00:00');
     setReturnTripDepartureStation(DestinationStation);
     setReturnTripDestinationStation(DepartureStation);
-
-
   }, [ArrayOfSchedules]);
 
   function LoadSchedules() {
-
     console.log(context)
 
     ArrayOfStations.forEach(station => {
-
       if (station.Location == DepartureInput) {
         setDepartureStation(station)
       } else if (station.Location == DestinationInput) {
         setDestinationStation(station)
       };
-
     });
 
     ArrayOfSchedules.forEach(schedule => {
-
       let selectedTime = new Date(WantedDateOfTrip);
       let departureTime = new Date(schedule.DepartureTime);
       let tempTime = new Date();
@@ -229,7 +199,6 @@ function SearchResultsPage() {
             }
           }
         });
-
       };
     });
     console.log(ArrayOfPossibleDepartures)
@@ -248,11 +217,8 @@ function SearchResultsPage() {
     return (priceInfo[0]);
   }
 
-
   function LoadRoundtrip() {
-
     ArrayOfSchedules.forEach(schedule => {
-
       // let selectedTime = new Date(WantedDateOfTrip);
       // let departureTime = new Date(schedule.DepartureTime);
       // let tempTime = new Date();
@@ -263,13 +229,10 @@ function SearchResultsPage() {
       let tempTime = new Date();
       tempTime.setDate(returnTripDate.getDate() + 1);
 
-
-
       if (departureTime > tempTime
         && ReturnTripDepartureStation.Id == schedule.DepartureTrainStationId
         && ReturnTripDestinationStation.Id == schedule.DestinationTrainStationId) {
         let trip = schedule;
-
 
         ArrayOfStations.forEach(station => {
 
@@ -342,7 +305,6 @@ function SearchResultsPage() {
       </main>
     )
   }
-
 };
 
 export default SearchResultsPage;
