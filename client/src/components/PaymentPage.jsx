@@ -1,4 +1,12 @@
+import React, { useState, useContext, useEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Context } from '../App'
+
 function PaymentPage(){
+    const [context, updateContext] = useContext(Context)
+    console.log('Context efter navigate');
+
+console.log(context);
     return(
         <div className="centered-text-div">
             <div>

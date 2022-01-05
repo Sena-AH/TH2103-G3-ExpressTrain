@@ -100,7 +100,9 @@ class DbInitializer {
     const statement = this.#database.prepare(`CREATE TABLE IF NOT EXISTS 'Booking'(
       'Id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
       'TravellerId' INTEGER NOT NULL REFERENCES 'Traveller',
-      'Price' DECIMAL NOT NULL);`
+      'Price' DECIMAL NOT NULL,
+      'BookingCode' NVARCHAR(6) UNIQUE,
+      'ManipulationCode' NVARCHAR(8));`
     );
 
     statement.run();
@@ -166,7 +168,7 @@ class DbInitializer {
     ('7', '1', '1', '4', '2', '1', '2021-12-30 13:25:00', '2021-12-30 16:25:00'),
     ('8', '1', '3', '3', '1', '4', '2021-12-31 11:00:00', '2021-12-31 14:15:00'),
     ('9', '1', '3', '1', '2', '3', '2022-01-01 07:15:00', '2022-01-01 11:30:00'),
-    ('10', '1', '1', '1', '3', '1', '2022-01-02 05:15:00', '2022-01-02 08:15:00'),
+    ('10', '1', '3', '1', '1', '1', '2022-01-02 05:15:00', '2022-01-02 08:15:00'),
 
     ('11', '1', '1', '1', '2', '1', '2022-01-25 05:15:00', '2022-01-25 08:15:00'),    
     ('12', '1', '1', '1', '3', '1', '2022-01-25 05:35:00', '2022-01-25 08:35:00'),
@@ -196,12 +198,12 @@ class DbInitializer {
     VALUES ('1', '23', '1'),
     ('2', '1', '2'),
     ('3', '10', '4'),
-    ('4', '11', '2'),
+    ('4', '11', '6'),
     ('5', '12', '4'),
     ('6', '7', '3'),
     ('7', '4', '3'),
-    ('8', '1', '1'),
-    ('9', '25', '3'),
+    ('8', '1', '5'),
+    ('9', '25', '7'),
     ('10', '26', '2');`
     );
     insert.run();
@@ -218,11 +220,14 @@ class DbInitializer {
   }
 
   #SeedBookingsTables() {
-    const insert = this.#database.prepare(`INSERT OR REPLACE INTO 'Booking' (Id, TravellerId, Price)
-    VALUES ('1', '1', '400.00'),
-    ('2', '2', '500.00'),
-    ('3', '2', '1500.00'),
-    ('4', '3', '200.00');`
+    const insert = this.#database.prepare(`INSERT OR REPLACE INTO 'Booking' (Id, TravellerId, Price, BookingCode, ManipulationCode)
+    VALUES ('1', '1', '400.00', 'A01BC4', '4CV34RT6'),
+    ('2', '2', '500.00', 'B123G5', '95TVFD34'),
+    ('3', '2', '1500.00', 'P99G43', 'SA2I3P91'),
+    ('4', '3', '200.00', '1PK6TR', 'LU7FV8HG'),
+    ('5', '2', '700.00', '8TH43K', '9IIK44HN'),
+    ('6', '2', '400.00', '3MHY3E', 'GHI23NGF'),
+    ('7', '2', '500.00', 'IK7H1H', '1B3I8B4K');`
     );
     insert.run();
   }
