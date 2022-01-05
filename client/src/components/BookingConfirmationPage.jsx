@@ -235,7 +235,7 @@ function BookingConfirmationPage() {
                         <p className="booking-id-title">Bokningskod</p>
                         <p className="booking-id-result">{booking.BookingCode}</p>
                     </div>
-
+{/* TODO: Needs a Manipulation Code: veriferings kod. */}
                     <div className="travel-detail-div">
 
                         <div className="itinerary">
