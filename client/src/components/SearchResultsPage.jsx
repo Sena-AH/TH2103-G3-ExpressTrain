@@ -66,10 +66,13 @@ function SearchResultsPage() {
       if (ArrayOfPossibleDepartures[i].props.id === TripId) {
         if (TypeOfTrip == 'oneway') {
 
+          let tripInfo = [ArrayOfPossibleReturnDepartures[i], SecondPrice]
+          let price = calculatePrice(tripInfo)
+
           updateContext({
             FirstTrip: {
               ScheduleId: TripId,
-              Price: FirstPrice
+              Price: price
             }
           })
           navigate('/BookingInformationPage')
@@ -78,14 +81,17 @@ function SearchResultsPage() {
         for (let i = 0; i < ArrayOfPossibleDepartures.length; i++) {
 
           if (ArrayOfPossibleDepartures[i].props.id === TripId) {
+
+            let tripInfo = [ArrayOfPossibleReturnDepartures[i], SecondPrice]
+            let price = calculatePrice(tripInfo)
+
             updateContext({
               FirstTrip: {
                 ScheduleId: TripId,
-                Price: FirstPrice
+                Price: price
               }
             })
           }
-          console.log(i)
         }
       }
     }
@@ -94,17 +100,19 @@ function SearchResultsPage() {
   function handleClickReturn(TripId) {
     for (let i = 0; i < ArrayOfPossibleReturnDepartures.length; i++) {
       if (TripId === ArrayOfPossibleReturnDepartures[i].props.id) {
-        console.log('secondtrip')
+        let tripInfo = [ArrayOfPossibleReturnDepartures[i], SecondPrice]
+
+        let price = calculatePrice(tripInfo)
         updateContext({
           SecondTrip: {
             ScheduleId: TripId,
-            Price: SecondPrice
+            Price: price
           }
         })
         navigate('/BookingInformationPage')
       }
     }
-    console.log(context)
+    
   }
 
   useEffect(() => {
@@ -203,6 +211,8 @@ function SearchResultsPage() {
 
           if (trip.DepartureStationName && trip.DestinationStationName) {
             if (!ArrayOfPossibleDepartureIds.includes(trip.Id)) {
+              let priceInfo = [FirstPrice, trip.DepartureTime];
+              let price = calculatePrice(priceInfo);
               ArrayOfPossibleDepartureIds.push(trip.Id)
               ArrayOfPossibleDepartures.push(
                 <div className="PossibleDeparture" id={trip.Id}>
@@ -212,7 +222,7 @@ function SearchResultsPage() {
                     <h2 className='StationNames'>Ankommer till: {trip.DestinationStationName}</h2>
                     <div className='DepartureAndArrival'>{schedule.ArrivalTime}</div>
                     <br />
-                    <div className='Price'>{FirstPrice} kr</div>
+                    <div className='Price'>{price} kr</div>
                   </button>
                 </div>
               )
@@ -226,21 +236,36 @@ function SearchResultsPage() {
     return ArrayOfPossibleDepartures;
   }
 
-  function calculatePrice() {
+  function calculatePrice(priceInfo) {
+    let date = new Date(priceInfo[1])
+    let today = Date.now();
 
+    let price;
+    if(date > today + 15){
+      price = priceInfo[0] - 100;
+      return (price);
+    }
+    return (priceInfo[0]);
   }
+
 
   function LoadRoundtrip() {
 
     ArrayOfSchedules.forEach(schedule => {
 
+      // let selectedTime = new Date(WantedDateOfTrip);
+      // let departureTime = new Date(schedule.DepartureTime);
+      // let tempTime = new Date();
+      // tempTime.setDate(selectedTime.getDate() + 8);
+
       let returnTripDate = new Date(WantedDateOfTrip);
-      let tempTime = new Date();
-      tempTime.setDate(returnTripDate.getDate() + 7);
-
       let departureTime = new Date(schedule.DepartureTime);
+      let tempTime = new Date();
+      tempTime.setDate(returnTripDate.getDate() + 1);
 
-      if (departureTime <= tempTime
+
+
+      if (departureTime > tempTime
         && ReturnTripDepartureStation.Id == schedule.DepartureTrainStationId
         && ReturnTripDestinationStation.Id == schedule.DestinationTrainStationId) {
         let trip = schedule;
@@ -256,6 +281,8 @@ function SearchResultsPage() {
           }
           if (trip.DepartureStationName && trip.DestinationStationName) {
             if (!ArrayOfPossibleReturnDepartureIds.includes(trip.Id)) {
+              let priceInfo = [FirstPrice, trip.DepartureTime];
+              let price = calculatePrice(priceInfo);
               ArrayOfPossibleReturnDepartureIds.push(trip.Id);
               ArrayOfPossibleReturnDepartures.push(
                 <div className="PossibleDeparture" id={trip.Id}>
@@ -265,7 +292,7 @@ function SearchResultsPage() {
                     <h2 className='StationNames'>Ankommer till: {trip.DestinationStationName}</h2>
                     <div className='DepartureAndArrival'>{schedule.ArrivalTime}</div>
                     <br />
-                    <div className='Price'>{SecondPrice} kr</div>
+                    <div className='Price'>{price} kr</div>
                   </button>
                 </div>
               )
