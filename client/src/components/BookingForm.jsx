@@ -5,6 +5,7 @@ import { Context } from '../App';
 
 function BookingForm(props) {
   const [context, updateContext] = useContext(Context);
+  console.log(context);
   
   const [navState, updateNavState] = useState({
     TravellerAmount: context.TravellerAmount,

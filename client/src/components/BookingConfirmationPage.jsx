@@ -298,10 +298,6 @@ function BookingConfirmationPage() {
         return <Booking />;
     }
 
-    return (
-        <main>
-            <MainContent />
-            {/* {error ? <Error/> : bookingDeleted ? <DeleteBookingConfirmation /> : <Booking/>} */}
-        </main>);
+    return (<MainContent />);
 }
 export default BookingConfirmationPage

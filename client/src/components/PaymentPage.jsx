@@ -31,6 +31,7 @@ function PaymentPage(props) {
   );
 
   const [bookingData, setBookingData] = useState();
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -155,6 +156,77 @@ function PaymentPage(props) {
     );
   }
 
+  function Booking() {
+    const travelDate = schedules[0] ? (
+      formatDate(schedules[0].DepartureTime)
+    ) : (
+      <Skeleton width="100%" />
+    );
+
+    return (
+      <>
+        <div>
+          <h1 className="page-title">Min bokning</h1>
+        </div>
+        <div className="page-content">
+          {/* <h3 className="page-subtitle">Boking Code: {bookingCode}</h3> */}
+
+          <div className="travel-date">
+            <div className="title section-title">Resdatum:</div>
+            <div className="section-content">{travelDate}</div>
+          </div>
+
+          <div className="itinerary">
+            <div className="section-title">Resväg:</div>
+            <Itinerary />
+          </div>
+
+          <div className="name">
+            <br />
+            <div className="section-title">Namn:</div>
+            <div className="section-content">
+              {context.TravellerFirstName ?? <Skeleton width="100%" />}{" "}
+              {context.TravellerLastName}
+            </div>
+          </div>
+
+          <div className="email">
+            <br />
+            <div className="section-title">E-post:</div>
+            <div className="section-content">
+              {context.TravellerEmail ?? <Skeleton width="100%" />}
+            </div>
+          </div>
+
+          <div className="phoneNumber">
+            <br />
+            <div className="section-title">Telefonnummer:</div>
+            <div className="section-content">
+              {context.TravellerPhoneNumber ?? <Skeleton width="100%" />}
+            </div>
+          </div>
+
+          <div className="price">
+            <br />
+            <div className="section-title">Totalbelopp:</div>
+            <div className="section-content">
+              {totalPrice ? totalPrice + " kr" : <Skeleton width="100%" />}
+            </div>
+          </div>
+        </div>
+        <div className="search-btn">
+          <button
+            type="button"
+            id="cancel-booking-btn"
+            onClick={(e) => setShowPaymentForm(true)}
+          >
+            Betala
+          </button>
+        </div>
+      </>
+    );
+  }
+
   function formatDate(date) {
     return date.toLocaleDateString("sv-SE");
   }
@@ -166,7 +238,10 @@ function PaymentPage(props) {
   function getScheduleIds(schedules) {
     return schedules.map(schedule => { return schedule.Id });
   }
-  return <PaymentForm data={bookingData}/>; 
+  if (showPaymentForm) {
+    return <PaymentForm data={bookingData}/>;
+  }
+  return <Booking />;
 }
 
 export default PaymentPage;

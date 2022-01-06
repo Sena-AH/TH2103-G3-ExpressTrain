@@ -2,21 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect, useContext } from 'react';
 import { Context } from '../App';
 
-function Tickets(props) {
-  let ticketOptions = [];
-  let amount = props.amount
-  let severalTickets;
-  for (let i = 0; i < amount; i++) {
-    if (i === 0) {
-      severalTickets = 'Biljett';
-    } else {
-      severalTickets = 'Biljetter';
-    }
-    ticketOptions.push(<option value="{i+1}">{i + 1} {severalTickets}</option>);
-  }
-  return ticketOptions;
-}
-
 function SearchResultsPage() {
   const [context, updateContext] = useContext(Context);
 
@@ -41,6 +26,9 @@ function SearchResultsPage() {
   const [FirstPrice, setFirstPrice] = useState(499);
   const [SecondPrice, setSecondPrice] = useState(399);
 
+  const [firstTrip, setFirstTrip] = useState({});
+  const [secondTrip, setSecondTrip] = useState({});
+
   const [ChosenSchedule, setChosenSchedule] = useState();
 
   const [ArrayOfChosenTrips, setArrayOfChosenTrips] = useState([]);
@@ -55,23 +43,40 @@ function SearchResultsPage() {
 
   let navigate = useNavigate();
 
+  useEffect(() => {
+    console.log(context);
+  }, [context]);
+
+  useEffect(() => {
+    if(isObjectLoaded(firstTrip)){
+      updateContext(firstTrip)
+    }
+  }, [firstTrip]);
+
+  useEffect(() => {
+    if(isObjectLoaded(secondTrip)){
+      updateContext(secondTrip)
+    }
+  }, [secondTrip]);
+
   function handleFirstTripClick(TripId) {
     setChosenSchedule(TripId);
 
     for (let i = 0; i < ArrayOfPossibleDepartures.length; i++) {
       if (ArrayOfPossibleDepartures[i].props.id === TripId) {
-        let tripInfo = [ArrayOfPossibleReturnDepartures[i], SecondPrice]
+        let tripInfo = [ArrayOfPossibleReturnDepartures[i], FirstPrice]
         let price = calculatePrice(tripInfo)
 
-        updateContext({
+        setFirstTrip({
           FirstTrip: {
             ScheduleId: TripId,
             Price: price
           }
-        })
-        if (TypeOfTrip == 'oneway') {
-          navigate('/BookingInformationPage');
-        }
+        });
+
+        // if (TypeOfTrip === 'oneway') {
+        //   navigate('/BookingInformationPage');
+        // }
       }
     }
   }
@@ -82,16 +87,27 @@ function SearchResultsPage() {
         let tripInfo = [ArrayOfPossibleReturnDepartures[i], SecondPrice]
 
         let price = calculatePrice(tripInfo)
-        updateContext({
+        setSecondTrip({
           SecondTrip: {
             ScheduleId: TripId,
             Price: price
           }
         })
-        navigate('/BookingInformationPage')
+
+        // navigate('/BookingInformationPage')
       }
     }
   }
+
+  useEffect(() => {
+    if (context.FirstTrip?.ScheduleId && TypeOfTrip === 'oneway') {
+      navigate('/BookingInformationPage');
+    }
+
+    if (context.SecondTrip?.ScheduleId && TypeOfTrip === 'roundtrip') {
+      navigate('/BookingInformationPage');
+    }
+  }, [context]);
 
   useEffect(() => {
     if (!context) {
@@ -109,6 +125,7 @@ function SearchResultsPage() {
         console.log("error", error);
       }
     };
+
     fetchData();
   }, [context]);
 
@@ -131,26 +148,16 @@ function SearchResultsPage() {
   }, [ArrayOfStations]);
 
   useEffect(() => {
-    setDepartureInput(context.InputInfo.From);
-    setDestinationInput(context.InputInfo.To);
-    setTypeOfTrip(context.InputInfo.TypeOfTrip);
+    setDepartureInput(context.TravelFrom);
+    setDestinationInput(context.TravelTo);
+    setTypeOfTrip(context.TravelType);
     setAmountOfTravellers(context.TravellerAmount);
-    setWantedDateOfTrip(context.InputInfo.DateOfTrip + ' 00:00:00');
+    setWantedDateOfTrip(context.TravelDate + ' 00:00:00');
     setReturnTripDepartureStation(DestinationStation);
     setReturnTripDestinationStation(DepartureStation);
   }, [ArrayOfSchedules]);
 
-  function LoadSchedules() {
-    console.log(context)
-
-    ArrayOfStations.forEach(station => {
-      if (station.Location == DepartureInput) {
-        setDepartureStation(station)
-      } else if (station.Location == DestinationInput) {
-        setDestinationStation(station)
-      };
-    });
-
+  function Schedules() {
     ArrayOfSchedules.forEach(schedule => {
       let selectedTime = new Date(WantedDateOfTrip);
       let departureTime = new Date(schedule.DepartureTime);
@@ -181,11 +188,12 @@ function SearchResultsPage() {
 
           if (trip.DepartureStationName && trip.DestinationStationName) {
             if (!ArrayOfPossibleDepartureIds.includes(trip.Id)) {
-              let priceInfo = [FirstPrice, trip.DepartureTime];
+              let priceInfo = [trip.DepartureTime, FirstPrice];
+              console.log(priceInfo);
               let price = calculatePrice(priceInfo);
               ArrayOfPossibleDepartureIds.push(trip.Id)
               ArrayOfPossibleDepartures.push(
-                <div className="PossibleDeparture" id={trip.Id}>
+                <div key={trip.Id} className="PossibleDeparture" id={trip.Id}>
                   <button type="submit" border="solid" value={trip.Id} onClick={() => handleFirstTripClick(trip.Id)}>
                     <h2 className='StationNames'>Avgår från: {trip.DepartureStationName}</h2>
                     <div className='DepartureDate'>{schedule.DepartureTime}</div>
@@ -201,23 +209,24 @@ function SearchResultsPage() {
         });
       };
     });
-    console.log(ArrayOfPossibleDepartures)
+    // console.log(ArrayOfPossibleDepartures)
     return ArrayOfPossibleDepartures;
   }
 
   function calculatePrice(priceInfo) {
-    let date = new Date(priceInfo[1])
+    let date = new Date(priceInfo[0]);
     let today = Date.now();
 
     let price;
     if(date > today + 15){
-      price = priceInfo[0] - 100;
+      price = priceInfo[1] - 100;
       return (price);
     }
-    return (priceInfo[0]);
+
+    return (priceInfo[1]);
   }
 
-  function LoadRoundtrip() {
+  function RoundTrip() {
     ArrayOfSchedules.forEach(schedule => {
       // let selectedTime = new Date(WantedDateOfTrip);
       // let departureTime = new Date(schedule.DepartureTime);
@@ -244,11 +253,13 @@ function SearchResultsPage() {
           }
           if (trip.DepartureStationName && trip.DestinationStationName) {
             if (!ArrayOfPossibleReturnDepartureIds.includes(trip.Id)) {
-              let priceInfo = [FirstPrice, trip.DepartureTime];
+              let priceInfo = [trip.DepartureTime, FirstPrice];
+              console.log(priceInfo);
               let price = calculatePrice(priceInfo);
+
               ArrayOfPossibleReturnDepartureIds.push(trip.Id);
               ArrayOfPossibleReturnDepartures.push(
-                <div className="PossibleDeparture" id={trip.Id}>
+                <div key={trip.Id} className="PossibleDeparture" id={trip.Id}>
                   <button type="submit" border="solid" value={trip.Id} onClick={() => handleClickReturn(trip.Id)}>
                     <h2 className='StationNames'>Avgår från: {trip.DepartureStationName}</h2>
                     <div className='DepartureDate'>{schedule.DepartureTime}</div>
@@ -268,12 +279,7 @@ function SearchResultsPage() {
     return ArrayOfPossibleReturnDepartures;
   }
 
-  function isLoadschedulesLoaded() {
-
-    return (isObjectLoaded(ArrayOfSchedules));
-  }
-
-  function isLoadRoundtripLoaded() {
+  function isSchedulesLoaded() {
     return (isObjectLoaded(ArrayOfSchedules));
   }
 
@@ -282,27 +288,42 @@ function SearchResultsPage() {
     if (state === undefined) return false;
     return !(Object.keys(state).length === 0);
   }
+
+  function setStationLocations() {
+    ArrayOfStations.forEach(station => {
+      if (station.Location == DepartureInput) {
+        setDepartureStation(station)
+      } else if (station.Location == DestinationInput) {
+        setDestinationStation(station)
+      };
+    });
+  }
+
+  useEffect(() => {
+    if (isSchedulesLoaded()) {
+      setStationLocations();
+    }
+  
+  }, [isSchedulesLoaded]);
+  
+  // Rendering.
   if (TypeOfTrip == 'oneway') {
     return (
-      <main>
-        <div className="wrapper">
-          <h1>Avgångar</h1>
-          {isLoadschedulesLoaded() ? <LoadSchedules /> : 'laddar...'}
-        </div>
-      </main>
+      <div>
+        <h1>Avgångar</h1>
+        {isSchedulesLoaded() ? <Schedules /> : 'laddar...'}
+      </div>
     );
 
   } else {
     return (
       //Load roundtrip schedules
-      <main>
-        <div className='wrapper'>
-          <h1>Utresor</h1>
-          {isLoadschedulesLoaded() ? <LoadSchedules /> : 'laddar...'}
-          <h1>Returresor</h1>
-          {isLoadRoundtripLoaded() ? <LoadRoundtrip /> : 'laddar...'}
-        </div>
-      </main>
+      <div>
+        <h1>Utresor</h1>
+        {isSchedulesLoaded() ? <Schedules /> : 'laddar...'}
+        <h1>Returresor</h1>
+        {isSchedulesLoaded() ? <RoundTrip /> : 'laddar...'}
+      </div>
     )
   }
 };
