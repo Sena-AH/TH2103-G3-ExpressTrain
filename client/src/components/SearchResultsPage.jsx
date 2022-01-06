@@ -104,7 +104,7 @@ function SearchResultsPage() {
       navigate('/BookingInformationPage');
     }
 
-    if (context.SecondTrip?.ScheduleId && TypeOfTrip === 'roundtrip') {
+    if (context.FirstTrip?.ScheduleId && context.SecondTrip?.ScheduleId && TypeOfTrip === 'roundtrip') {
       navigate('/BookingInformationPage');
     }
   }, [context]);
