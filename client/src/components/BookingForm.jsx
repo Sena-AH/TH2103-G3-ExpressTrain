@@ -1,16 +1,21 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { Context } from '../App';
+
 
 function BookingForm(props) {
-  const [context, updateContext] = useState({
-    TravellerAmount: 2,
+  const [context, updateContext] = useContext(Context);
+  console.log(context);
+  
+  const [navState, updateNavState] = useState({
+    TravellerAmount: context.TravellerAmount,
     FirstTrip: {
-      ScheduleId: 3,
-      Price: 599
+      ScheduleId: context.FirstTrip?.ScheduleId ?? 0,
+      Price: context.FirstTrip?.Price ?? 0
     },
     SecondTrip: {
-      ScheduleId: 2,
-      Price: 985
+      ScheduleId: context.SecondTrip?.ScheduleId ?? 0,
+      Price: context.SecondTrip?.Price ?? 0
     },
     FirstTripSeats: [],
     SecondTripSeats: [],
@@ -22,15 +27,19 @@ function BookingForm(props) {
   let navigate = useNavigate();
 
   function handleChange(event) {
-    updateContext({
-      ...context,
+    updateNavState({
+      ...navState,
       ['Traveller' + event.target.name]: event.target.value.trim(),
     });
   }
 
   function submitData() {
-    navigate('/SeatsPage', { state: context });
+    navigate('/SeatsPage', { state: navState });
   }
+
+  useEffect(() => {
+    console.log(context);
+  }, []);
 
   return (
     <div>
@@ -41,7 +50,7 @@ function BookingForm(props) {
           type="text"
           name="FirstName"
           placeholder="Förnamn"
-          value={context.TravellerFirstName}
+          value={navState.TravellerFirstName}
           onChange={handleChange} />
       </div>
 
@@ -51,7 +60,7 @@ function BookingForm(props) {
           type="text"
           name="LastName"
           placeholder="Efternamn"
-          value={context.TravellerLastName}
+          value={navState.TravellerLastName}
           onChange={handleChange} />
       </div>
 
@@ -61,7 +70,7 @@ function BookingForm(props) {
           type="text"
           name="Email"
           placeholder="E-mail"
-          value={context.TravellerEmail}
+          value={navState.TravellerEmail}
           onChange={handleChange} />
       </div>
 
@@ -71,7 +80,7 @@ function BookingForm(props) {
           type="text"
           name="PhoneNumber"
           placeholder="Telefonnummer"
-          value={context.TravellerPhoneNumber}
+          value={navState.TravellerPhoneNumber}
           onChange={handleChange} />
       </div>
 

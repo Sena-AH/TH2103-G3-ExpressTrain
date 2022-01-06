@@ -174,6 +174,10 @@ function Booking(props) {
 
   function Itinerary() {
     let itineraries = [];
+
+    // TODO: only show unique schedules (but include all seatings per schedule)
+    // use Seats: {seats[i]?.join(", ") ?? []})
+    console.log(schedules);
     for (let i = 0; i < schedules.length; i++) {
       const schedule = schedules[i];
       let departureStation =
