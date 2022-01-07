@@ -38,7 +38,8 @@ function PaymentForm(props) {
     };
     (async () => {
       const paymentResult = await createPayment(paymentData);
-      alert(paymentResult);
+      // alert message to show the swish url.
+      // alert(paymentResult);
       const bookingResult = await createBooking(bookingData);
       const navState = { bookingId: bookingResult.lastInsertRowid};
       if (bookingResult.changes > 0) {

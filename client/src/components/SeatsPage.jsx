@@ -184,7 +184,10 @@ function SeatsPage() {
   }
 
   function VacantSeatFirst(seatNumber) {
-    if (context.FirstTripSeats.length === context.TravellerAmount) {
+    console.log('VacantSeatFirst clicked.')
+    console.log('context.FirstTripSeats.length: ' + context.FirstTripSeats.length)
+    console.log('context.TravellerAmount' + context.TravellerAmount)
+    if (context.FirstTripSeats.length == context.TravellerAmount) {
       alert("Du har redan valt sittplats(er)");
     } else if (context.FirstTripSeats.includes(seatNumber)) {
       alert("Du har redan valt den här platsen!");
@@ -195,7 +198,7 @@ function SeatsPage() {
   }
 
   function VacantSeatSecond(seatNumber) {
-    if (context.SecondTripSeats.length === context.TravellerAmount) {
+    if (context.SecondTripSeats.length == context.TravellerAmount) {
       alert("Du har redan valt sittplats(er)");
     } else if (context.SecondTripSeats.includes(seatNumber)) {
       alert("Du har redan valt den här platsen!");
@@ -274,7 +277,7 @@ function SeatsPage() {
     return cartSeats;
   }
 
-  function NavToPayment() {
+  function navToPayment() {
     navigate("/Payment", { state: context });
   }
 
@@ -290,7 +293,7 @@ function SeatsPage() {
           </div>
           <div className="TotalPrice">
             <div className="search-btn">
-              <button type="button" onClick={() => NavToPayment()}>
+              <button type="button" onClick={() => navToPayment()}>
                 Spara och Fortsätt
               </button>
             </div>
@@ -314,7 +317,7 @@ function SeatsPage() {
           </div>
           <div className="TotalPrice">
             <div className="search-btn">
-              <button type="button" onClick={() => NavToPayment()}>
+              <button type="button" onClick={() => navToPayment()}>
                 Spara och Fortsätt
               </button>
             </div>

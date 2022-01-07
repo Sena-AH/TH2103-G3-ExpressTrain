@@ -218,7 +218,7 @@ function PaymentPage(props) {
           <button
             type="button"
             id="cancel-booking-btn"
-            onClick={(e) => setShowPaymentForm(true)}
+            onClick={() => setShowPaymentForm(true)}
           >
             Betala
           </button>

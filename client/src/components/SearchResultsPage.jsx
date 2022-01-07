@@ -189,7 +189,6 @@ function SearchResultsPage() {
           if (trip.DepartureStationName && trip.DestinationStationName) {
             if (!ArrayOfPossibleDepartureIds.includes(trip.Id)) {
               let priceInfo = [trip.DepartureTime, FirstPrice];
-              console.log(priceInfo);
               let price = calculatePrice(priceInfo);
               ArrayOfPossibleDepartureIds.push(trip.Id)
               ArrayOfPossibleDepartures.push(
