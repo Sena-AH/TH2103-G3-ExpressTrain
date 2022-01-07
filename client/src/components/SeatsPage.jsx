@@ -184,9 +184,6 @@ function SeatsPage() {
   }
 
   function VacantSeatFirst(seatNumber) {
-    console.log('VacantSeatFirst clicked.')
-    console.log('context.FirstTripSeats.length: ' + context.FirstTripSeats.length)
-    console.log('context.TravellerAmount' + context.TravellerAmount)
     if (context.FirstTripSeats.length == context.TravellerAmount) {
       alert("Du har redan valt sittplats(er)");
     } else if (context.FirstTripSeats.includes(seatNumber)) {

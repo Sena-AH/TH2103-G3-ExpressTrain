@@ -58,9 +58,8 @@ text-align: center;
 }
 
 .itinerary{
-  margin-bottom: 2vw;
-  padding: 2vw;
-  padding-top: 0vw;
+  /* margin-bottom: 2vw; */
+  padding: 0vw 2vw;
 }
 
 .travel-split-up{

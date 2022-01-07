@@ -17,17 +17,17 @@ function PaymentPage(props) {
     context.TravellerAmount
   );
   const [firstTrip, setTirstTrip] = useState(context.FirstTrip);
-  const [secondTrip, setSecondTrip] = useState(context.SecondTrip);
-  const [seats, setSeats] = useState([
+  const [secondTrip, setSecondTrip] = useState(context.SecondTrip.ScheduleId == 0 ? {} : context.SecondTrip);
+  const [seats, setSeats] = useState(context.SecondTripSeats ? [
     context.FirstTripSeats,
     context.SecondTripSeats,
-  ]);
-  const [scheduleIds, setScheduleIds] = useState([
+  ] : [context.FirstTripSeats]);
+  const [scheduleIds, setScheduleIds] = useState(secondTrip.ScheduleId != undefined ? [
     firstTrip.ScheduleId,
-    secondTrip.ScheduleId,
-  ]);
+    secondTrip.ScheduleId
+  ] : [firstTrip.ScheduleId]);
   const [totalPrice, setTotalPrice] = useState(
-    firstTrip.Price + secondTrip.Price
+    firstTrip.Price + (secondTrip?.Price ?? 0)
   );
 
   const [bookingData, setBookingData] = useState();
@@ -238,6 +238,7 @@ function PaymentPage(props) {
   function getScheduleIds(schedules) {
     return schedules.map(schedule => { return schedule.Id });
   }
+
   if (showPaymentForm) {
     return <PaymentForm data={bookingData}/>;
   }
