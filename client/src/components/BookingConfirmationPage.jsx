@@ -6,7 +6,7 @@ function BookingConfirmationPage() {
     // const navigate = useNavigate();
     // useLocation holds several items, we grab the {state} and then we can access it by state.bookingId
     const { state } = useLocation();
-    const bookingId = 3;
+    const bookingId = state.bookingId;
     // const bookingCode = state.bookingCode;
 
     const [booking, setBooking] = useState([]);
