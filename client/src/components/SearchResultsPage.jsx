@@ -163,8 +163,10 @@ function SearchResultsPage() {
       let departureTime = new Date(schedule.DepartureTime);
       let tempTime = new Date();
       tempTime.setDate(selectedTime.getDate() + 8);
-
-      if (departureTime >= selectedTime
+      let binaryDepartureTime = departureTime.valueOf();
+      let binarySelectedTime = selectedTime.valueOf();
+      // if (departureTime >= selectedTime
+        if (binaryDepartureTime >= binarySelectedTime
         && schedule.DepartureTrainStationId === DepartureStation.Id
         && schedule.DestinationTrainStationId === DestinationStation.Id) {
         let trip = schedule;
