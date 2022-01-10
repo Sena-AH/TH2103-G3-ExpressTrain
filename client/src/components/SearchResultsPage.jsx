@@ -48,13 +48,13 @@ function SearchResultsPage() {
   }, [context]);
 
   useEffect(() => {
-    if(isObjectLoaded(firstTrip)){
+    if (isObjectLoaded(firstTrip)) {
       updateContext(firstTrip)
     }
   }, [firstTrip]);
 
   useEffect(() => {
-    if(isObjectLoaded(secondTrip)){
+    if (isObjectLoaded(secondTrip)) {
       updateContext(secondTrip)
     }
   }, [secondTrip]);
@@ -159,14 +159,25 @@ function SearchResultsPage() {
 
   function Schedules() {
     ArrayOfSchedules.forEach(schedule => {
-      let selectedTime = new Date(WantedDateOfTrip);
-      let departureTime = new Date(schedule.DepartureTime);
-      let tempTime = new Date();
-      tempTime.setDate(selectedTime.getDate() + 8);
-      let binaryDepartureTime = departureTime.valueOf();
-      let binarySelectedTime = selectedTime.valueOf();
+      //let selectedTime1 = new Date(WantedDateOfTrip);
+      let selectedTime = fixDate(WantedDateOfTrip);
+      let selectedTimeNew = new Date(selectedTime);
+
+console.log(selectedTime);
+
+      //let departureTime1 = new Date(schedule.DepartureTime);
+      let departureTime = fixDate(schedule.DepartureTime);
+      let departureTimeNew = new Date(departureTime);
+      // let tempTime = new Date();
+    
+      // tempTime.setDate(selectedTime.getDate() + 8);
+      // let binaryDepartureTime = departureTime.valueOf();
+      // let binarySelectedTime = selectedTime.valueOf();
+      // let bst = parseInt(`${binarySelectedTime}`);
+      // console.log(bst);
+      //console.log(bst);
       // if (departureTime >= selectedTime
-        if (binaryDepartureTime >= binarySelectedTime
+      if (departureTimeNew >= selectedTimeNew
         && schedule.DepartureTrainStationId === DepartureStation.Id
         && schedule.DestinationTrainStationId === DestinationStation.Id) {
         let trip = schedule;
@@ -219,7 +230,7 @@ function SearchResultsPage() {
     let today = Date.now();
 
     let price;
-    if(date > today + 15){
+    if (date > today + 15) {
       price = priceInfo[1] - 100;
       return (price);
     }
@@ -238,6 +249,8 @@ function SearchResultsPage() {
       let departureTime = new Date(schedule.DepartureTime);
       let tempTime = new Date();
       tempTime.setDate(returnTripDate.getDate() + 1);
+      let binaryDepartureTime = departureTime.valueOf();
+      let binaryTempTime = tempTime.valueOf();
 
       if (departureTime > tempTime
         && ReturnTripDepartureStation.Id == schedule.DepartureTrainStationId
@@ -300,13 +313,21 @@ function SearchResultsPage() {
     });
   }
 
+  function fixDate(date) {
+    let dateString = date.toString();
+    let addT = dateString.replace(/ /g, "T");
+    let addZ = addT + 'Z';
+    console.log(addZ);
+    return addZ;
+  }
+
   useEffect(() => {
     if (isSchedulesLoaded()) {
       setStationLocations();
     }
-  
+
   }, [isSchedulesLoaded]);
-  
+
   // Rendering.
   if (TypeOfTrip == 'oneway') {
     return (
