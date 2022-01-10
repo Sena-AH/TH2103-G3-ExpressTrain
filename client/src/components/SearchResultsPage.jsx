@@ -59,46 +59,6 @@ function SearchResultsPage() {
     }
   }, [secondTrip]);
 
-  function handleFirstTripClick(TripId) {
-    setChosenSchedule(TripId);
-
-    for (let i = 0; i < ArrayOfPossibleDepartures.length; i++) {
-      if (ArrayOfPossibleDepartures[i].props.id === TripId) {
-        let tripInfo = [ArrayOfPossibleReturnDepartures[i], FirstPrice]
-        let price = calculatePrice(tripInfo)
-
-        setFirstTrip({
-          FirstTrip: {
-            ScheduleId: TripId,
-            Price: price
-          }
-        });
-
-        // if (TypeOfTrip === 'oneway') {
-        //   navigate('/BookingInformationPage');
-        // }
-      }
-    }
-  }
-
-  function handleClickReturn(TripId) {
-    for (let i = 0; i < ArrayOfPossibleReturnDepartures.length; i++) {
-      if (TripId === ArrayOfPossibleReturnDepartures[i].props.id) {
-        let tripInfo = [ArrayOfPossibleReturnDepartures[i], SecondPrice]
-
-        let price = calculatePrice(tripInfo)
-        setSecondTrip({
-          SecondTrip: {
-            ScheduleId: TripId,
-            Price: price
-          }
-        })
-
-        // navigate('/BookingInformationPage')
-      }
-    }
-  }
-
   useEffect(() => {
     if (context.FirstTrip?.ScheduleId && TypeOfTrip === 'oneway') {
       navigate('/BookingInformationPage');
@@ -157,26 +117,53 @@ function SearchResultsPage() {
     setReturnTripDestinationStation(DepartureStation);
   }, [ArrayOfSchedules]);
 
+  function handleFirstTripClick(TripId) {
+    setChosenSchedule(TripId);
+
+    for (let i = 0; i < ArrayOfPossibleDepartures.length; i++) {
+      if (ArrayOfPossibleDepartures[i].props.id === TripId) {
+        let tripInfo = [ArrayOfPossibleReturnDepartures[i], FirstPrice]
+        let price = calculatePrice(tripInfo)
+
+        setFirstTrip({
+          FirstTrip: {
+            ScheduleId: TripId,
+            Price: price
+          }
+        });
+
+      }
+    }
+  }
+
+  function handleClickReturn(TripId) {
+    for (let i = 0; i < ArrayOfPossibleReturnDepartures.length; i++) {
+      if (TripId === ArrayOfPossibleReturnDepartures[i].props.id) {
+        let tripInfo = [ArrayOfPossibleReturnDepartures[i], SecondPrice]
+
+        let price = calculatePrice(tripInfo)
+        setSecondTrip({
+          SecondTrip: {
+            ScheduleId: TripId,
+            Price: price
+          }
+        })
+
+        // navigate('/BookingInformationPage')
+      }
+    }
+  }
+
   function Schedules() {
     ArrayOfSchedules.forEach(schedule => {
-      //let selectedTime1 = new Date(WantedDateOfTrip);
       let selectedTime = fixDate(WantedDateOfTrip);
       let selectedTimeNew = new Date(selectedTime);
 
-console.log(selectedTime);
+      console.log(selectedTime);
 
-      //let departureTime1 = new Date(schedule.DepartureTime);
       let departureTime = fixDate(schedule.DepartureTime);
       let departureTimeNew = new Date(departureTime);
-      // let tempTime = new Date();
-    
-      // tempTime.setDate(selectedTime.getDate() + 8);
-      // let binaryDepartureTime = departureTime.valueOf();
-      // let binarySelectedTime = selectedTime.valueOf();
-      // let bst = parseInt(`${binarySelectedTime}`);
-      // console.log(bst);
-      //console.log(bst);
-      // if (departureTime >= selectedTime
+
       if (departureTimeNew >= selectedTimeNew
         && schedule.DepartureTrainStationId === DepartureStation.Id
         && schedule.DestinationTrainStationId === DestinationStation.Id) {
@@ -191,13 +178,6 @@ console.log(selectedTime);
           if (schedule.DestinationTrainStationId === station.Id) {
             trip.DestinationStationName = station.Name;
           }
-
-          // 2Do tisdag:
-          // - korta antalet dagar?
-          // - kolla antalet lediga platser?
-          // - klippa ut avresedatum för sig och avresetid för sig till trip (split??)
-          // - bestämma hur vi ska sätta pris
-          // - hitta ett sätt att sänka priset vid tidig bokning (ytterligare en temptime med plus massa dagar och jämföra?)
 
           if (trip.DepartureStationName && trip.DestinationStationName) {
             if (!ArrayOfPossibleDepartureIds.includes(trip.Id)) {
