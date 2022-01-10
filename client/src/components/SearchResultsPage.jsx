@@ -15,6 +15,8 @@ function SearchResultsPage() {
   const [ReturnTripDestinationStation, setReturnTripDestinationStation] = useState();
 
   const [WantedDateOfTrip, setWantedDateOfTrip] = useState();
+  const [FirstPossibleTripDate, setFirstPossibleTripDate] = useState();
+  const [FirstPossibleTripSchedule, setFirstPossibleTripSchedule] = useState([]);
 
   const [ArrayOfStations, setArrayOfStations] = useState([]);
   const [ArrayOfSchedules, setArrayOfSchedules] = useState([]);
@@ -201,7 +203,19 @@ function SearchResultsPage() {
         });
       };
     });
-    // console.log(ArrayOfPossibleDepartures)
+    if (ArrayOfPossibleDepartureIds) {
+      let i = ArrayOfPossibleDepartureIds[0];
+      console.log(ArrayOfSchedules[i]);
+      let sched = ArrayOfSchedules[i];
+      setFirstPossibleTripSchedule(sched);
+      setFirstPossibleTripDate('katt');
+      // console.log(sched);
+      // let date = sched.DepartureTime;
+      // console.log(date);
+      // setFirstPossibleTripDate(date);
+      // setFirstPossibleTripDate(fixDate(FirstPossibleTripDate));
+      //console.log(FirstPossibleTripDate);
+    }
     return ArrayOfPossibleDepartures;
   }
 
@@ -219,20 +233,37 @@ function SearchResultsPage() {
   }
 
   function RoundTrip() {
+    //console.log(FirstPossibleTripSchedule.DepartureTime);
     ArrayOfSchedules.forEach(schedule => {
       // let selectedTime = new Date(WantedDateOfTrip);
       // let departureTime = new Date(schedule.DepartureTime);
       // let tempTime = new Date();
       // tempTime.setDate(selectedTime.getDate() + 8);
 
-      let returnTripDate = new Date(WantedDateOfTrip);
-      let departureTime = new Date(schedule.DepartureTime);
-      let tempTime = new Date();
-      tempTime.setDate(returnTripDate.getDate() + 1);
-      let binaryDepartureTime = departureTime.valueOf();
-      let binaryTempTime = tempTime.valueOf();
+      //let returnTripDate = new Date(WantedDateOfTrip);
+      // let returnTripDate = fixDate(WantedDateOfTrip);
+      // let returnTripDateNew = new Date(returnTripDate);
+      // let departureTime = new Date(schedule.DepartureTime);
+      // let tempTime = new Date();
+      // tempTime.setDate(returnTripDateNew.getDate() + 1);
+      // let tempTime2 = fixDate(tempTime);
+      // console.log(tempTime2);
+      // let testTime = tempTime2.toString()
+      // console.log(testTime);
+      // let binaryDepartureTime = departureTime.valueOf();
+      // let binaryTempTime = tempTime.valueOf();
 
-      if (departureTime > tempTime
+      let scheduleDepartmentTime = fixDate(schedule.DepartureTime);
+      let scheduleDepartmentTimeNew = new Date(scheduleDepartmentTime);
+      let wantedDateOfFirstTrip = fixDate(WantedDateOfTrip);
+
+      if (FirstPossibleTripDate) {
+        wantedDateOfFirstTrip = fixDate(FirstPossibleTripDate);
+      }
+      
+      let WantedDateOfFirstTripNew = new Date(wantedDateOfFirstTrip);
+
+      if (scheduleDepartmentTimeNew > WantedDateOfFirstTripNew
         && ReturnTripDepartureStation.Id == schedule.DepartureTrainStationId
         && ReturnTripDestinationStation.Id == schedule.DestinationTrainStationId) {
         let trip = schedule;
@@ -275,6 +306,13 @@ function SearchResultsPage() {
 
   function isSchedulesLoaded() {
     return (isObjectLoaded(ArrayOfSchedules));
+  }
+
+  function isFirstTripLoaded() {
+    if (typeof FirstPossibleTripDate !== 'undefined') {
+      return true;
+    }
+    return false;
   }
 
   function isObjectLoaded(state) {
