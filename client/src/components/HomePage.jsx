@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect, useContext } from 'react';
 import { Context } from '../App';
+import { validate } from 'uuid';
 
 function Tickets(props) {
   let ticketOptions = [];
@@ -21,14 +22,13 @@ function HomePage() {
 
   const [context, updateContext] = useContext(Context)
   const [travelInfo, setTravelInfo] = useState({});
-
-  const [DepartureInput, setDepartureInput] = useState("");
-  const [DestinationInput, setDestinationInput] = useState("");
-  const [ArrayOfStations, setArrayOfStations] = useState([]);
+  
   const [TicketAmountChoice, setTicketAmountChoice] = useState(1);
 
   const [TypeOfTrip, setTypeOfTrip] = useState('oneway');
   const [DateOfTrip, setDateOfTrip] = useState();
+
+  // const [ErrorMessage, setErrorMessage] = useState('');
 
   let navigate = useNavigate();
 
@@ -43,7 +43,8 @@ function HomePage() {
     setTravelInfo({
       ...travelInfo,
       'TravelType': 'oneway',
-      'TravellerAmount': '1'
+      'TravellerAmount': '1',
+
     });
   }, []);
 
@@ -53,11 +54,39 @@ function HomePage() {
 
 
   function handleClick() {
-    navigate('/SearchResultsPage');
+    validateInput();
+    if(!travelInfo.LocationErrorMessage && travelInfo.TravelDate){
+      trimContext();
+      navigate('/SearchResultsPage');
+    } else {
+      navigate('/');
+    }
   }
 
-  // handleClick();
+  function validateInput() {
+    if (!travelInfo.TravelFrom && !travelInfo.TravelTo) {
+      travelInfo.LocationErrorMessage = 'Vänligen fyll i både avgång och destination';
+    } else {
+      if (!travelInfo.TravelTo) {
+        travelInfo.LocationErrorMessage = 'Du har inte angivit någon destination';
+      } else if (!travelInfo.TravelFrom) {
+        travelInfo.LocationErrorMessage = 'Du har inte angivit någon avgång';
+      } else {
+        travelInfo.LocationErrorMessage = null;
+      }
+    }
+    if(!travelInfo.TravelDate){
+      travelInfo.DateErrorMessage = 'Inget datum angivet';
+    } else {
+      travelInfo.DateErrorMessage = null;
+    }
+  }
 
+  function trimContext(){
+    context.DateErrorMessage = null;
+    context.LocationErrorMessage = null;
+  }
+  // handleClick();
   return (
     <div>
       <div className="input-search">
@@ -65,6 +94,9 @@ function HomePage() {
       </div>
       <div className="input-search">
         <input className="input" placeholder="Till:" name="TravelTo" value={setTravelInfo.TravelTo} onChange={handleChange} />
+      </div>
+      <div className="input-search" style={{fontWeight: 'bold'}}>
+        {travelInfo.LocationErrorMessage}
       </div>
 
       <form className="input-form" action="" method="post">
@@ -98,6 +130,9 @@ function HomePage() {
 
       <div className="input-date">
         <input className="input-color" type="date" name="TravelDate" onChange={handleChange}></input>
+      </div>
+      <div className="input-search" style={{fontWeight: 'bold'}}>
+        {travelInfo.DateErrorMessage}
       </div>
 
       <div className="search-btn">
