@@ -87,10 +87,10 @@ function HomePage() {
   return (
     <div>
       <div className="input-search">
-        <input className="input" placeholder="Från:" name="TravelFrom" value={setTravelInfo.TravelFrom} onChange={handleChange} />
+        <input className="input" placeholder="Från:" name="TravelFrom" value={setTravelInfo.TravelFrom} onChange={handleChange} maxLength={20} />
       </div>
       <div className="input-search">
-        <input className="input" placeholder="Till:" name="TravelTo" value={setTravelInfo.TravelTo} onChange={handleChange} />
+        <input className="input" placeholder="Till:" name="TravelTo" value={setTravelInfo.TravelTo} onChange={handleChange} maxLength={20} />
       </div>
       <div className="input-search" style={{fontWeight: 'bold'}}>
         {travelInfo.LocationErrorMessage}
