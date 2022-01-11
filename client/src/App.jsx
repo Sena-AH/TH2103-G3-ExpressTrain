@@ -4,8 +4,6 @@ import './css/Navigation.css';
 import './css/header.css';
 import './css/footer.css';
 import './css/main.css';
-import './css/BookingConfirmation.css'
-import './css/SeatsPage.css';
 import './css/style.css';
 import './css/SwitchStyle.css';
 

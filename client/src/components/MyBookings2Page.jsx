@@ -72,7 +72,20 @@ function Booking(props) {
       schedule.ArrivalTime = new Date(schedule.ArrivalTime);
       return schedule;
     });
-    return await Promise.all(schedulesPromises);
+
+    const allSchedules = await Promise.all(schedulesPromises);
+
+    let schedules = [];
+    
+    for (let i = 0; i < allSchedules.length; i++) {
+      const schedule = allSchedules[i];
+      
+      if(!(schedules.some(x => schedule.Id == x.Id))){
+        schedules.push(schedule);
+      }
+    }
+
+    return schedules;
   }
 
   async function fetchStations(schedules) {
@@ -173,8 +186,6 @@ function Booking(props) {
     let itineraries = [];
 
     // TODO: only show unique schedules (but include all seatings per schedule)
-    // use Seats: {seats[i]?.join(", ") ?? []})
-    console.log(schedules);
     for (let i = 0; i < schedules.length; i++) {
       const schedule = schedules[i];
       let departureStation =
@@ -186,14 +197,16 @@ function Booking(props) {
       let departureDate = formatDate(schedule.DepartureTime) ?? "unknown";
       let departureTime = formatTime(schedule.DepartureTime) ?? "unknown";
       let arrivalTime = formatTime(schedule.ArrivalTime) ?? "unknown";
-      let seat = stages[i].SeatNumber ?? "unknown";
+      let seats = stages
+        .filter(stage => stage.ScheduleId == schedule.Id) // c# where
+        .map(x => { return x.SeatNumber; }); // c# select
 
       itineraries.push(
         <div key={schedule.Id} className="itinerary-result">
           <div className="itinerary-date">{departureDate}</div>
           <div className="intinerary section-content">
             {departureTime} - {departureStation} (Platform {departurePlatform} -
-            Seat {seat})<br />
+              Seats: {seats?.join(", ") ?? []})<br />
             {arrivalTime} - {destinationStation} (Platform {departurePlatform})
           </div>
         </div>
@@ -262,7 +275,7 @@ function Booking(props) {
             </div>
           </div>
 
-          {/* <div className="price">
+          <div className="">
             <br />
             <div className="section-title">Totalbelopp:</div>
             <div className="section-content">
@@ -272,7 +285,7 @@ function Booking(props) {
                 <Skeleton width="100%" />
               )}
             </div>
-          </div> */}
+          </div>
         </div>
         <div className="search-btn">
         <button

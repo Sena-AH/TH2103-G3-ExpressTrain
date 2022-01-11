@@ -206,7 +206,7 @@ function PaymentPage(props) {
             </div>
           </div>
 
-          <div className="price">
+          <div className="">
             <br />
             <div className="section-title">Totalbelopp:</div>
             <div className="section-content">
