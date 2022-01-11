@@ -161,7 +161,13 @@ function SearchResultsPage() {
       let selectedTime = fixDate(WantedDateOfTrip);
       let selectedTimeNew = new Date(selectedTime);
 
-      console.log(selectedTime);
+      let binSel = Date.parse(selectedTime);
+      console.log(binSel);
+      let binsel2 = binSel + 86400000;
+      console.log(binsel2);
+      let binsel3 = new Date(binsel2);
+      console.log(binsel3);
+
 
       let departureTime = fixDate(schedule.DepartureTime);
       let departureTimeNew = new Date(departureTime);
@@ -203,19 +209,20 @@ function SearchResultsPage() {
         });
       };
     });
-    if (ArrayOfPossibleDepartureIds) {
-      let i = ArrayOfPossibleDepartureIds[0];
-      console.log(ArrayOfSchedules[i]);
-      let sched = ArrayOfSchedules[i];
-      setFirstPossibleTripSchedule(sched);
-      setFirstPossibleTripDate('katt');
-      // console.log(sched);
-      // let date = sched.DepartureTime;
-      // console.log(date);
-      // setFirstPossibleTripDate(date);
-      // setFirstPossibleTripDate(fixDate(FirstPossibleTripDate));
-      //console.log(FirstPossibleTripDate);
-    }
+    // if (ArrayOfPossibleDepartureIds) {
+    //   let i = ArrayOfPossibleDepartureIds[0];
+    //   console.log(ArrayOfSchedules[i].DepartureTime);
+    //   let sched = ArrayOfSchedules[i];
+    //   //console.log(sched.Object.DepartureTime);
+    //   setFirstPossibleTripSchedule(ArrayOfSchedules[i]);
+    //   setFirstPossibleTripDate('katt');
+    //   // console.log(sched);
+    //   // let date = sched.DepartureTime;
+    //   // console.log(date);
+    //   // setFirstPossibleTripDate(date);
+    //   // setFirstPossibleTripDate(fixDate(FirstPossibleTripDate));
+    //   //console.log(FirstPossibleTripDate);
+    // }
     return ArrayOfPossibleDepartures;
   }
 
