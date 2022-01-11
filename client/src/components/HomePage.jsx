@@ -26,9 +26,6 @@ function HomePage() {
   const [TicketAmountChoice, setTicketAmountChoice] = useState(1);
 
   const [TypeOfTrip, setTypeOfTrip] = useState('oneway');
-  const [DateOfTrip, setDateOfTrip] = useState();
-
-  // const [ErrorMessage, setErrorMessage] = useState('');
 
   let navigate = useNavigate();
 
