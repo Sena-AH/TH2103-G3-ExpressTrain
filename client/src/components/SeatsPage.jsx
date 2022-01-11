@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import '../css/SeatsPage.css';
 
 function SeatsPage() {
   const { state } = useLocation();
@@ -169,7 +170,7 @@ function SeatsPage() {
         (result) => {
           return result;
         },
-        () => {}
+        () => { }
       );
   }
 
@@ -283,8 +284,11 @@ function SeatsPage() {
       return (
         <div className="WholePage">
           <h1 className="Title">
-            Sittplatser {startStation} - {destinationStation}
+            Sittplatser <br />
           </h1>
+          <h2> {startStation} <br />
+          - <br />
+            {destinationStation}</h2>
           <div className="TrainCart">
             {isRenderedFirstSeatsLoaded() ? <RenderFirstCart /> : "laddar..."}
           </div>
@@ -301,14 +305,22 @@ function SeatsPage() {
       return (
         <div className="WholePage">
           <h1 className="Title">
-            Sittplatser {startStation} - {destinationStation}
+            Sittplatser <br />
           </h1>
+          <h2> {startStation} <br />
+          - <br />
+            {destinationStation}</h2>
           <div className="TrainCart">
             {isRenderedFirstSeatsLoaded() ? <RenderFirstCart /> : "laddar..."}
           </div>
+
           <h1 className="Title">
-            Sittplatser {destinationStation} - {startStation}
+            Sittplatser <br />
           </h1>
+          <h2> {destinationStation} <br />
+          - <br />
+            {startStation}</h2>
+
           <div className="TrainCart">
             {isRenderedSecondSeatsLoaded() ? <RenderSecondCart /> : "laddar..."}
           </div>
