@@ -60,10 +60,10 @@ function HomePage() {
   return (
     <div>
       <div className="input-search">
-        <input className="input" placeholder="Från:" name="TravelFrom" value={setTravelInfo.TravelFrom} onChange={handleChange} maxLength={20} />
+        <input maxLength={20} className="input" placeholder="Från:" name="TravelFrom" value={setTravelInfo.TravelFrom} onChange={handleChange} />
       </div>
       <div className="input-search">
-        <input className="input" placeholder="Till:" name="TravelTo" value={setTravelInfo.TravelTo} onChange={handleChange} maxLength={20} />
+        <input maxLength={20} className="input" placeholder="Till:" name="TravelTo" value={setTravelInfo.TravelTo} onChange={handleChange} />
       </div>
 
       <form className="input-form" action="" method="post">
