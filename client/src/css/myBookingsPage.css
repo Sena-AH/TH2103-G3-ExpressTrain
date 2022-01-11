@@ -1,3 +1,72 @@
-.itinerary-result{
-    padding: 0.2rem 0;
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+.booking-title{
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 1.5rem;
+  line-height: 1.75rem;
+
+  color: #418CBF;
+}
+
+.bookings-form{
+  width: 90%;
+  height: 100%;
+  margin: auto;
+}
+
+.bookings-form *{
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+}
+
+/* booking */
+.booking-input{
+  width: 100%;
+  background: #F1F2F6;
+  border-radius: 5px;
+
+  font-style: normal;
+  font-weight: normal;
+  font-size: 1.5rem;
+  line-height: 1.75rem;
+  color: #AEADC4;
+
+  border: none;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.booking-input::placeholder{
+  color: #AEADC4;
+}
+
+.booking-btn{
+  width: 100%;
+
+  font-style: normal;
+  font-weight: normal;
+  font-size: 1.5rem;
+  line-height: 1.75rem;
+  color: #FFFFFF;
+  text-align: center;
+
+  background: #1A883D;
+  border-radius: 5px;
+  
+  border: none;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.invalid-input-label{
+  display: inline-block;
+  color: red;
+  margin-bottom: 0.2rem;
+}
+
+.invalid-input-field{
+  border: solid 1px red;
 }

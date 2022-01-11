@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import "../css/myBookingsPage.css";
 import "../css/myBookings2Page.css";
 
 function Booking(props) {
@@ -164,10 +165,6 @@ function Booking(props) {
     setIsManipulationCodeRequired(true);
   }
 
-  function handleCheckoutClick(event) {
-    // TODO: Implement
-  }
-
   function handleHomePageClick(event) {
     navigate("/");
   }
@@ -226,11 +223,9 @@ function Booking(props) {
 
     return (
       <>
-        <div>
-          <h1 className="page-title">Min bokning</h1>
-        </div>
+        <h2 className="booking-title">Min bokning</h2>
         <div className="page-content">
-          <h3 className="page-subtitle">Boking Code: {bookingCode}</h3>
+          <h3 className="page-subtitle">Bokning Code: {bookingCode}</h3>
 
           <div className="travel-date">
             <div className="title section-title">Resdatum:</div>

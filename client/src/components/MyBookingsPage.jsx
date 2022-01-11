@@ -41,28 +41,25 @@ function MyBookingsPage() {
     });
   }
 
+  function InvalidEntry(props) {
+    return (<label for={props.for} className="invalid-input-label">* {props.message}</label>);
+  }
+
   return (
     <>
-      <div>
-        <h2 className="page-title">Min bokning</h2>
-      </div>
-      <form onSubmit={handleSubmit}>
-        <div className="my-bookings-search input-search">
-          <input
-            className="search-bar input"
-            placeholder="Bokningsnummer"
-            min="0"
-            name="bookingCode"
-            value={formData.bookingCode}
-            onChange={handleChange}
-          />
-          <div className="error-message">
-            {idIsValid ? "" : "(Ogiltig Bokningsnummer)"}
-          </div>
-        </div>
-        <div className="search-btn">
-          <input type="submit" value="Sök bokning" />
-        </div>
+      <h2 className="booking-title">Min bokning</h2>
+      <form className="bookings-form" onSubmit={handleSubmit}>
+        {idIsValid ? '' : <InvalidEntry for="booking-number" message="Ogiltig Bokningsnummer" />}
+        <input
+          className={"booking-input " + (idIsValid ? '' : 'invalid-input-field')}
+          id="booking-number"
+          placeholder="Bokningsnummer"
+          min="0"
+          name="bookingCode"
+          value={formData.bookingCode}
+          onChange={handleChange}
+        />
+        <input className="booking-btn" type="submit" value="Sök bokning" />
       </form>
     </>
   );
