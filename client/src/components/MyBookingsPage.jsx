@@ -47,7 +47,7 @@ function MyBookingsPage() {
 
   return (
     <>
-      <h2 className="booking-title">Min bokning</h2>
+      <h2 className="booking-title bold">Min bokning</h2>
       <form className="bookings-form" onSubmit={handleSubmit}>
         {idIsValid ? '' : <InvalidEntry for="booking-number" message="Ogiltig Bokningsnummer" />}
         <input
