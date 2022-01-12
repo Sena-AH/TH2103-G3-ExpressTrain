@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Context } from '../App';
+import './css/bookingForm.css';
 
 
 function BookingForm(props) {
@@ -124,7 +125,13 @@ keys.forEach(item => item.addEventListener(
 
       <div className="current-total-price-div">
         <div className="search-btn">
-          <button type="button" onClick={submitData}>Spara och Fortsätt</button>
+          <button 
+            type="button" 
+            className="submit-button" 
+            onClick={submitData}
+          >
+              Spara och Fortsätt
+          </button>
         </div>
       </div>
     </div>
