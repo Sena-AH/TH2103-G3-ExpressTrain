@@ -32,6 +32,7 @@ function SearchResultsPage() {
   const [ChosenSchedule, setChosenSchedule] = useState();
 
   const [TypeOfTrip, setTypeOfTrip] = useState('oneway');
+  const [isReturnTripPossible, setIsReturnTripPossible] = useState(true);
 
   let navigate = useNavigate();
 
@@ -114,7 +115,7 @@ function SearchResultsPage() {
 
     for (let i = 0; i < ArrayOfPossibleDepartures.length; i++) {
       if (ArrayOfPossibleDepartures[i].props.id === TripId) {
-       
+
         setFirstTrip({
           FirstTrip: {
             ScheduleId: TripId,
@@ -128,7 +129,7 @@ function SearchResultsPage() {
   function handleClickReturn(TripId) {
     for (let i = 0; i < ArrayOfPossibleReturnDepartures.length; i++) {
       if (TripId === ArrayOfPossibleReturnDepartures[i].props.id) {
-       
+
         setSecondTrip({
           SecondTrip: {
             ScheduleId: TripId,
@@ -137,6 +138,14 @@ function SearchResultsPage() {
         })
       }
     }
+  }
+
+  function handleOnewayClick() {
+    setTypeOfTrip('oneway');
+  }
+
+  function handleRestartClick() {
+    navigate('/');
   }
 
   function Schedules() {
@@ -163,7 +172,7 @@ function SearchResultsPage() {
 
           if (trip.DepartureStationName && trip.DestinationStationName) {
             if (!ArrayOfPossibleDepartureIds.includes(trip.Id)) {
-              
+
               ArrayOfPossibleDepartureIds.push(trip.Id)
               ArrayOfPossibleDepartures.push(
                 <div key={trip.Id} className="PossibleDeparture" id={trip.Id}>
@@ -182,7 +191,24 @@ function SearchResultsPage() {
         });
       };
     });
-    return ArrayOfPossibleDepartures;
+    if (isObjectLoaded(ArrayOfPossibleDepartures)) {
+      return (<div>
+        <h1>Avgångar</h1>
+        {ArrayOfPossibleDepartures}
+      </div>);
+    }
+    else {
+      setIsReturnTripPossible(false);
+      return (
+        <div className='noPossibleFirstTrips'>
+          <h1>Avgångar</h1>
+          Tyvärr finns inga resor nära ditt angivna datum.
+          <div className="search-btn">
+            <button type="button" onClick={() => handleRestartClick()}>Börja om</button>
+          </div>
+        </div>
+      )
+    }
   }
 
   function RoundTrip() {
@@ -227,8 +253,30 @@ function SearchResultsPage() {
         });
       };
     })
-
-    return ArrayOfPossibleReturnDepartures;
+    if (isObjectLoaded(ArrayOfPossibleReturnDepartures) && isReturnTripPossible) {
+      return (<div>
+        <h1>Avgångar returresa</h1>
+        {ArrayOfPossibleReturnDepartures}
+      </div>);
+    }
+    else if (!isObjectLoaded(ArrayOfPossibleReturnDepartures)) {
+      return (
+        <div>
+          <h1>Avgångar returresa</h1>
+          Tyvärr finns inga returresor nära ditt angivna datum.
+          <div className="search-btn">
+            <button type="button" onClick={() => handleRestartClick()}>Börja om</button>
+          </div>
+          <div className="search-btn">
+            <button type="button" onClick={() => handleOnewayClick()}>Boka utresa som enkelresa</button>
+          </div>
+        </div>
+      );
+    }
+    else
+    return (
+      <div></div>
+    );
   }
 
   function isSchedulesLoaded() {
@@ -269,7 +317,6 @@ function SearchResultsPage() {
   if (TypeOfTrip == 'oneway') {
     return (
       <div>
-        <h1>Avgångar</h1>
         {isSchedulesLoaded() ? <Schedules /> : 'laddar...'}
       </div>
     );
@@ -277,9 +324,7 @@ function SearchResultsPage() {
   } else {
     return (
       <div>
-        <h1>Utresor</h1>
         {isSchedulesLoaded() ? <Schedules /> : 'laddar...'}
-        <h1>Returresor</h1>
         {isSchedulesLoaded() ? <RoundTrip /> : 'laddar...'}
       </div>
     )
