@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Context } from '../App';
-import './css/bookingForm.css';
+import '../css/bookingForm.css';
 
 
 function BookingForm(props) {
