@@ -9,6 +9,7 @@ import './css/SeatsPage.css';
 import './css/style.css';
 import './css/SwitchStyle.css';
 
+
 import Menubar from './components/Menubar';
 import HomePage from './components/HomePage';
 import AboutPage from './components/AboutPage';
