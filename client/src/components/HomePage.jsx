@@ -52,7 +52,38 @@ function HomePage() {
 
 
   function handleClick() {
+    validateInput();
+    if(!travelInfo.LocationErrorMessage && travelInfo.TravelDate){
+      trimContext();
+      navigate('/SearchResultsPage');
+    } else {
+      navigate('/');
+    }
+  }
+
+  function validateInput() {
+    if (!travelInfo.TravelFrom && !travelInfo.TravelTo) {
+      travelInfo.LocationErrorMessage = 'Vänligen fyll i både avgång och destination';
+    } else {
+      if (!travelInfo.TravelTo) {
+        travelInfo.LocationErrorMessage = 'Du har inte angivit någon destination';
+      } else if (!travelInfo.TravelFrom) {
+        travelInfo.LocationErrorMessage = 'Du har inte angivit någon avgång';
+      } else {
+        travelInfo.LocationErrorMessage = null;
+      }
+    }
+    if(!travelInfo.TravelDate){
+      travelInfo.DateErrorMessage = 'Inget datum angivet';
+    } else {
+      travelInfo.DateErrorMessage = null;
+    }
     navigate('/SearchResultsPage');
+  }
+
+  function trimContext(){
+    context.DateErrorMessage = null;
+    context.LocationErrorMessage = null;
   }
 
   // handleClick();
@@ -64,6 +95,9 @@ function HomePage() {
       </div>
       <div className="input-search">
         <input maxLength={20} className="input" placeholder="Till:" name="TravelTo" value={setTravelInfo.TravelTo} onChange={handleChange} />
+      </div>
+      <div className="input-search" style={{fontWeight: 'bold'}}>
+        {travelInfo.LocationErrorMessage}
       </div>
 
       <form className="input-form" action="" method="post">
@@ -97,6 +131,10 @@ function HomePage() {
 
       <div className="input-date">
         <input className="input-color" type="date" name="TravelDate" onChange={handleChange}></input>
+      </div>
+
+      <div className="input-search" style={{fontWeight: 'bold'}}>
+        {travelInfo.DateErrorMessage}
       </div>
 
       <div className="search-btn">
