@@ -15,9 +15,6 @@ function SearchResultsPage() {
   const [ReturnTripDestinationStation, setReturnTripDestinationStation] = useState();
 
   const [WantedDateOfTrip, setWantedDateOfTrip] = useState();
-  const [FirstPossibleTripDate, setFirstPossibleTripDate] = useState();
-  const [FirstPossibleTripFinder, setFirstPossibleTripFinder] = useState(0);
-  const [FirstPossibleTripSchedule, setFirstPossibleTripSchedule] = useState([]);
 
   const [ArrayOfStations, setArrayOfStations] = useState([]);
   const [ArrayOfSchedules, setArrayOfSchedules] = useState([]);
@@ -51,16 +48,56 @@ function SearchResultsPage() {
   }, [context]);
 
   useEffect(() => {
-    if (isObjectLoaded(firstTrip)) {
+    if(isObjectLoaded(firstTrip)){
       updateContext(firstTrip)
     }
   }, [firstTrip]);
 
   useEffect(() => {
-    if (isObjectLoaded(secondTrip)) {
+    if(isObjectLoaded(secondTrip)){
       updateContext(secondTrip)
     }
   }, [secondTrip]);
+
+  function handleFirstTripClick(TripId) {
+    setChosenSchedule(TripId);
+
+    for (let i = 0; i < ArrayOfPossibleDepartures.length; i++) {
+      if (ArrayOfPossibleDepartures[i].props.id === TripId) {
+        let tripInfo = [ArrayOfPossibleReturnDepartures[i], FirstPrice]
+        let price = calculatePrice(tripInfo)
+
+        setFirstTrip({
+          FirstTrip: {
+            ScheduleId: TripId,
+            Price: price
+          }
+        });
+
+        // if (TypeOfTrip === 'oneway') {
+        //   navigate('/BookingInformationPage');
+        // }
+      }
+    }
+  }
+
+  function handleClickReturn(TripId) {
+    for (let i = 0; i < ArrayOfPossibleReturnDepartures.length; i++) {
+      if (TripId === ArrayOfPossibleReturnDepartures[i].props.id) {
+        let tripInfo = [ArrayOfPossibleReturnDepartures[i], SecondPrice]
+
+        let price = calculatePrice(tripInfo)
+        setSecondTrip({
+          SecondTrip: {
+            ScheduleId: TripId,
+            Price: price
+          }
+        })
+
+        // navigate('/BookingInformationPage')
+      }
+    }
+  }
 
   useEffect(() => {
     if (context.FirstTrip?.ScheduleId && TypeOfTrip === 'oneway') {
@@ -120,56 +157,18 @@ function SearchResultsPage() {
     setReturnTripDestinationStation(DepartureStation);
   }, [ArrayOfSchedules]);
 
-  function handleFirstTripClick(TripId) {
-    setChosenSchedule(TripId);
-
-    for (let i = 0; i < ArrayOfPossibleDepartures.length; i++) {
-      if (ArrayOfPossibleDepartures[i].props.id === TripId) {
-        // let tripInfo = [ArrayOfPossibleReturnDepartures[i], FirstPrice]
-        // let price = calculatePrice(tripInfo)
-
-        setFirstTrip({
-          FirstTrip: {
-            ScheduleId: TripId,
-            Price: FirstPrice
-          }
-        });
-
-      }
-    }
-  }
-
-  function handleClickReturn(TripId) {
-    for (let i = 0; i < ArrayOfPossibleReturnDepartures.length; i++) {
-      if (TripId === ArrayOfPossibleReturnDepartures[i].props.id) {
-        // let tripInfo = [ArrayOfPossibleReturnDepartures[i], SecondPrice]
-
-        // let price = calculatePrice(tripInfo)
-        setSecondTrip({
-          SecondTrip: {
-            ScheduleId: TripId,
-            Price: SecondPrice
-          }
-        })
-
-        // navigate('/BookingInformationPage')
-      }
-    }
-  }
-
   function Schedules() {
     ArrayOfSchedules.forEach(schedule => {
-      let selectedTime = fixDate(WantedDateOfTrip);
-      let selectedTimeNew = new Date(selectedTime);
+      let selectedTime = new Date(WantedDateOfTrip);
+      let departureTime = new Date(schedule.DepartureTime);
+      let tempTime = new Date();
+      tempTime.setDate(selectedTime.getDate() + 8);
 
-      let departureTime = fixDate(schedule.DepartureTime);
-      let departureTimeNew = new Date(departureTime);
-
-      if (departureTimeNew >= selectedTimeNew
+      if (departureTime >= selectedTime
         && schedule.DepartureTrainStationId === DepartureStation.Id
         && schedule.DestinationTrainStationId === DestinationStation.Id) {
         let trip = schedule;
-        //let i = 0;
+        let i = 0;
 
         ArrayOfStations.forEach(station => {
 
@@ -180,12 +179,17 @@ function SearchResultsPage() {
             trip.DestinationStationName = station.Name;
           }
 
+          // 2Do tisdag:
+          // - korta antalet dagar?
+          // - kolla antalet lediga platser?
+          // - klippa ut avresedatum för sig och avresetid för sig till trip (split??)
+          // - bestämma hur vi ska sätta pris
+          // - hitta ett sätt att sänka priset vid tidig bokning (ytterligare en temptime med plus massa dagar och jämföra?)
+
           if (trip.DepartureStationName && trip.DestinationStationName) {
             if (!ArrayOfPossibleDepartureIds.includes(trip.Id)) {
-              let fixedDate = fixDate(trip.DepartureTime);
-              // let priceInfo = [fixedDate, FirstPrice];
-              // let price = calculatePrice(priceInfo);
-
+              let priceInfo = [trip.DepartureTime, FirstPrice];
+              let price = calculatePrice(priceInfo);
               ArrayOfPossibleDepartureIds.push(trip.Id)
               ArrayOfPossibleDepartures.push(
                 <div key={trip.Id} className="PossibleDeparture" id={trip.Id}>
@@ -195,28 +199,16 @@ function SearchResultsPage() {
                     <h2 className='StationNames'>Ankommer till: {trip.DestinationStationName}</h2>
                     <div className='DepartureAndArrival'>{schedule.ArrivalTime}</div>
                     <br />
-                    <div className='Price'>{FirstPrice} kr</div>
+                    <div className='Price'>{price} kr</div>
                   </button>
                 </div>
               )
-
-              if (FirstPossibleTripFinder < 1) {
-                let tripDate = new Date(fixedDate);
-                setFirstPossibleTripDate(tripDate);
-                console.log('FirstPossibleTripDate')
-                console.log(tripDate);
-              }
-
-              let increase = FirstPossibleTripFinder + 1;
-              setFirstPossibleTripFinder(increase)
-              console.log(increase);
-              console.log('trip.id');
-              console.log(trip.Id);
             }
           }
         });
       };
     });
+    // console.log(ArrayOfPossibleDepartures)
     return ArrayOfPossibleDepartures;
   }
 
@@ -225,7 +217,7 @@ function SearchResultsPage() {
     let today = Date.now();
 
     let price;
-    if (date > today + 15) {
+    if(date > today + 15){
       price = priceInfo[1] - 100;
       return (price);
     }
@@ -234,50 +226,22 @@ function SearchResultsPage() {
   }
 
   function RoundTrip() {
-    //console.log(FirstPossibleTripSchedule.DepartureTime);
     ArrayOfSchedules.forEach(schedule => {
       // let selectedTime = new Date(WantedDateOfTrip);
       // let departureTime = new Date(schedule.DepartureTime);
       // let tempTime = new Date();
       // tempTime.setDate(selectedTime.getDate() + 8);
 
-      //let returnTripDate = new Date(WantedDateOfTrip);
-      // let returnTripDate = fixDate(WantedDateOfTrip);
-      // let returnTripDateNew = new Date(returnTripDate);
-      // let departureTime = new Date(schedule.DepartureTime);
-      // let tempTime = new Date();
-      // tempTime.setDate(returnTripDateNew.getDate() + 1);
-      // let tempTime2 = fixDate(tempTime);
-      // console.log(tempTime2);
-      // let testTime = tempTime2.toString()
-      // console.log(testTime);
-      // let binaryDepartureTime = departureTime.valueOf();
-      // let binaryTempTime = tempTime.valueOf();
+      let returnTripDate = new Date(WantedDateOfTrip);
+      let departureTime = new Date(schedule.DepartureTime);
+      let tempTime = new Date();
+      tempTime.setDate(returnTripDate.getDate() + 1);
 
-      let scheduleDepartureTime = fixDate(schedule.DepartureTime);
-      let scheduleDepartureTimeNew = new Date(scheduleDepartureTime);
-
-      let milliDepTime = Date.parse(scheduleDepartureTimeNew);
-      console.log(milliDepTime);
-      let milliFirstPossible = Date.parse(FirstPossibleTripDate);
-      console.log(milliFirstPossible);
-
-      // Testa om det funkar i safari som tänkt
-      // let wantedDateOfFirstTrip = fixDate(WantedDateOfTrip);
-
-      // if (FirstPossibleTripDate) {
-      //   wantedDateOfFirstTrip = fixDate(FirstPossibleTripDate);
-      // }
-
-      // let WantedDateOfFirstTripNew = new Date(wantedDateOfFirstTrip);
-
-      // if (scheduleDepartmentTimeNew > WantedDateOfFirstTripNew
-      // if (scheduleDepartmentTimeNew > FirstPossibleTripDate
-      if (milliDepTime > milliFirstPossible
+      if (departureTime > tempTime
         && ReturnTripDepartureStation.Id == schedule.DepartureTrainStationId
         && ReturnTripDestinationStation.Id == schedule.DestinationTrainStationId) {
         let trip = schedule;
-        console.log('milli fungerar')
+
         ArrayOfStations.forEach(station => {
 
           if (schedule.DepartureTrainStationId === station.Id) {
@@ -288,6 +252,9 @@ function SearchResultsPage() {
           }
           if (trip.DepartureStationName && trip.DestinationStationName) {
             if (!ArrayOfPossibleReturnDepartureIds.includes(trip.Id)) {
+              let priceInfo = [trip.DepartureTime, FirstPrice];
+              console.log(priceInfo);
+              let price = calculatePrice(priceInfo);
 
               ArrayOfPossibleReturnDepartureIds.push(trip.Id);
               ArrayOfPossibleReturnDepartures.push(
@@ -298,7 +265,7 @@ function SearchResultsPage() {
                     <h2 className='StationNames'>Ankommer till: {trip.DestinationStationName}</h2>
                     <div className='DepartureAndArrival'>{schedule.ArrivalTime}</div>
                     <br />
-                    <div className='Price'>{SecondPrice} kr</div>
+                    <div className='Price'>{price} kr</div>
                   </button>
                 </div>
               )
@@ -313,13 +280,6 @@ function SearchResultsPage() {
 
   function isSchedulesLoaded() {
     return (isObjectLoaded(ArrayOfSchedules));
-  }
-
-  function isFirstTripLoaded() {
-    if (typeof FirstPossibleTripDate !== 'undefined') {
-      return true;
-    }
-    return false;
   }
 
   function isObjectLoaded(state) {
@@ -338,20 +298,13 @@ function SearchResultsPage() {
     });
   }
 
-  function fixDate(date) {
-    let dateString = date.toString();
-    let addT = dateString.replace(/ /g, "T");
-    let addZ = addT + 'Z';
-    return addZ;
-  }
-
   useEffect(() => {
     if (isSchedulesLoaded()) {
       setStationLocations();
     }
-
+  
   }, [isSchedulesLoaded]);
-
+  
   // Rendering.
   if (TypeOfTrip == 'oneway') {
     return (
@@ -368,7 +321,7 @@ function SearchResultsPage() {
         <h1>Utresor</h1>
         {isSchedulesLoaded() ? <Schedules /> : 'laddar...'}
         <h1>Returresor</h1>
-        {isFirstTripLoaded() ? <RoundTrip /> : 'laddar...'}
+        {isSchedulesLoaded() ? <RoundTrip /> : 'laddar...'}
       </div>
     )
   }
