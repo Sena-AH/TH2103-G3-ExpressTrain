@@ -22,13 +22,6 @@ function HomePage() {
   const [context, updateContext] = useContext(Context)
   const [travelInfo, setTravelInfo] = useState({});
 
-  const [DepartureInput, setDepartureInput] = useState("");
-  const [DestinationInput, setDestinationInput] = useState("");
-  const [ArrayOfStations, setArrayOfStations] = useState([]);
-  const [TicketAmountChoice, setTicketAmountChoice] = useState(1);
-
-  const [TypeOfTrip, setTypeOfTrip] = useState('oneway');
-
   let navigate = useNavigate();
 
   function handleChange(event) {
