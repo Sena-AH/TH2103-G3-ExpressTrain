@@ -11,7 +11,7 @@
   flex-direction: column;
   justify-content: center;
   align-content: center;
-margin: 2vw;
+  margin: 2vw;
 }
 
 .PossibleDeparture{
@@ -26,32 +26,62 @@ margin: 2vw;
   font-weight: normal;
 }
 
-.departure-btn {
+.search-result-button-css {
   background: #F9F9F9;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border: none;
-  border-radius: 5px;
-  color: 28475D;
-  padding: 0vw 0vw;
+  border-radius: 12px;
+  color: black;
+  padding-top: 2%;
 }
 
-.departure-btn:focus{
-  background: #3b8bc0;
-  color: white;
-  padding: 0vw 0vw;
+.search-result-price-css{
+  background: rgba(215, 215, 215, 1);
+  color: dimgray;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 0px 0px 12px 12px;
+  padding: 2%;
+  text-align: center;
 }
+
+.search-result-button-css:hover > .search-result-price-css{
+  background: #26375C;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 0px 0px 12px 12px;
+  padding: 2%;
+  text-align: center;
+  color: #FFFFFF;
+} 
+
+.search-result-button-css:hover{
+  background: #418CBF;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  border:none;
+  border-radius: 12px;
+  padding-top: 2%;
+}
+
+.search-result-button-css:focus{
+  background: #418CBF;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  border:none;
+  border-radius: 12px;
+  padding-top: 2%;
+}
+
+.search-result-button-css:focus > .search-result-price-css{
+  background: #26375C;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 0px 0px 12px 12px;
+  padding: 2%;
+  text-align: center;
+  color: #FFFFFF;
+}
+
 .StationNames {
   font-weight: bold;
   font-size: large;
   padding-top: 1vw;
-}
-
-.TripPrice {
-  background-color: #D7D7D7;
-  border: none;
-  border-radius: 5px;
-  padding: 5px;
-  font-weight:bold;
 }
 
 .sorry-msg {

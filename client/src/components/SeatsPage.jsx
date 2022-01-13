@@ -170,7 +170,7 @@ function SeatsPage() {
         (result) => {
           return result;
         },
-        () => {}
+        () => { }
       );
   }
 
@@ -220,8 +220,8 @@ function SeatsPage() {
         cartSeats.push(
           <div key={i} className="seat">
             <button className="takenSeat" onClick={() => TakenSeat()}>
-              {i}, <br />
-              Upptagen
+              {i}<br />
+
             </button>
           </div>
         );
@@ -232,8 +232,8 @@ function SeatsPage() {
               className="availableSeat"
               onClick={() => VacantSeatFirst(i)}
             >
-              {i}, <br />
-              Ledig
+              {i}<br />
+
             </button>
           </div>
         );
@@ -252,8 +252,8 @@ function SeatsPage() {
         cartSeats.push(
           <div key={i} className="seat">
             <button className="takenSeat" onClick={() => TakenSeat()}>
-              {i}, <br />
-              Upptagen
+              {i}<br />
+
             </button>
           </div>
         );
@@ -264,8 +264,8 @@ function SeatsPage() {
               className="availableSeat"
               onClick={() => VacantSeatSecond(i)}
             >
-              {i}, <br />
-              Ledig
+              {i}<br />
+
             </button>
           </div>
         );
@@ -284,8 +284,11 @@ function SeatsPage() {
       return (
         <div className="WholePage">
           <h1 className="Title">
-            Sittplatser {startStation} - {destinationStation}
+            Sittplatser <br />
           </h1>
+          <h2> {startStation} <br />
+          - <br />
+            {destinationStation}</h2>
           <div className="TrainCart">
             {isRenderedFirstSeatsLoaded() ? <RenderFirstCart /> : "laddar..."}
           </div>
@@ -302,14 +305,22 @@ function SeatsPage() {
       return (
         <div className="WholePage">
           <h1 className="Title">
-            Sittplatser {startStation} - {destinationStation}
+            Sittplatser <br />
           </h1>
+          <h2> {startStation} <br />
+          - <br />
+            {destinationStation}</h2>
           <div className="TrainCart">
             {isRenderedFirstSeatsLoaded() ? <RenderFirstCart /> : "laddar..."}
           </div>
+
           <h1 className="Title">
-            Sittplatser {destinationStation} - {startStation}
+            Sittplatser <br />
           </h1>
+          <h2> {destinationStation} <br />
+          - <br />
+            {startStation}</h2>
+
           <div className="TrainCart">
             {isRenderedSecondSeatsLoaded() ? <RenderSecondCart /> : "laddar..."}
           </div>

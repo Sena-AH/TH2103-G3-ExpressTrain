@@ -178,14 +178,16 @@ function SearchResultsPage() {
               ArrayOfPossibleDepartureIds.push(trip.Id)
               ArrayOfPossibleDepartures.push(
                 <div key={trip.Id} className="PossibleDeparture" id={trip.Id}>
-                  <button type="submit" className='departure-btn' value={trip.Id} onClick={() => handleFirstTripClick(trip.Id)}>
+                  <button className="search-result-button-css" type="submit" value={trip.Id} onClick={() => handleFirstTripClick(trip.Id)}>
                     <div className='StationNames'>Från: {trip.DepartureStationName}</div>
                     <div className='DepartureDate'>{schedule.DepartureTime}</div>
                     <div className='StationNames'>Till: {trip.DestinationStationName}</div>
                     <div className='DepartureAndArrival'>{schedule.ArrivalTime}</div>
                     <br />
-                    <div className='TripPrice'>{FirstPrice} kr</div>
+                    <div className='Price search-result-price-css'>{FirstPrice} kr</div>
+
                   </button>
+
                 </div>
               )
             }
@@ -206,9 +208,9 @@ function SearchResultsPage() {
         <div className='noPossibleFirstTrips search-result-wrapper'>
           <h2>Avgångar</h2>
           <div className='sorry-msg'>
-          Tyvärr finns inga resor nära ditt angivna datum.
+            Tyvärr finns inga resor nära ditt angivna datum.
           </div>
-          <div  className='choice-btn-wrapper'>
+          <div className='choice-btn-wrapper'>
             <button className="choice-btn" type="button" onClick={() => handleRestartClick()}>Börja om</button>
           </div>
         </div>
@@ -243,15 +245,19 @@ function SearchResultsPage() {
               ArrayOfPossibleReturnDepartureIds.push(trip.Id);
               ArrayOfPossibleReturnDepartures.push(
                 <div key={trip.Id} className="PossibleDeparture" id={trip.Id}>
-                  <button type="submit" className='departure-btn' value={trip.Id} onClick={() => handleClickReturn(trip.Id)}>
+                  <button type="submit" className="search-result-button-css" value={trip.Id} onClick={() => handleClickReturn(trip.Id)}>
                     <div className='StationNames'>Från: {trip.DepartureStationName}</div>
                     <div className='DepartureDate'>{schedule.DepartureTime}</div>
                     <div className='StationNames'>Till: {trip.DestinationStationName}</div>
                     <div className='DepartureAndArrival'>{schedule.ArrivalTime}</div>
                     <br />
-                    <div className='TripPrice'>{SecondPrice} kr</div>
+                    <div className='TripPrice Price search-result-price-css'>{SecondPrice} kr</div>
+
                   </button>
                 </div>
+
+
+
               )
             }
           }
@@ -277,9 +283,9 @@ function SearchResultsPage() {
       );
     }
     else
-    return (
-      <div></div>
-    );
+      return (
+        <div></div>
+      );
   }
 
   function isSchedulesLoaded() {
