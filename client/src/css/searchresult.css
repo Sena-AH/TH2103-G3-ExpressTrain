@@ -1,7 +1,79 @@
-.search-result-div {
+.search-result {
+  align-content: center;
+  flex-direction: column;
+  justify-content: center;
+}
+.search-result-wrapper {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  text-align: left;
+  color: 28475D;
+  background: #FFFFFF;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+margin: 2vw;
+}
+
+.PossibleDeparture{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 2vw;
+  padding: 2vw;
+  text-align: center;
+  color: white;
+  font-style: normal;
+  font-weight: normal;
+}
+
+.departure-btn {
+  background: #F9F9F9;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border: none;
+  border-radius: 5px;
+  color: 28475D;
+  padding: 0vw 0vw;
+}
+
+.departure-btn:focus{
+  background: #3b8bc0;
+  color: white;
+  padding: 0vw 0vw;
+}
+.StationNames {
+  font-weight: bold;
+  font-size: large;
+  padding-top: 1vw;
+}
+
+.TripPrice {
+  background-color: #D7D7D7;
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  font-weight:bold;
+}
+
+.sorry-msg {
+  margin: 2vw;
+  margin-bottom: 4vw;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+}
+
+.choice-btn {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  margin:2vw;
+  background-color: #D7D7D7;
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  font-weight: bold;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 90%;
 }
 
 .search-result-button:focus {
@@ -14,10 +86,12 @@
   margin-top: 10px;
 }
 
-.current-total-price-div {
-  margin-top: 20px;
-  margin-bottom: 20px;
+.search-result-button:focus {
+  border: black 1px solid;
   display: flex;
   flex-direction: column;
+  align-self: center;
   align-items: center;
+  color: green;
+  margin-top: 10px;
 }

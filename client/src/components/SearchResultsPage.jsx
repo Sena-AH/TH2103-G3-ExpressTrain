@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect, useContext } from 'react';
 import { Context } from '../App';
+import '../css/searchresult.css';
+
 
 function SearchResultsPage() {
   const [context, updateContext] = useContext(Context);
@@ -176,13 +178,13 @@ function SearchResultsPage() {
               ArrayOfPossibleDepartureIds.push(trip.Id)
               ArrayOfPossibleDepartures.push(
                 <div key={trip.Id} className="PossibleDeparture" id={trip.Id}>
-                  <button type="submit" border="solid" value={trip.Id} onClick={() => handleFirstTripClick(trip.Id)}>
-                    <h2 className='StationNames'>Avgår från: {trip.DepartureStationName}</h2>
+                  <button type="submit" className='departure-btn' value={trip.Id} onClick={() => handleFirstTripClick(trip.Id)}>
+                    <div className='StationNames'>Från: {trip.DepartureStationName}</div>
                     <div className='DepartureDate'>{schedule.DepartureTime}</div>
-                    <h2 className='StationNames'>Ankommer till: {trip.DestinationStationName}</h2>
+                    <div className='StationNames'>Till: {trip.DestinationStationName}</div>
                     <div className='DepartureAndArrival'>{schedule.ArrivalTime}</div>
                     <br />
-                    <div className='Price'>{FirstPrice} kr</div>
+                    <div className='TripPrice'>{FirstPrice} kr</div>
                   </button>
                 </div>
               )
@@ -192,17 +194,20 @@ function SearchResultsPage() {
       };
     });
     if (isObjectLoaded(ArrayOfPossibleDepartures)) {
-      return (<div>
-        <h1>Avgångar</h1>
+      setIsReturnTripPossible(true);
+      return (<div className='search-result-wrapper'>
+        <h2>Avgångar</h2>
         {ArrayOfPossibleDepartures}
       </div>);
     }
     else {
       setIsReturnTripPossible(false);
       return (
-        <div className='noPossibleFirstTrips'>
-          <h1>Avgångar</h1>
+        <div className='noPossibleFirstTrips search-result-wrapper'>
+          <h2>Avgångar</h2>
+          <div className='sorry-msg'>
           Tyvärr finns inga resor nära ditt angivna datum.
+          </div>
           <div className="search-btn">
             <button type="button" onClick={() => handleRestartClick()}>Börja om</button>
           </div>
@@ -238,13 +243,13 @@ function SearchResultsPage() {
               ArrayOfPossibleReturnDepartureIds.push(trip.Id);
               ArrayOfPossibleReturnDepartures.push(
                 <div key={trip.Id} className="PossibleDeparture" id={trip.Id}>
-                  <button type="submit" border="solid" value={trip.Id} onClick={() => handleClickReturn(trip.Id)}>
-                    <h2 className='StationNames'>Avgår från: {trip.DepartureStationName}</h2>
+                  <button type="submit" className='departure-btn' value={trip.Id} onClick={() => handleClickReturn(trip.Id)}>
+                    <div className='StationNames'>Från: {trip.DepartureStationName}</div>
                     <div className='DepartureDate'>{schedule.DepartureTime}</div>
-                    <h2 className='StationNames'>Ankommer till: {trip.DestinationStationName}</h2>
+                    <div className='StationNames'>Till: {trip.DestinationStationName}</div>
                     <div className='DepartureAndArrival'>{schedule.ArrivalTime}</div>
                     <br />
-                    <div className='Price'>{SecondPrice} kr</div>
+                    <div className='TripPrice'>{SecondPrice} kr</div>
                   </button>
                 </div>
               )
@@ -254,21 +259,21 @@ function SearchResultsPage() {
       };
     })
     if (isObjectLoaded(ArrayOfPossibleReturnDepartures) && isReturnTripPossible) {
-      return (<div>
-        <h1>Avgångar returresa</h1>
+      return (<div className='search-result-wrapper'>
+        <h2>Avgångar returresa</h2>
         {ArrayOfPossibleReturnDepartures}
       </div>);
     }
     else if (!isObjectLoaded(ArrayOfPossibleReturnDepartures)) {
       return (
-        <div>
-          <h1>Avgångar returresa</h1>
-          Tyvärr finns inga returresor nära ditt angivna datum.
-          <div className="search-btn">
-            <button type="button" onClick={() => handleRestartClick()}>Börja om</button>
+        <div className='search-result-wrapper'>
+          <h2>Avgångar returresa</h2>
+          <div className='sorry-msg'>Tyvärr finns inga returresor nära ditt angivna datum.</div>
+          <div>
+            <button className="choice-btn" type="button" onClick={() => handleRestartClick()}>Börja om</button>
           </div>
-          <div className="search-btn">
-            <button type="button" onClick={() => handleOnewayClick()}>Boka utresa som enkelresa</button>
+          <div>
+            <button className="choice-btn" type="button" onClick={() => handleOnewayClick()}>Boka utresa som enkelresa</button>
           </div>
         </div>
       );
@@ -316,14 +321,14 @@ function SearchResultsPage() {
   // Rendering.
   if (TypeOfTrip == 'oneway') {
     return (
-      <div>
+      <div className='search-result'>
         {isSchedulesLoaded() ? <Schedules /> : 'laddar...'}
       </div>
     );
 
   } else {
     return (
-      <div>
+      <div className='search-result'>
         {isSchedulesLoaded() ? <Schedules /> : 'laddar...'}
         {isSchedulesLoaded() ? <RoundTrip /> : 'laddar...'}
       </div>
