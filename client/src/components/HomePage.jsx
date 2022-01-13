@@ -1,6 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect, useContext } from 'react';
 import { Context } from '../App';
+import { validate } from 'uuid';
+
+
 
 function Tickets(props) {
   let ticketOptions = [];
@@ -21,6 +24,9 @@ function HomePage() {
 
   const [context, updateContext] = useContext(Context)
   const [travelInfo, setTravelInfo] = useState({});
+  
+  const [TravelFromErr, setTravelFromErr] = useState(false);
+  const [TravelToErr, setTravelToErr] = useState(false);
 
   let navigate = useNavigate();
 
@@ -46,7 +52,7 @@ function HomePage() {
 
   function handleClick() {
     validateInput();
-    if(!travelInfo.LocationErrorMessage && travelInfo.TravelDate){
+    if (!travelInfo.LocationErrorMessage && travelInfo.TravelDate) {
       trimContext();
       navigate('/SearchResultsPage');
     } else {
@@ -55,7 +61,17 @@ function HomePage() {
   }
 
   function validateInput() {
-    if (!travelInfo.TravelFrom && !travelInfo.TravelTo) {
+
+    const valid = new RegExp(/[^a-zA-ZåäöÅÄÖ]/)
+    if (valid.test(travelInfo.TravelFrom) || valid.test(travelInfo.TravelTo)) {
+      if(valid.test(travelInfo.TravelFrom) && valid.test(travelInfo.TravelTo)){
+        travelInfo.LocationErrorMessage = 'Vänligen ange enbart bokstäver för avgång och destination';
+      } else if(valid.test(travelInfo.TravelFrom)){
+        travelInfo.LocationErrorMessage = 'Vänligen ange enbart bokstäver för din avgång';
+      } else {
+        travelInfo.LocationErrorMessage = 'Vänligen ange enbart bokstäver för din destination';
+      }   
+    }else if(!travelInfo.TravelFrom && !travelInfo.TravelTo) {
       travelInfo.LocationErrorMessage = 'Vänligen fyll i både avgång och destination';
     } else {
       if (!travelInfo.TravelTo) {
@@ -66,7 +82,14 @@ function HomePage() {
         travelInfo.LocationErrorMessage = null;
       }
     }
-    if(!travelInfo.TravelDate){
+
+
+    
+
+    console.log(TravelFromErr);
+    console.log(TravelToErr);
+
+    if (!travelInfo.TravelDate) {
       travelInfo.DateErrorMessage = 'Inget datum angivet';
     } else {
       travelInfo.DateErrorMessage = null;
@@ -83,12 +106,12 @@ function HomePage() {
 
   }
 
-  function capitalizeInput(input){
-    input = input.slice(0,1).toUpperCase() + input.slice(1, input.length);
+  function capitalizeInput(input) {
+    input = input.slice(0, 1).toUpperCase() + input.slice(1, input.length);
     return input;
   }
 
-  function trimContext(){
+  function trimContext() {
     context.DateErrorMessage = null;
     context.LocationErrorMessage = null;
   }
@@ -103,7 +126,7 @@ function HomePage() {
       <div className="input-search">
         <input maxLength={35} className="input" placeholder="Till:" name="TravelTo" value={setTravelInfo.TravelTo} onChange={handleChange} />
       </div>
-      <div className="input-search" style={{fontWeight: 'bold'}}>
+      <div className="input-search" style={{ fontWeight: 'bold' }}>
         {travelInfo.LocationErrorMessage}
       </div>
 
@@ -140,7 +163,7 @@ function HomePage() {
         <input className="input-color" placeholder="ÅÅÅÅ-MM-DD" type="date" name="TravelDate" onChange={handleChange}></input>
       </div>
 
-      <div className="input-search" style={{fontWeight: 'bold'}}>
+      <div className="input-search" style={{ fontWeight: 'bold' }}>
         {travelInfo.DateErrorMessage}
       </div>
 
