@@ -184,18 +184,9 @@ function SearchResultsPage() {
                     <div className='StationNames'>Till: {trip.DestinationStationName}</div>
                     <div className='DepartureAndArrival'>{schedule.ArrivalTime}</div>
                     <br />
+                    <div className='Price search-result-price-css'>{FirstPrice} kr</div>
 
                   </button>
-                  <div className='Price search-result-price-css'>{FirstPrice} kr</div>
-
-                  {/* <button type="submit" className='departure-btn' value={trip.Id} onClick={() => handleFirstTripClick(trip.Id)}>
-                      <div className='StationNames'>Från: {trip.DepartureStationName}</div>
-                      <div className='DepartureDate'>{schedule.DepartureTime}</div>
-                      <div className='StationNames'>Till: {trip.DestinationStationName}</div>
-                      <div className='DepartureAndArrival'>{schedule.ArrivalTime}</div>
-                      <br />
-                    </button> */}
-                  {/* <div className='TripPrice'>{FirstPrice} kr</div> */}
 
                 </div>
               )
@@ -254,15 +245,19 @@ function SearchResultsPage() {
               ArrayOfPossibleReturnDepartureIds.push(trip.Id);
               ArrayOfPossibleReturnDepartures.push(
                 <div key={trip.Id} className="PossibleDeparture" id={trip.Id}>
-                  <button type="submit" className='departure-btn' value={trip.Id} onClick={() => handleClickReturn(trip.Id)}>
+                  <button type="submit" className="search-result-button-css" value={trip.Id} onClick={() => handleClickReturn(trip.Id)}>
                     <div className='StationNames'>Från: {trip.DepartureStationName}</div>
                     <div className='DepartureDate'>{schedule.DepartureTime}</div>
                     <div className='StationNames'>Till: {trip.DestinationStationName}</div>
                     <div className='DepartureAndArrival'>{schedule.ArrivalTime}</div>
                     <br />
-                    <div className='TripPrice'>{SecondPrice} kr</div>
+                    <div className='TripPrice Price search-result-price-css'>{SecondPrice} kr</div>
+
                   </button>
                 </div>
+
+
+
               )
             }
           }
