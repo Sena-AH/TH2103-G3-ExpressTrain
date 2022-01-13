@@ -94,16 +94,15 @@ function HomePage() {
     } else {
       travelInfo.DateErrorMessage = null;
     }
-    let fromTemp = travelInfo.TravelFrom.toLowerCase();
-    let toTemp = travelInfo.TravelTo.toLowerCase();
-
-    travelInfo.TravelFrom = capitalizeInput(fromTemp);
-    travelInfo.TravelTo = capitalizeInput(toTemp);
-
+    if(travelInfo.TravelFrom){
+      let fromTemp = travelInfo.TravelFrom.toLowerCase();
+      travelInfo.TravelFrom = capitalizeInput(fromTemp);
+    }
+    if(travelInfo.TravelTo){
+      let toTemp = travelInfo.TravelTo.toLowerCase();
+      travelInfo.TravelTo = capitalizeInput(toTemp);
+    }
     updateContext(travelInfo);
-    console.log(travelInfo.TravelFrom);
-    console.log(travelInfo.TravelTo);
-
   }
 
   function capitalizeInput(input) {
