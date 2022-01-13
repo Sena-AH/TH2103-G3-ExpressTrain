@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+.paymentform-font *{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+}
+
+.input-payment-form{
+    padding: 1rem 1rem 1rem 1rem;
+}
+
+.label-telephone-swish{
+    font-size: 1.5rem;
+    line-height: 1.75rem;
+    color: #418CBF;
+}
+
+.telephone-swish-input{
+    width: 100%;
+    background: #F1F2F6;
+    border-radius: 0.313rem;
+
+    font-size: 1.5rem;
+    line-height: 1.75rem;
+    color: #AEADC4;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin-bottom:  1.5rem;
+}
+
+.payment-swish-input{
+    width: 100%;
+    background-color: #1a883d;
+    border-radius: 0.313rem;
+    line-height: 1.75rem;
+    color: #ffffff;
+    font-size: 1.5rem;
+    padding: .5rem 1rem;
+    border: none;
+    margin-bottom: 1rem;
+}

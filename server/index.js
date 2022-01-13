@@ -202,6 +202,59 @@ webServer.get('/api/Schedule/:id', (req, res) => {
   );
 });
 
+// REST ROUTE: POST Booking
+webServer.post('/api/Booking', (req, res) => {
+    // do not allow id to be set manually
+    delete req.body.id;
+    req.body.BookingCode = getNewBookingCode();
+    req.body.ManipulationCode = getNewManipulationCode();
+    req.params.table = 'Booking';
+    console.log(req.body);
+    console.log(req.params);
+    // run query and return result
+    runQuery(req, res, `
+      INSERT INTO ${req.params.table} (${Object.keys(req.body)})     
+      VALUES (${Object.keys(req.body).map(x => ':' + x)})
+    `, req.body
+    );
+});
+
+function getNewBookingCode() {
+  let bookingCode = "";
+
+  do {
+    for (let i = 0; i < 6; i++) {
+      let charCode = getRandomInt(48, 91);
+      charCode = ((charCode < 58) || (charCode > 64)) ? charCode : charCode-7; // only numbers and letters
+      bookingCode += String.fromCharCode(charCode);
+    }
+  } while (!isBookingCodeUnique(bookingCode));
+
+  return bookingCode;
+}
+
+function isBookingCodeUnique(bookingCode) {
+  const info = db.prepare(`SELECT EXISTS(SELECT * FROM Booking WHERE BookingCode = ?)`).bind(bookingCode).all();
+  return Object.values(info[0])[0] == 0;
+}
+
+function getNewManipulationCode() {
+  let bookingManipulationCode = "";
+  for (let i = 0; i < 8; i++) {
+    let charCode = getRandomInt(48, 91);
+    charCode = ((charCode < 58) || (charCode > 64)) ? charCode : charCode-7; // only numbers and letters
+    bookingManipulationCode += String.fromCharCode(charCode);
+  }
+
+  return bookingManipulationCode;
+}
+
+function getRandomInt(inclusiveMin, exclusiveMax) {
+  inclusiveMin = Math.ceil(inclusiveMin);
+  exclusiveMax = Math.floor(exclusiveMax);
+  return Math.floor(Math.random() * (exclusiveMax - inclusiveMin) + inclusiveMin);
+}
+
 // REST ROUTE: POST
 webServer.post('/api/:table', (req, res) => {
   // do not allow id to be set manually
