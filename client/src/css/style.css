@@ -44,10 +44,12 @@
     margin-left: auto;
     margin-right: auto;
     width: 85%;
+    color: rgb(116, 2, 2);
 }
 .destination-error {
     display: flex;
     margin-left: auto;
     margin-right: auto;
     width: 85%;
+    color: rgb(116, 2, 2);
 }
