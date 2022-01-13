@@ -48,7 +48,6 @@ function PaymentPage(props) {
   }, []);
 
   useEffect(() => {
-    // TODO: maybe no useEffect
     setBookingData({
       FirstName: context.TravellerFirstName,
       LastName: context.TravellerLastName,

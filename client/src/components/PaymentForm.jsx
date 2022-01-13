@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
+import "../css/PaymentForm.css"
 
 function PaymentForm(props) {
   const navigate = useNavigate();
@@ -10,7 +11,7 @@ function PaymentForm(props) {
   });
 
   const bookingData = props.data ?? {};
-  const payeeAlias = "1231181189";
+  const payeeAlias = "1231181189"; // company id/phone number?!
   const price = bookingData.Price;
   // const message = "TrainCompany trip from ... to ...on date";
   const payeePaymentReference = uuidv4().split('-').join('');
@@ -82,41 +83,11 @@ function PaymentForm(props) {
     const body = {
       TravellerId: travellerId,
       Price: price,
-      BookingCode: getNewBookingCode(),
-      ManipulationCode: getNewManipulationCode(),
+      // BookingCode: getNewBookingCode(),
+      // ManipulationCode: getNewManipulationCode(),
     };
     const result = await axios.post("/api/Booking", body);
     return result.data;
-  }
-
-  function getRandomInt(inclusiveMin, exclusiveMax) {
-    inclusiveMin = Math.ceil(inclusiveMin);
-    exclusiveMax = Math.floor(exclusiveMax);
-    return Math.floor(Math.random() * (exclusiveMax - inclusiveMin) + inclusiveMin);
-  }
-
-  function getNewBookingCode() {
-    // TODO: check for duplicates and move to API
-    let bookingCode = "";
-    for (let i = 0; i < 6; i++) {
-      let charCode = getRandomInt(48, 91);
-      charCode = ((charCode < 58) || (charCode > 64)) ? charCode : charCode-7; // only numbers and letters
-      bookingCode += String.fromCharCode(charCode);
-    }
-
-    return bookingCode;
-  }
-
-  function getNewManipulationCode() {
-    // TODO: check for duplicates and move to API
-    let bookingManipulationCode = "";
-    for (let i = 0; i < 8; i++) {
-      let charCode = getRandomInt(48, 91);
-      charCode = ((charCode < 58) || (charCode > 64)) ? charCode : charCode-7; // only numbers and letters
-      bookingManipulationCode += String.fromCharCode(charCode);
-    }
-
-    return bookingManipulationCode;
   }
 
   async function postScheduleStages(bookingId, scheduleIds, seats) {
@@ -137,12 +108,13 @@ function PaymentForm(props) {
   }
 
   return (
-    <div>
-      <div className="input-form">
+    <div className="paymentform-font">
+      <div className="input-payment-form">
         <form onSubmit={handlePaymentSubmit}>
-          <label>
+          <label className="label-telephone-swish bold">
             Telefonnummer:
             <input
+              className="telephone-swish-input"
               type="tel"
               pattern="[0-9]{8,15}"
               name="phoneNumber"
@@ -150,7 +122,7 @@ function PaymentForm(props) {
               onChange={handlePhoneNumberChange}
             />
           </label>
-          <input type="submit" value="Betala" />
+          <input className="payment-swish-input" type="submit" value="Betala" />
         </form>
       </div>
     </div>
