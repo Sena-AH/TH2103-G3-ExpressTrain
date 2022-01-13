@@ -332,32 +332,30 @@ function Booking(props) {
             Vi behöver din veriferings kod för att kunna gör andringar till din
             bokning.
           </div>
-          <div className="input-form">
-            <form onSubmit={handleManipulationCodeEntrySubmit}>
-              <label
-                htmlFor="verification-code-input"
-                className="validation-label"
-              >
-                Veriferingskod {isCodeValid ? '' : <span class="invalid-input-label invalid-input-label-orange">(*Fel Veriferingskod)</span>}
-              </label>
-              <div className="input-search input-search-mod">
-                <input
-                  id="verification-code-input"
-                  className={"input " + (isCodeValid ? '' : 'invalid-input-field invalid-input-field-orange')}
-                  value={manipulationCode}
-                  onChange={handleManipulationCodeChange}
-                  autoFocus
-                />
-              </div>
-              <div className="search-btn">
-                <input
-                  type="submit"
-                  id="validate-cancellation-btn"
-                  value="Avboka bokningen"
-                />
-              </div>
-            </form>
-          </div>
+          <form className="validation-form" onSubmit={handleManipulationCodeEntrySubmit}>
+            <label
+              htmlFor="verification-code-input"
+              className="validation-label"
+            >
+              Veriferingskod {isCodeValid ? '' : <span class="invalid-input-label invalid-input-label-orange">(*Fel Veriferingskod)</span>}
+            </label>
+            {/* <div className="input-search input-search-mod"> */}
+            <input
+              id="verification-code-input"
+              className={"validation-input booking-input " + (isCodeValid ? '' : 'invalid-input-field invalid-input-field-orange')}
+              value={manipulationCode}
+              onChange={handleManipulationCodeChange}
+              autoFocus
+            />
+            {/* </div> */}
+            {/* <div className="search-btn"> */}
+            <input className="validation-btn booking-btn"
+              type="submit"
+              id="validate-cancellation-btn"
+              value="Avboka bokningen"
+            />
+            {/* </div> */}
+          </form>
         </div>
       </div>
     );
@@ -366,9 +364,7 @@ function Booking(props) {
   function BookingDeletedConfirmation() {
     return (
       <>
-        <div>
-          <h1 className="page-deleted-title">Din bokning är nu avbokad</h1>
-        </div>
+        <h1 className="page-deleted-title">Din bokning är nu avbokad</h1>
         <div className="search-btn">
           <button
             type="button"

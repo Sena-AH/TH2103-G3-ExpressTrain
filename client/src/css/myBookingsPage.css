@@ -70,3 +70,9 @@
 .invalid-input-field{
   border: solid 1px red;
 }
+
+.page-deleted-title{
+  color: #418CBF;
+  text-align: center;
+  margin-top: 1rem;
+}
