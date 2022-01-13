@@ -24,9 +24,6 @@ function HomePage() {
 
   const [context, updateContext] = useContext(Context)
   const [travelInfo, setTravelInfo] = useState({});
-  
-  const [TravelFromErr, setTravelFromErr] = useState(false);
-  const [TravelToErr, setTravelToErr] = useState(false);
 
   let navigate = useNavigate();
 
@@ -60,117 +57,131 @@ function HomePage() {
     }
   }
 
+  function resetErrors() {
+    travelInfo.ToCharErrorMessage = null;
+    travelInfo.ToErrorMessage = null;
+    travelInfo.FromCharErrorMessage = null;
+    travelInfo.FromErrorMessage = null;
+  }
+
   function validateInput() {
-
+    resetErrors();
     const valid = new RegExp(/[^a-zA-ZåäöÅÄÖ]/)
-    if (valid.test(travelInfo.TravelFrom) || valid.test(travelInfo.TravelTo)) {
-      if(valid.test(travelInfo.TravelFrom) && valid.test(travelInfo.TravelTo)){
-        travelInfo.LocationErrorMessage = 'Vänligen ange enbart bokstäver för avgång och destination';
-      } else if(valid.test(travelInfo.TravelFrom)){
-        travelInfo.LocationErrorMessage = 'Vänligen ange enbart bokstäver för din avgång';
-      } else {
-        travelInfo.LocationErrorMessage = 'Vänligen ange enbart bokstäver för din destination';
-      }   
-    }else if(!travelInfo.TravelFrom && !travelInfo.TravelTo) {
-      travelInfo.LocationErrorMessage = 'Vänligen fyll i både avgång och destination';
-    } else {
-      if (!travelInfo.TravelTo) {
-        travelInfo.LocationErrorMessage = 'Du har inte angivit någon destination';
-      } else if (!travelInfo.TravelFrom) {
-        travelInfo.LocationErrorMessage = 'Du har inte angivit någon avgång';
-      } else {
-        travelInfo.LocationErrorMessage = null;
-      }
-    }
-
-
     
+      if(valid.test(travelInfo.TravelFrom)){
+        console.log(travelInfo.FromCharErrorMessage);
+        travelInfo.FromCharErrorMessage = 'Vänligen ange enbart bokstäver för avgång';
+      } 
+      if(valid.test(travelInfo.TravelTo)){
+        console.log(travelInfo.ToCharErrorMessage);
+        travelInfo.ToCharErrorMessage = 'Vänligen ange enbart bokstäver för destination';
+      }
+      if (!travelInfo.TravelFrom) {
+        travelInfo.FromErrorMessage = 'Du har inte angivit någon avgång';
+      }
+      if (!travelInfo.TravelTo) {
+        travelInfo.ToErrorMessage = 'Du har inte angivit någon destination';
+      }
+        
+      console.log(travelInfo.FromErrorMessage);
+      console.log(travelInfo.TravelTo);
+      console.log(travelInfo.ToErrorMessage);
 
-    console.log(TravelFromErr);
-    console.log(TravelToErr);
 
-    if (!travelInfo.TravelDate) {
-      travelInfo.DateErrorMessage = 'Inget datum angivet';
-    } else {
-      travelInfo.DateErrorMessage = null;
+      if (!travelInfo.TravelDate) {
+        travelInfo.DateErrorMessage = 'Inget datum angivet';
+      } else {
+        travelInfo.DateErrorMessage = null;
+      }
+      if (travelInfo.TravelFrom) {
+        let fromTemp = travelInfo.TravelFrom.toLowerCase();
+        travelInfo.TravelFrom = capitalizeInput(fromTemp);
+      }
+      if (travelInfo.TravelTo) {
+        let toTemp = travelInfo.TravelTo.toLowerCase();
+        travelInfo.TravelTo = capitalizeInput(toTemp);
+      }
+      updateContext(travelInfo);
     }
-    if(travelInfo.TravelFrom){
-      let fromTemp = travelInfo.TravelFrom.toLowerCase();
-      travelInfo.TravelFrom = capitalizeInput(fromTemp);
+
+    function capitalizeInput(input) {
+      input = input.slice(0, 1).toUpperCase() + input.slice(1, input.length);
+      return input;
     }
-    if(travelInfo.TravelTo){
-      let toTemp = travelInfo.TravelTo.toLowerCase();
-      travelInfo.TravelTo = capitalizeInput(toTemp);
+
+    function trimContext() {
+
+      context.FromErrorMessage = null;
+      context.FromCharErrorMessage = null;
+
+      context.ToErrorMessage = null;
+      context.ToCharErrorMessage = null;
+
+      context.DateErrorMessage = null;
     }
-    updateContext(travelInfo);
-  }
 
-  function capitalizeInput(input) {
-    input = input.slice(0, 1).toUpperCase() + input.slice(1, input.length);
-    return input;
-  }
+    // handleClick();
 
-  function trimContext() {
-    context.DateErrorMessage = null;
-    context.LocationErrorMessage = null;
-  }
-
-  // handleClick();
-
-  return (
-    <div>
-      <div className="input-search">
-        <input maxLength={35} className="input" placeholder="Från:" name="TravelFrom" value={setTravelInfo.TravelFrom} onChange={handleChange} />
-      </div>
-      <div className="input-search">
-        <input maxLength={35} className="input" placeholder="Till:" name="TravelTo" value={setTravelInfo.TravelTo} onChange={handleChange} />
-      </div>
-      <div className="input-search" style={{ fontWeight: 'bold' }}>
-        {travelInfo.LocationErrorMessage}
-      </div>
-
-      <form className="input-form" action="" method="post">
-        <div className="switch" >
-          <input type="radio"
-            className="switch-input"
-            name="TravelType"
-            value="oneway"
-            id="oneway"
-            onClick={handleChange}
-          />
-          <label htmlFor="oneway" className="switch-label switch-label-off">Enkelresa</label>
-
-          <input type="radio"
-            className="switch-input"
-            name="TravelType"
-            value="roundtrip"
-            id="roundtrip"
-            onClick={handleChange}
-          />
-          <label htmlFor="roundtrip" className="switch-label switch-label-on">Tur & retur</label>
-          <span className="switch-selection"></span>
+    return (
+      <div>
+        <div className="input-search">
+          <input maxLength={35} className="input" placeholder="Från:" name="TravelFrom" value={setTravelInfo.TravelFrom} onChange={handleChange} />
         </div>
-      </ form>
+        <div className="departure-error" style={{ fontWeight: 'bold' }}>
+          {travelInfo.FromErrorMessage}
+          {travelInfo.FromCharErrorMessage}
+        </div>
 
-      <div className="input-tickets">
-        <select className="input-color" name="TravellerAmount" id="tickets" onChange={handleChange} >
-          <Tickets amount="8" />
-        </select>
+        <div className="input-search">
+          <input maxLength={35} className="input" placeholder="Till:" name="TravelTo" value={setTravelInfo.TravelTo} onChange={handleChange} />
+        </div>
+        <div className="destination-error" style={{ fontWeight: 'bold' }}>
+          {travelInfo.ToErrorMessage}
+          {travelInfo.ToCharErrorMessage}
+        </div>
+
+        <form className="input-form" action="" method="post">
+          <div className="switch" >
+            <input type="radio"
+              className="switch-input"
+              name="TravelType"
+              value="oneway"
+              id="oneway"
+              onClick={handleChange}
+            />
+            <label htmlFor="oneway" className="switch-label switch-label-off">Enkelresa</label>
+
+            <input type="radio"
+              className="switch-input"
+              name="TravelType"
+              value="roundtrip"
+              id="roundtrip"
+              onClick={handleChange}
+            />
+            <label htmlFor="roundtrip" className="switch-label switch-label-on">Tur & retur</label>
+            <span className="switch-selection"></span>
+          </div>
+        </ form>
+
+        <div className="input-tickets">
+          <select className="input-color" name="TravellerAmount" id="tickets" onChange={handleChange} >
+            <Tickets amount="8" />
+          </select>
+        </div>
+
+        <div className="input-date">
+          <input className="input-color" placeholder="ÅÅÅÅ-MM-DD" type="date" name="TravelDate" onChange={handleChange}></input>
+        </div>
+
+        <div className="input-search" style={{ fontWeight: 'bold' }}>
+          {travelInfo.DateErrorMessage}
+        </div>
+
+        <div className="search-btn">
+          <button type="button" onClick={() => handleClick()}>Sök</button>
+        </div>
       </div>
+    );
+  }
 
-      <div className="input-date">
-        <input className="input-color" placeholder="ÅÅÅÅ-MM-DD" type="date" name="TravelDate" onChange={handleChange}></input>
-      </div>
-
-      <div className="input-search" style={{ fontWeight: 'bold' }}>
-        {travelInfo.DateErrorMessage}
-      </div>
-
-      <div className="search-btn">
-        <button type="button" onClick={() => handleClick()}>Sök</button>
-      </div>
-    </div>
-  );
-}
-
-export default HomePage;
+  export default HomePage;
