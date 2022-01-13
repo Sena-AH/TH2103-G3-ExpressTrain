@@ -1,5 +1,5 @@
 import BookingForm from "./BookingForm";
-// import '../css/searchresult.css';
+import '../css/BookingInformation.css';
 
 function BookingInformationPage() {
   return (

@@ -2,13 +2,10 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 6vw;
+  margin: 2vw;
   padding: 2vw;
   text-align: center;
   background: #FFFFFF;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 5px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-style: normal;
   font-weight: normal;
 }
@@ -57,14 +54,9 @@ padding-bottom: 4vw;
 text-align: center;
 }
 
-.itinerary{
-  /* margin-bottom: 2vw; */
-  padding: 0vw 2vw;
-}
-
 .travel-split-up{
   background-color: rgb(65, 140, 191);
-  border: 1px  rgb(50, 129, 182) solid;
+  border-bottom: 1px  #26375C solid;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 5px;
   padding: 2vw;

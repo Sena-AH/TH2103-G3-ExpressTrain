@@ -65,9 +65,9 @@ keys.forEach(item => item.addEventListener(
 ));
 
   return (
-    <div>
-      <h2>Bokningsinformation</h2>
-      <div className="input-search">
+    <div className='bookingForm'>
+          <h1 className="page-title bookingForm-header">Bokningsinformation</h1>
+          <div className="input-search">
         <input
           id="FirstName"
           className="input"
