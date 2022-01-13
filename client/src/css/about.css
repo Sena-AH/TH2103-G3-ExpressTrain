@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Josefin+Sans');
 /* About */
+.about-text {
+    flex-direction: column;
+  justify-content: center;
+  align-content: center;
+margin: 2vw;
+}
 .about-div{
     
     position: relative;
