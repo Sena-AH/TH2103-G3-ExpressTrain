@@ -1,11 +1,7 @@
 
 function ContactPage() {
     return (
-      <main>
-        <div className="wrapper">
-        <h2>Kontakt</h2>
-        </div>
-      </main>
+        <h2 className="booking-title bold">Kontakt</h2>
     );
   };
 
