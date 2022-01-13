@@ -85,9 +85,6 @@ function HomePage() {
     travelInfo.TravelTo = capitalizeInput(toTemp);
 
     updateContext(travelInfo);
-    console.log(travelInfo.TravelFrom);
-    console.log(travelInfo.TravelTo);
-
   }
 
   function capitalizeInput(input){
