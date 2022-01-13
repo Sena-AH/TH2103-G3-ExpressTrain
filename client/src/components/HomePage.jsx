@@ -78,19 +78,21 @@ function HomePage() {
     } else {
       travelInfo.DateErrorMessage = null;
     }
-    travelInfo.TravelFrom = travelInfo.TravelFrom.toLowerCase();
-    travelInfo.TravelTo = travelInfo.TravelTo.toLowerCase();
+    let fromTemp = travelInfo.TravelFrom.toLowerCase();
+    let toTemp = travelInfo.TravelTo.toLowerCase();
 
-    travelInfo.TravelFrom = capitalizeInput(travelInfo.TravelFrom);
-    travelInfo.TravelTo = capitalizeInput(travelInfo.TravelTo);
+    travelInfo.TravelFrom = capitalizeInput(fromTemp);
+    travelInfo.TravelTo = capitalizeInput(toTemp);
 
-    console.log(travelInfo);
+    updateContext(travelInfo);
+    console.log(travelInfo.TravelFrom);
+    console.log(travelInfo.TravelTo);
 
-    navigate('/SearchResultsPage');
   }
 
   function capitalizeInput(input){
-    return input.slice(0,1).toUpperCase() + input.slice(1, input.length);
+    input = input.slice(0,1).toUpperCase() + input.slice(1, input.length);
+    return input;
   }
 
   function trimContext(){
