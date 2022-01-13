@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import "../css/myBookingsPage.css";
 import "../css/myBookings2Page.css";
 
 function Booking(props) {
@@ -71,7 +72,20 @@ function Booking(props) {
       schedule.ArrivalTime = new Date(schedule.ArrivalTime);
       return schedule;
     });
-    return await Promise.all(schedulesPromises);
+
+    const allSchedules = await Promise.all(schedulesPromises);
+
+    let schedules = [];
+    
+    for (let i = 0; i < allSchedules.length; i++) {
+      const schedule = allSchedules[i];
+      
+      if(!(schedules.some(x => schedule.Id == x.Id))){
+        schedules.push(schedule);
+      }
+    }
+
+    return schedules;
   }
 
   async function fetchStations(schedules) {
@@ -164,10 +178,6 @@ function Booking(props) {
     setIsManipulationCodeRequired(true);
   }
 
-  function handleCheckoutClick(event) {
-    // TODO: Implement
-  }
-
   function handleHomePageClick(event) {
     navigate("/");
   }
@@ -175,9 +185,6 @@ function Booking(props) {
   function Itinerary() {
     let itineraries = [];
 
-    // TODO: only show unique schedules (but include all seatings per schedule)
-    // use Seats: {seats[i]?.join(", ") ?? []})
-    console.log(schedules);
     for (let i = 0; i < schedules.length; i++) {
       const schedule = schedules[i];
       let departureStation =
@@ -189,14 +196,16 @@ function Booking(props) {
       let departureDate = formatDate(schedule.DepartureTime) ?? "unknown";
       let departureTime = formatTime(schedule.DepartureTime) ?? "unknown";
       let arrivalTime = formatTime(schedule.ArrivalTime) ?? "unknown";
-      let seat = stages[i].SeatNumber ?? "unknown";
+      let seats = stages
+        .filter(stage => stage.ScheduleId == schedule.Id) // c# where
+        .map(x => { return x.SeatNumber; }); // c# select
 
       itineraries.push(
         <div key={schedule.Id} className="itinerary-result">
           <div className="itinerary-date">{departureDate}</div>
           <div className="intinerary section-content">
             {departureTime} - {departureStation} (Platform {departurePlatform} -
-            Seat {seat})<br />
+              Seats: {seats?.join(", ") ?? []})<br />
             {arrivalTime} - {destinationStation} (Platform {departurePlatform})
           </div>
         </div>
@@ -226,68 +235,67 @@ function Booking(props) {
 
     return (
       <>
-        <div>
-          <h1 className="page-title">Min bokning</h1>
-        </div>
-        <div className="page-content">
-          <h3 className="page-subtitle">Boking Code: {bookingCode}</h3>
+        <h2 className="booking-title-header bold">Min bokning</h2>
+        
+        <h3 className="page-subtitle">Bokning Code: {bookingCode}</h3>
 
-          <div className="travel-date">
-            <div className="title section-title">Resdatum:</div>
-            <div className="section-content">{travelDate}</div>
-          </div>
+          <div className="page-content">
+            <div className="travel-date">
+              <div className="title section-title">Resdatum:</div>
+              <div className="section-content">{travelDate}</div>
+            </div>
 
-          <div className="itinerary">
-            <div className="section-title">Resväg:</div>
-            <Itinerary />
-          </div>
+            <div className="itinerary">
+              <div className="section-title">Resväg:</div>
+              <Itinerary />
+            </div>
 
-          <div className="name">
-            <br />
-            <div className="section-title">Namn:</div>
-            <div className="section-content">
-              {traveller.FirstName ?? <Skeleton width="100%" />}{" "}
-              {traveller.LastName}
+            <div className="name">
+              <br />
+              <div className="section-title">Namn:</div>
+              <div className="section-content">
+                {traveller.FirstName ?? <Skeleton width="100%" />}{" "}
+                {traveller.LastName}
+              </div>
+            </div>
+
+            <div className="email">
+              <br />
+              <div className="section-title">E-post:</div>
+              <div className="section-content">
+                {traveller.Email ?? <Skeleton width="100%" />}
+              </div>
+            </div>
+
+            <div className="phoneNumber">
+              <br />
+              <div className="section-title">Telefonnummer:</div>
+              <div className="section-content">
+                {traveller.PhoneNumber ?? <Skeleton width="100%" />}
+              </div>
+            </div>
+
+            <div className="price-section">
+              <br />
+              <div className="section-price-title">Totalbelopp:</div>
+              <div className="section-price-content">
+                {booking.Price ? (
+                  booking.Price + " kr"
+                ) : (
+                  <Skeleton width="100%" />
+                )}
+              </div>
             </div>
           </div>
-
-          <div className="email">
-            <br />
-            <div className="section-title">E-post:</div>
-            <div className="section-content">
-              {traveller.Email ?? <Skeleton width="100%" />}
-            </div>
+          <div className="search-btn">
+            <button
+              type="button"
+              id="cancel-booking-btn"
+              onClick={handleCancleBookingClick}
+            >
+              Avboka bokningen
+            </button>
           </div>
-
-          <div className="phoneNumber">
-            <br />
-            <div className="section-title">Telefonnummer:</div>
-            <div className="section-content">
-              {traveller.PhoneNumber ?? <Skeleton width="100%" />}
-            </div>
-          </div>
-
-          {/* <div className="price">
-            <br />
-            <div className="section-title">Totalbelopp:</div>
-            <div className="section-content">
-              {booking.Price ? (
-                booking.Price + " kr"
-              ) : (
-                <Skeleton width="100%" />
-              )}
-            </div>
-          </div> */}
-        </div>
-        <div className="search-btn">
-        <button
-          type="button"
-          id="cancel-booking-btn"
-          onClick={handleCancleBookingClick}
-        >
-          Avboka bokningen
-        </button>
-      </div>
       </>
     );
   }
@@ -295,7 +303,7 @@ function Booking(props) {
   function Error() {
     return (
       <>
-        <div>
+        <div className="error">
           Seems like something went wrong!
           <br />
           Error: {error}
@@ -306,28 +314,28 @@ function Booking(props) {
 
   function ManipulationCodeEntry() {
     return (
-      <div>
+      <div class="bookings-font">
         <div>
-          <h1 className="page-title">Veriferings kod</h1>
+          <h1 className="page-title bold">Veriferings kod</h1>
         </div>
 
         <div className="page-content">
-          <div>
+          <div className="instructions-text">
             Vi behöver din veriferings kod för att kunna gör andringar till din
-            bokning
+            bokning.
           </div>
           <div className="input-form">
             <form onSubmit={handleManipulationCodeEntrySubmit}>
               <label
                 htmlFor="verification-code-input"
-                className="switch-label switch-label-on"
+                className="validation-label"
               >
-                Veriferings kod {isCodeValid ? "" : "(Fel Veriferingskod)"}
+                Veriferings kod {isCodeValid ? '' : <span class="invalid-input-label invalid-input-label-orange">(*Fel Veriferingskod)</span>}
               </label>
-              <div className="input-search">
+              <div className="input-search input-search-mod">
                 <input
                   id="verification-code-input"
-                  className="input"
+                  className={"input " + (isCodeValid ? '' : 'invalid-input-field invalid-input-field-orange')}
                   value={manipulationCode}
                   onChange={handleManipulationCodeChange}
                   autoFocus
@@ -351,7 +359,7 @@ function Booking(props) {
     return (
       <>
         <div>
-          <h1 className="page-title">Din bokning är nu avbokad</h1>
+          <h1 className="page-deleted-title">Din bokning är nu avbokad</h1>
         </div>
         <div className="search-btn">
           <button
