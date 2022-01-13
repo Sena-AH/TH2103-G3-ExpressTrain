@@ -220,8 +220,8 @@ function SeatsPage() {
         cartSeats.push(
           <div key={i} className="seat">
             <button className="takenSeat" onClick={() => TakenSeat()}>
-              {i}, <br />
-              Upptagen
+              {i}<br />
+
             </button>
           </div>
         );
@@ -232,8 +232,8 @@ function SeatsPage() {
               className="availableSeat"
               onClick={() => VacantSeatFirst(i)}
             >
-              {i}, <br />
-              Ledig
+              {i}<br />
+
             </button>
           </div>
         );

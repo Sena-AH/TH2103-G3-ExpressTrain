@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect, useContext } from 'react';
 import { Context } from '../App';
+import '../css/searchresult.css';
+
 
 function SearchResultsPage() {
   const [context, updateContext] = useContext(Context);
@@ -48,13 +50,13 @@ function SearchResultsPage() {
   }, [context]);
 
   useEffect(() => {
-    if(isObjectLoaded(firstTrip)){
+    if (isObjectLoaded(firstTrip)) {
       updateContext(firstTrip)
     }
   }, [firstTrip]);
 
   useEffect(() => {
-    if(isObjectLoaded(secondTrip)){
+    if (isObjectLoaded(secondTrip)) {
       updateContext(secondTrip)
     }
   }, [secondTrip]);
@@ -193,14 +195,14 @@ function SearchResultsPage() {
               ArrayOfPossibleDepartureIds.push(trip.Id)
               ArrayOfPossibleDepartures.push(
                 <div key={trip.Id} className="PossibleDeparture" id={trip.Id}>
-                  <button type="submit" border="solid" value={trip.Id} onClick={() => handleFirstTripClick(trip.Id)}>
-                    <h2 className='StationNames'>Avgår från: {trip.DepartureStationName}</h2>
-                    <div className='DepartureDate'>{schedule.DepartureTime}</div>
-                    <h2 className='StationNames'>Ankommer till: {trip.DestinationStationName}</h2>
-                    <div className='DepartureAndArrival'>{schedule.ArrivalTime}</div>
+                  <button className="search-result-button-css" type="submit" value={trip.Id} onClick={() => handleFirstTripClick(trip.Id)}>
+                    <h3 className='StationNames'>{trip.DepartureStationName} - {trip.DestinationStationName}</h3>
+                    <div className='DepartureDate DepartureAndArrival'>{schedule.DepartureTime} --- {schedule.ArrivalTime}</div>
+
                     <br />
-                    <div className='Price'>{price} kr</div>
+
                   </button>
+                  <div className='Price search-result-price-css'>{price} kr</div>
                 </div>
               )
             }
@@ -217,7 +219,7 @@ function SearchResultsPage() {
     let today = Date.now();
 
     let price;
-    if(date > today + 15){
+    if (date > today + 15) {
       price = priceInfo[1] - 100;
       return (price);
     }
@@ -259,7 +261,7 @@ function SearchResultsPage() {
               ArrayOfPossibleReturnDepartureIds.push(trip.Id);
               ArrayOfPossibleReturnDepartures.push(
                 <div key={trip.Id} className="PossibleDeparture" id={trip.Id}>
-                  <button type="submit" border="solid" value={trip.Id} onClick={() => handleClickReturn(trip.Id)}>
+                  <button className="search-result-button-css" type="submit" value={trip.Id} onClick={() => handleClickReturn(trip.Id)}>
                     <h2 className='StationNames'>Avgår från: {trip.DepartureStationName}</h2>
                     <div className='DepartureDate'>{schedule.DepartureTime}</div>
                     <h2 className='StationNames'>Ankommer till: {trip.DestinationStationName}</h2>
@@ -302,9 +304,9 @@ function SearchResultsPage() {
     if (isSchedulesLoaded()) {
       setStationLocations();
     }
-  
+
   }, [isSchedulesLoaded]);
-  
+
   // Rendering.
   if (TypeOfTrip == 'oneway') {
     return (
