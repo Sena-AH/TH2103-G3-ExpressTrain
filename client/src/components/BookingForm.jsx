@@ -44,8 +44,8 @@ function BookingForm(props) {
 
   // validation script here
 const inp_field = {
-  FirstName: /^[a-zåäöA-ZÅÄÖ]{1,35}$/i,
-  LastName: /^[a-zåäöA-ZÅÄÖ]{1,35}$/i,
+  FirstName: /^[a-zåäöA-ZÅÄÖ.-]{1,35}$/i,
+  LastName: /^[a-zåäöA-ZÅÄÖ.-]{1,35}$/i,
   Email: /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/,
   PhoneNumber:/^\d{10}$/,
 }
@@ -65,9 +65,9 @@ keys.forEach(item => item.addEventListener(
 ));
 
   return (
-    <div className='bookingForm'>
-          <h1 className="page-title bookingForm-header">Bokningsinformation</h1>
-          <div className="input-search">
+    <div id="bookingForm" className='bookingForm'>
+      <h1 className="page-title bookingForm-header">Bokningsinformation</h1>
+      <div className="input-search">
         <input
           id="FirstName"
           className="input"
@@ -78,7 +78,7 @@ keys.forEach(item => item.addEventListener(
           value={navState.TravellerFirstName}
           onChange={handleChange} 
           required
-          />
+        />
       </div>
 
       <div className="input-search">
