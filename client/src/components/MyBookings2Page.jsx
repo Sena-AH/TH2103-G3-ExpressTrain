@@ -324,12 +324,12 @@ function Booking(props) {
     return (
       <div class="bookings-font">
         <div>
-          <h1 className="page-title bold">Veriferings kod</h1>
+          <h1 className="page-title bold">Veriferingskod</h1>
         </div>
 
         <div className="page-content">
           <div className="instructions-text">
-            Vi behöver din veriferings kod för att kunna gör andringar till din
+            Vi behöver din veriferingskod för att kunna gör andringar till din
             bokning.
           </div>
           <form className="validation-form" onSubmit={handleManipulationCodeEntrySubmit}>
