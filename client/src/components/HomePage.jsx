@@ -78,7 +78,19 @@ function HomePage() {
     } else {
       travelInfo.DateErrorMessage = null;
     }
+    travelInfo.TravelFrom = travelInfo.TravelFrom.toLowerCase();
+    travelInfo.TravelTo = travelInfo.TravelTo.toLowerCase();
+
+    travelInfo.TravelFrom = capitalizeInput(travelInfo.TravelFrom);
+    travelInfo.TravelTo = capitalizeInput(travelInfo.TravelTo);
+
+    console.log(travelInfo);
+
     navigate('/SearchResultsPage');
+  }
+
+  function capitalizeInput(input){
+    return input.slice(0,1).toUpperCase() + input.slice(1, input.length);
   }
 
   function trimContext(){
@@ -91,10 +103,10 @@ function HomePage() {
   return (
     <div>
       <div className="input-search">
-        <input maxLength={20} className="input" placeholder="Från:" name="TravelFrom" value={setTravelInfo.TravelFrom} onChange={handleChange} />
+        <input maxLength={35} className="input" placeholder="Från:" name="TravelFrom" value={setTravelInfo.TravelFrom} onChange={handleChange} />
       </div>
       <div className="input-search">
-        <input maxLength={20} className="input" placeholder="Till:" name="TravelTo" value={setTravelInfo.TravelTo} onChange={handleChange} />
+        <input maxLength={35} className="input" placeholder="Till:" name="TravelTo" value={setTravelInfo.TravelTo} onChange={handleChange} />
       </div>
       <div className="input-search" style={{fontWeight: 'bold'}}>
         {travelInfo.LocationErrorMessage}
