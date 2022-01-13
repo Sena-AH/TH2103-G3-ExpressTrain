@@ -26,42 +26,45 @@ margin: 2vw;
   font-weight: normal;
 }
 
-.departure-btn {
-  background: #F9F9F9;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border: none;
-  border-radius: 5px;
-  color: 28475D;
-  padding: 0vw 0vw;
-}
+
 .PossibleDeparture{
 
    padding: 2vw 0vw;
   margin: 2vw 5vw;
 }
-.search-result-button-css{
-  background: #418CBF;
+
+.PossibleDeparture:hover > .search-result-button-css, .PossibleDeparture:focus > .search-result-button-css{
+   background: #418CBF;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   border:none;
-  border-radius: 12px;
-   border-radius: 12px 12px 0px 0px;
-   padding-top: 2%;
-
-font-family: Roboto;
-font-style: normal;
-font-weight: normal;
-font-size: 18px;
-line-height: 28px;
-color: #FFFFFF;
+  border-radius: 12px 12px 0px 0px;
+  padding-top: 2%;
 }
-
-.search-result-price-css{
-  background: #26375C;
+.PossibleDeparture:hover > .search-result-price-css, .PossibleDeparture:focus > .search-result-price-css{
+   background: #26375C;
 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 border-radius: 0px 0px 12px 12px;
 padding: 2%;
 text-align: center;
 color: #FFFFFF;
+}
+
+.search-result-button-css {
+  background: #F9F9F9;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border: none;
+  border-radius: 12px 12px 0px 0px;
+  color: black;
+  padding-top: 2%;
+}
+
+.search-result-price-css{
+  background: rgba(215, 215, 215, 1);
+  color: dimgray;
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+border-radius: 0px 0px 12px 12px;
+padding: 2%;
+text-align: center;
 }
 
 

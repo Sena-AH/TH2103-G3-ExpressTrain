@@ -179,9 +179,10 @@ function SearchResultsPage() {
               ArrayOfPossibleDepartures.push(
                 <div key={trip.Id} className="PossibleDeparture" id={trip.Id}>
                   <button className="search-result-button-css" type="submit" value={trip.Id} onClick={() => handleFirstTripClick(trip.Id)}>
-                    <h3 className='StationNames'>{trip.DepartureStationName} - {trip.DestinationStationName}</h3>
-                    <div className='DepartureDate DepartureAndArrival'>{schedule.DepartureTime} --- {schedule.ArrivalTime}</div>
-
+                    <div className='StationNames'>Från: {trip.DepartureStationName}</div>
+                    <div className='DepartureDate'>{schedule.DepartureTime}</div>
+                    <div className='StationNames'>Till: {trip.DestinationStationName}</div>
+                    <div className='DepartureAndArrival'>{schedule.ArrivalTime}</div>
                     <br />
 
                   </button>
@@ -194,7 +195,7 @@ function SearchResultsPage() {
                       <div className='DepartureAndArrival'>{schedule.ArrivalTime}</div>
                       <br />
                     </button> */}
-                  <div className='TripPrice'>{FirstPrice} kr</div>
+                  {/* <div className='TripPrice'>{FirstPrice} kr</div> */}
 
                 </div>
               )
