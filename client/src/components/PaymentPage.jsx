@@ -63,6 +63,9 @@ function PaymentPage(props) {
   async function fetchSchedules(scheduleIds) {
     const schedulesPromises = scheduleIds.map(async (scheduleId) => {
       const schedule = await fetchUrl(`/api/Schedule/${scheduleId}`);
+      console.log(schedule.DepartureTime);
+      schedule.DepartureTime = fixDate(schedule.DepartureTime);
+      schedule.ArrivalTime = fixDate(schedule.ArrivalTime);
       schedule.DepartureTime = new Date(schedule.DepartureTime);
       schedule.ArrivalTime = new Date(schedule.ArrivalTime);
       return schedule;
@@ -128,6 +131,7 @@ function PaymentPage(props) {
     }
     for (let i = 0; i < schedules.length; i++) {
       const schedule = schedules[i];
+      
       let departureStation =
         stations[schedule.DepartureTrainStationId]?.Name ?? "unknown";
       let destinationStation =
@@ -137,6 +141,10 @@ function PaymentPage(props) {
       let departureDate = formatDate(schedule.DepartureTime) ?? "unknown";
       let departureTime = formatTime(schedule.DepartureTime) ?? "unknown";
       let arrivalTime = formatTime(schedule.ArrivalTime) ?? "unknown";
+
+      // let departureDate = schedule.DepartureTime ?? "unknown";
+      // let departureTime = schedule.DepartureTime ?? "unknown";
+      // let arrivalTime = schedule.ArrivalTime ?? "unknown";
 
       itineraries.push(
         <div key={schedule.Id} className="itinerary-result">
@@ -154,6 +162,13 @@ function PaymentPage(props) {
     ) : (
       <Skeleton count={2} height="3rem" width="100%" />
     );
+  }
+
+  function fixDate(date) {
+    let dateString = date.toString();
+    let addT = dateString.replace(/ /g, "T");
+    let addZ = addT + 'Z';
+    return addT;
   }
 
   function Booking() {
