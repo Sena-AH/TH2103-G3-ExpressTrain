@@ -142,10 +142,6 @@ function PaymentPage(props) {
       let departureTime = formatTime(schedule.DepartureTime) ?? "unknown";
       let arrivalTime = formatTime(schedule.ArrivalTime) ?? "unknown";
 
-      // let departureDate = schedule.DepartureTime ?? "unknown";
-      // let departureTime = schedule.DepartureTime ?? "unknown";
-      // let arrivalTime = schedule.ArrivalTime ?? "unknown";
-
       itineraries.push(
         <div key={schedule.Id} className="itinerary-result">
           <div className="itinerary-date">{departureDate}</div>
@@ -167,7 +163,6 @@ function PaymentPage(props) {
   function fixDate(date) {
     let dateString = date.toString();
     let addT = dateString.replace(/ /g, "T");
-    let addZ = addT + 'Z';
     return addT;
   }
 
