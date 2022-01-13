@@ -330,7 +330,7 @@ function Booking(props) {
                 htmlFor="verification-code-input"
                 className="validation-label"
               >
-                Veriferings kod {isCodeValid ? '' : <span class="invalid-input-label invalid-input-label-orange">(*Fel Veriferingskod)</span>}
+                Veriferingskod {isCodeValid ? '' : <span class="invalid-input-label invalid-input-label-orange">(*Fel Veriferingskod)</span>}
               </label>
               <div className="input-search input-search-mod">
                 <input
