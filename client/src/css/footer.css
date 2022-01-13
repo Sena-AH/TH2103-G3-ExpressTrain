@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap');
+
 footer {
-background-color: #26375C;
+  background-color: #26375C;
   color: #fff;
   height: min-content;
   display: grid;
@@ -10,6 +12,7 @@ background-color: #26375C;
 }
 
 footer p {
+  font-family: 'Julius Sans One', sans-serif;
   text-align: center;
   width: 80%;
   margin-left: auto;
