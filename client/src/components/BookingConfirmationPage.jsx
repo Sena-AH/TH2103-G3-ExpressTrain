@@ -104,8 +104,12 @@ function BookingConfirmationPage() {
         let schedules = [];
         for (const stage of stages) {
             const schedule = await fetchUrl(`/api/Schedule/${stage.ScheduleId}`, 'schedules');
+            schedule.DepartureTime = fixDate(schedule.DepartureTime);
+            schedule.ArrivalTime = fixDate(schedule.ArrivalTime);
             schedule.DepartureTime = new Date(schedule.DepartureTime);
             schedule.ArrivalTime = new Date(schedule.ArrivalTime);
+            console.log(schedule.DepartureTime);
+
             schedules.push(schedule);
         }
         return schedules;
@@ -206,6 +210,12 @@ function BookingConfirmationPage() {
         return (isObjLoaded(stations) && isObjLoaded(platforms));
     }
 
+    function fixDate(date) {
+        let dateString = date.toString();
+        let addT = dateString.replace(/ /g, "T");
+        return addT;
+    }
+
     function formatDate(date) {
         const [day, month, year] = [to2Digits(date.getDate()), to2Digits(date.getMonth() + 1), date.getFullYear()];
         return `${year}-${month}-${day}`;
@@ -226,9 +236,9 @@ function BookingConfirmationPage() {
         return (<>
             <div className="review-square">
                 <div className="thank-you-text">
-                    <h1>Tack för att du bokade hos oss!</h1><br />
-                    <p>Du får bokningsbekräftelsen skickad till den inskrivna epost adressen med Bokningsnummer. </p>
-                    <p>Ha en trevlig resa!</p>
+                    <h1>Tack för att du bokar hos oss!</h1><br />
+                    <p>Spara din bokningsinformation</p>
+                    <p>Trevlig resa!</p>
                 </div>
                 <div>
                     <div className="booking-id-h3">
@@ -289,7 +299,7 @@ function BookingConfirmationPage() {
         return (<>
             <div>
                 Seems like something went wrong!<br />
-        Error: {error}
+                Error: {error}
             </div>
         </>);
     }

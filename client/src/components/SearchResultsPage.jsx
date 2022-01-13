@@ -311,8 +311,7 @@ function SearchResultsPage() {
   function fixDate(date) {
     let dateString = date.toString();
     let addT = dateString.replace(/ /g, "T");
-    let addZ = addT + 'Z';
-    return addZ;
+    return addT;
   }
 
   useEffect(() => {
