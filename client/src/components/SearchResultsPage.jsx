@@ -269,10 +269,8 @@ function SearchResultsPage() {
         <div className='search-result-wrapper'>
           <h2>Avgångar returresa</h2>
           <div className='sorry-msg'>Tyvärr finns inga returresor nära ditt angivna datum.</div>
-          <div>
+          <div className='choice-btn-wrapper'>
             <button className="choice-btn" type="button" onClick={() => handleRestartClick()}>Börja om</button>
-          </div>
-          <div>
             <button className="choice-btn" type="button" onClick={() => handleOnewayClick()}>Boka utresa som enkelresa</button>
           </div>
         </div>
