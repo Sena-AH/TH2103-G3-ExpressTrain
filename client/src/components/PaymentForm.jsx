@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from 'uuid';
 
 function PaymentForm(props) {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ function PaymentForm(props) {
   const payeeAlias = "1231181189";
   const price = bookingData.Price;
   // const message = "TrainCompany trip from ... to ...on date";
-  const payeePaymentReference = "TripReference"; // TODO: implement
+  const payeePaymentReference = uuidv4().split('-').join('');
 
   function handlePhoneNumberChange(event) {
     setPaymentFormData({
@@ -34,7 +35,7 @@ function PaymentForm(props) {
       payeeAlias: payeeAlias,
       amount: price,
       currency: "SEK",
-      message: "Trip to: ???",
+      message: "Express Train",
     };
     (async () => {
       const paymentResult = await createPayment(paymentData);
