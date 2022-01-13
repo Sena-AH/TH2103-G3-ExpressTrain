@@ -1,0 +1,134 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+.bookings-font *{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+}
+
+.booking-title-header{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1.5rem;
+    line-height: 1.75rem;
+
+    color: #418CBF;
+    text-align: center;
+}
+
+.page-subtitle{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1.5rem;
+    line-height: 1.75rem;
+
+    color: #418CBF;
+    width: 90%;
+    margin: auto;
+}
+
+/* box-bg */
+.page-content{
+    background: #418CBF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    margin-bottom: 1.5rem;
+}
+
+/* price-bg */
+.price-section{
+    width: auto;    
+    background: #26375C;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+}
+
+.section-title{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    color: #FFFFFF;
+}
+
+.section-content{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    color: #FFFFFF;
+}
+
+/* Trip-header */
+.section-price-title{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.section-price-content{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    color: #FFFFFF;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.itinerary-date{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    color: #26375C;
+}
+
+.error{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    color: #26375C;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.page-title{
+    width: 95%;
+}
+
+.instructions-text{
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    color: #FFFFFF;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.validation-label {
+    float: left;
+    line-height: 1.2rem;
+    text-align: center;
+    cursor: pointer;
+    margin-left: 1.2rem;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    color: #FFFFFF;
+    font-size: 1rem;
+  }
+
+.input-search-mod{
+    padding: .1rem
+}
+
+.invalid-input-label-orange{
+    /* font-weight: bold; */
+    color: #fda10b;
+    font-size: 1.2rem;
+}
+
+.invalid-input-field-orange{
+    border-color: #fda10b !important;
+}

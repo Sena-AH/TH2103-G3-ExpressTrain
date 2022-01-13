@@ -1,6 +1,7 @@
 /*
  main body
 */
+
 main {
   display: grid;
   grid-template-columns: 1fr;
@@ -86,6 +87,10 @@ Input mall - color
 }
 .input-search input {
   width: 100%;
+}
+
+.bold{
+  font-weight: bold !important;
 }
 
 /*
