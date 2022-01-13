@@ -130,7 +130,7 @@ function HomePage() {
       </div>
 
       <div className="input-date">
-        <input className="input-color" type="date" name="TravelDate" onChange={handleChange}></input>
+        <input className="input-color" placeholder="ÅÅÅÅ-MM-DD" type="date" name="TravelDate" onChange={handleChange}></input>
       </div>
 
       <div className="input-search" style={{fontWeight: 'bold'}}>
