@@ -76,6 +76,7 @@ function SearchResultsPage() {
         const response = await fetch(url);
         const json = await response.json();
         setArrayOfStations(json);
+        console.log(context.TravelFrom)
       } catch (error) {
         console.log("error", error);
       }

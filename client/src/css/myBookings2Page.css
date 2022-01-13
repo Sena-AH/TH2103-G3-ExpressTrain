@@ -102,7 +102,6 @@
     font-style: normal;
     font-weight: normal;
     color: #FFFFFF;
-    text-align: center;
     margin-bottom: 1rem;
 }
 
@@ -111,7 +110,6 @@
     line-height: 1.2rem;
     text-align: center;
     cursor: pointer;
-    margin-left: 1.2rem;
     font-family: Roboto;
     font-style: normal;
     font-weight: normal;
@@ -132,3 +130,28 @@
 .invalid-input-field-orange{
     border-color: #fda10b !important;
 }
+
+.validation-form input{
+    display: unset;
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.validation-btn{
+    text-align: center;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  
+    background-color: #1a883d;
+    border-radius: 5px;
+    display: inline-block;
+    cursor: pointer;
+    color: #ffffff;
+    font-size: 24px;
+    padding: 10px 31px;
+    text-decoration: none;
+    border: none;
+  }
