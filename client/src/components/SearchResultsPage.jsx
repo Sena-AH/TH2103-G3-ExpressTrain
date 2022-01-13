@@ -208,8 +208,8 @@ function SearchResultsPage() {
           <div className='sorry-msg'>
           Tyvärr finns inga resor nära ditt angivna datum.
           </div>
-          <div className="search-btn">
-            <button type="button" onClick={() => handleRestartClick()}>Börja om</button>
+          <div  className='choice-btn-wrapper'>
+            <button className="choice-btn" type="button" onClick={() => handleRestartClick()}>Börja om</button>
           </div>
         </div>
       )
