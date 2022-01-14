@@ -66,7 +66,7 @@ function HomePage() {
 
   function validateInput() {
     resetErrors();
-    const valid = new RegExp(/[^a-zA-ZåäöÅÄÖ]/)
+    const valid = new RegExp(/[^a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]/)
     
       if(valid.test(travelInfo.TravelFrom)){
         console.log(travelInfo.FromCharErrorMessage);
