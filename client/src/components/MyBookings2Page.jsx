@@ -206,9 +206,9 @@ function Booking(props) {
         <div key={schedule.Id} className="itinerary-result">
           <div className="itinerary-date">{departureDate}</div>
           <div className="intinerary section-content">
-            {departureTime} - {departureStation} (Platform {departurePlatform} -
-            Seats: {seats?.join(", ") ?? []})<br />
-            {arrivalTime} - {destinationStation} (Platform {departurePlatform})
+            {departureTime} - {departureStation} (Plattform {departurePlatform} -
+            Sittplats: {seats?.join(", ") ?? []})<br />
+            {arrivalTime} - {destinationStation} (Plattform {departurePlatform})
           </div>
         </div>
       );
@@ -245,7 +245,7 @@ function Booking(props) {
       <>
         <h2 className="booking-title-header bold">Min bokning</h2>
 
-        <h3 className="page-subtitle">Bokning Code: {bookingCode}</h3>
+        <h3 className="page-subtitle">Bokningkod: {bookingCode}</h3>
 
         <div className="page-content">
           <div className="travel-date">
