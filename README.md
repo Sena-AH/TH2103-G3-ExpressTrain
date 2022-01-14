@@ -28,6 +28,13 @@
 - Skriv 'npm start' i den nya terminalen och tryck enter  
 - Appen skall nu starta i din webbläsare  
 
+## Testa från mobilen  
+- Ta reda på din dators ip-adress, du kan ofta hitta den i egenskaper (properties) för det wi-fi du är ansluten till.  
+- Adressen heter IPv4  
+- Se till att det går att se din dator på det lokala nätverket  
+- Kontrollera att din telefon är ansluten till samma wi-fi  
+- Surfa in med mobilen på ip-adressen  
+
 ## Fungerar det inte?  
 - I filträdet till vänster, öppna mappen database och ta bort 'TrainDB2.db' och försök starta igen. Det finns två mappar som heter database på två olika ställen. Kontrollera båda för säkerhets skull!  
 - Om det inte hjälper, följ då stegen under rubriken "Starta projektet första gången"  
