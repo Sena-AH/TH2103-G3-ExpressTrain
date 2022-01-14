@@ -82,11 +82,6 @@ function HomePage() {
       if (!travelInfo.TravelTo) {
         travelInfo.ToErrorMessage = 'Du har inte angivit någon destination';
       }
-        
-      console.log(travelInfo.FromErrorMessage);
-      console.log(travelInfo.TravelTo);
-      console.log(travelInfo.ToErrorMessage);
-
 
       if (!travelInfo.TravelDate) {
         travelInfo.DateErrorMessage = 'Inget datum angivet';
@@ -173,7 +168,7 @@ function HomePage() {
           <input className="input-color" placeholder="ÅÅÅÅ-MM-DD" type="date" name="TravelDate" onChange={handleChange}></input>
         </div>
 
-        <div className="input-search" style={{ fontWeight: 'bold' }}>
+        <div className="destination-error" style={{ fontWeight: 'bold' }}>
           {travelInfo.DateErrorMessage}
         </div>
 
