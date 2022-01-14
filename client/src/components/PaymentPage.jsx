@@ -178,7 +178,6 @@ function PaymentPage(props) {
           <h1 className="page-title">Min bokning</h1>
         </div>
         <div className="page-content">
-          {/* <h3 className="page-subtitle">Boking Code: {bookingCode}</h3> */}
 
           <div className="travel-date">
             <div className="title section-title">Resdatum:</div>

@@ -199,8 +199,8 @@ function Booking(props) {
       let departureTime = formatTime(schedule.DepartureTime) ?? "unknown";
       let arrivalTime = formatTime(schedule.ArrivalTime) ?? "unknown";
       let seats = stages
-        .filter(stage => stage.ScheduleId == schedule.Id) // c# where
-        .map(x => { return x.SeatNumber; }); // c# select
+        .filter(stage => stage.ScheduleId == schedule.Id)
+        .map(x => { return x.SeatNumber; });
 
       itineraries.push(
         <div key={schedule.Id} className="itinerary-result">
@@ -312,9 +312,9 @@ function Booking(props) {
     return (
       <>
         <div className="error">
-          Seems like something went wrong!
+          Något har gott fel, forsök igen!
           <br />
-          Error: {error}
+          Fel: {error}
         </div>
       </>
     );
@@ -324,12 +324,12 @@ function Booking(props) {
     return (
       <div class="bookings-font">
         <div>
-          <h1 className="page-title bold">Veriferingskod</h1>
+          <h1 className="page-title bold">Avbokningskod</h1>
         </div>
 
         <div className="page-content">
           <div className="instructions-text">
-            Vi behöver din veriferingskod för att kunna gör andringar till din
+            Vi behöver din avbokningskod för att kunna gör andringar till din
             bokning.
           </div>
           <form className="validation-form" onSubmit={handleManipulationCodeEntrySubmit}>
@@ -337,9 +337,8 @@ function Booking(props) {
               htmlFor="verification-code-input"
               className="validation-label"
             >
-              Veriferingskod {isCodeValid ? '' : <span class="invalid-input-label invalid-input-label-orange">(*Fel Veriferingskod)</span>}
+              Avbokningskod {isCodeValid ? '' : <span class="invalid-input-label invalid-input-label-orange">(*Fel Avbokningskod)</span>}
             </label>
-            {/* <div className="input-search input-search-mod"> */}
             <input
               id="verification-code-input"
               className={"validation-input booking-input " + (isCodeValid ? '' : 'invalid-input-field invalid-input-field-orange')}
@@ -347,14 +346,11 @@ function Booking(props) {
               onChange={handleManipulationCodeChange}
               autoFocus
             />
-            {/* </div> */}
-            {/* <div className="search-btn"> */}
             <input className="validation-btn booking-btn"
               type="submit"
               id="validate-cancellation-btn"
               value="Avboka bokningen"
             />
-            {/* </div> */}
           </form>
         </div>
       </div>
@@ -371,7 +367,7 @@ function Booking(props) {
             id="home-page-btn"
             onClick={handleHomePageClick}
           >
-            Back to Start
+            Tillbaks till hemsidan
           </button>
         </div>
       </>

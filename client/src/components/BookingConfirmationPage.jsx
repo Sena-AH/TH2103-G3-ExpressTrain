@@ -269,8 +269,8 @@ function BookingConfirmationPage() {
     function Error() {
         return (<>
             <div>
-                Seems like something went wrong!<br />
-                Error: {error}
+                Något har gott fel, forsök igen!<br />
+                Fel: {error}
             </div>
         </>);
     }

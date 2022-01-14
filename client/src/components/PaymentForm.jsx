@@ -11,9 +11,8 @@ function PaymentForm(props) {
   });
 
   const bookingData = props.data ?? {};
-  const payeeAlias = "1231181189"; // company id/phone number?!
+  const payeeAlias = "1231181189";
   const price = bookingData.Price;
-  // const message = "TrainCompany trip from ... to ...on date";
   const payeePaymentReference = uuidv4().split('-').join('');
 
   function handlePhoneNumberChange(event) {
@@ -83,8 +82,6 @@ function PaymentForm(props) {
     const body = {
       TravellerId: travellerId,
       Price: price,
-      // BookingCode: getNewBookingCode(),
-      // ManipulationCode: getNewManipulationCode(),
     };
     const result = await axios.post("/api/Booking", body);
     return result.data;
