@@ -38,3 +38,18 @@
     border-left: 6px solid rgb(0, 0, 0);
     height: 50%;
 }
+
+.departure-error {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    width: 85%;
+    color: rgb(116, 2, 2);
+}
+.destination-error {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    width: 85%;
+    color: rgb(116, 2, 2);
+}
