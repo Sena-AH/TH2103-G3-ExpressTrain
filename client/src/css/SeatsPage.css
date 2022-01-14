@@ -28,7 +28,6 @@ main{
     flex-wrap: wrap;
     border-radius: 60px 60px 0px 0px;
     padding-top: 10%;
-
 }
 
 .seat{
@@ -71,3 +70,12 @@ main{
 
 }
 
+.seat:nth-child(2),.seat:nth-child(6), .seat:nth-child(10), .seat:nth-child(14), .seat:nth-child(18), .seat:nth-child(22), .seat:nth-child(26){
+    display: inline;
+    text-align: left;
+}
+
+.seat:nth-child(3),.seat:nth-child(7), .seat:nth-child(11), .seat:nth-child(15), .seat:nth-child(19), .seat:nth-child(23), .seat:nth-child(27){
+    display: inline;
+    text-align: right;
+}

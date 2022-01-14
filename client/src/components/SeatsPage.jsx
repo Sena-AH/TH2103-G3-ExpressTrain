@@ -315,6 +315,7 @@ function SeatsPage() {
           </div>
 
           <h1 className="Title">
+            <br />
             Sittplatser <br />
           </h1>
           <h2> {destinationStation} <br />
