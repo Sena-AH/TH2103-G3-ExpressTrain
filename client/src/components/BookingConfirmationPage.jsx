@@ -256,9 +256,8 @@ function BookingConfirmationPage() {
 
 
                     </div>
-                    <div className="traveller-blue-line">
-                        <br />
-                    </div>
+
+
                 </div>
 
             </div>

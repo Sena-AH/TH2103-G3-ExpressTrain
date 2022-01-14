@@ -47,11 +47,12 @@
   border-radius: 5px 5px 0px 0px;
 }
 .price-confirmation, .traveller-blue-line{
-background: #26375C;
-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-border-radius: 0px 0px 5px 5px;
-padding-bottom: 4vw;
-text-align: center;
+  background: #26375C;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 0px 0px 5px 5px;
+  padding-bottom: 4%;
+  text-align: center;
+  max-height: 80px;
 }
 
 .travel-split-up{
@@ -60,23 +61,26 @@ text-align: center;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 5px;
   padding: 2vw;
+  margin:3%;
 }
 
 .departure-and-destination-div, .booking-traveller-title{
   text-align: left;
-font-size: 24px;
-line-height: 28px;
+  font-size: 24px;
+  line-height: 28px;
 
 }
 
 .departure-details-div, .destination-details-div{
   text-align: left;
   flex-wrap: wrap;
-flex-direction: row;
-align-items: flex-start;
+  flex-direction: row;
+  align-items: flex-start;
 }
 
 .traveller-detail-div{
   text-align: left;
-padding: 3vw;
+  padding: 3vw;
+  border-radius: 5px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
