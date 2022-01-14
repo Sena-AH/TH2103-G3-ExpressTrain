@@ -1,22 +1,22 @@
-input {
+#bookingForm input {
   display: flex;
   margin-left: auto;
   margin-right: auto;
-  width: 90%;
+  max-width: 90%;
   padding: 1rem;
   box-sizing: border-box;
   border-radius: 5px;
   border: 3px solid #ccc;
   outline: none !important;
 }
-.valid {
+#bookingForm .valid {
   border-color: #36cc36;
 }
-.invalid {
+#bookingForm .invalid {
   border-color: rgb(255, 0, 0);
 }
 
-input + p {
+#bookingForm input + p {
   font-size: 0.9em;
   font-weight: bold;
   margin: 0 10px;
@@ -25,7 +25,7 @@ input + p {
   opacity: 0;
   height: 0;
 }
-input.invalid + p {
+#bookingForm input.invalid + p {
   opacity: 1;
   height: auto;
   margin-bottom: 20px;

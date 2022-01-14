@@ -1,0 +1,14 @@
+.contact {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  justify-content: center;
+  padding: 2vw;
+}
+
+.contact-header {
+  text-align: center;
+  justify-content: center;
+  color: #418CBF;
+  padding-bottom: 1vw;
+}

@@ -199,7 +199,7 @@ function SearchResultsPage() {
     if (isObjectLoaded(ArrayOfPossibleDepartures)) {
       setIsReturnTripPossible(true);
       return (<div className='search-result-wrapper'>
-        <h2>Avgångar</h2>
+        <h1 className="page-title searchResult-header">Avgångar</h1>
         {ArrayOfPossibleDepartures}
       </div>);
     }
@@ -207,7 +207,7 @@ function SearchResultsPage() {
       setIsReturnTripPossible(false);
       return (
         <div className='noPossibleFirstTrips search-result-wrapper'>
-          <h2>Avgångar</h2>
+          <h1 className="page-title searchResult-header">Avgångar</h1>
           <div className='sorry-msg'>
             Tyvärr finns inga resor nära ditt angivna datum.
           </div>
@@ -267,14 +267,14 @@ function SearchResultsPage() {
     })
     if (isObjectLoaded(ArrayOfPossibleReturnDepartures) && isReturnTripPossible) {
       return (<div className='search-result-wrapper'>
-        <h2>Avgångar returresa</h2>
+        <h2 className="searchResult-header">Avgångar returresa</h2>
         {ArrayOfPossibleReturnDepartures}
       </div>);
     }
     else if (!isObjectLoaded(ArrayOfPossibleReturnDepartures)) {
       return (
         <div className='search-result-wrapper'>
-          <h2>Avgångar returresa</h2>
+          <h2 className="searchResult-header">Avgångar returresa</h2>
           <div className='sorry-msg'>Tyvärr finns inga returresor nära ditt angivna datum.</div>
           <div className='choice-btn-wrapper'>
             <button className="choice-btn" type="button" onClick={() => handleRestartClick()}>Börja om</button>

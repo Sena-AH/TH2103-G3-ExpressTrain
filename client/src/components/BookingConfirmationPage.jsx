@@ -24,32 +24,6 @@ function BookingConfirmationPage() {
         })();
     }, [bookingId]);
 
-    // useEffect(() => {
-    //     if (!bookingCode) {
-    //         setError("Booking Code missing.");
-    //         return;
-    //     }
-
-    //     (async () => {
-    //         const booking = await fetchBooking();
-    //         const stages = await fetchStages(booking.Id);
-    //         const schedules = await fetchSchedules(stages);
-    //         const [traveller, stations, platforms] = await Promise.all([
-    //             await fetchTraveller(booking.TravellerId),
-    //             await fetchStations(schedules),
-    //             await fetchPlatforms(schedules),
-    //         ]);
-
-    //         setBooking(booking);
-    //         setTraveller(traveller);
-    //         setStages(stages);
-    //         setSchedules(schedules);
-    //         setStations(stations);
-    //         setPlatforms(platforms);
-    //     })();
-    // }, [bookingCode]);
-
-
     useEffect(() => {
         if (!isObjLoaded(booking)) return;
         (async () => {
@@ -87,10 +61,6 @@ function BookingConfirmationPage() {
     async function fetchBooking() {
         return await fetchUrl(`/api/Booking/${bookingId}`, 'booking');
     }
-
-    // async function fetchBooking() {
-    //     return await fetchUrl(`/api/Booking/BookingCode/${bookingCode}`);
-    // }
 
     async function fetchTraveller(id) {
         return await fetchUrl(`/api/Traveller/${id}`, 'traveller');
@@ -145,6 +115,7 @@ function BookingConfirmationPage() {
         }
         return platforms;
     }
+
     async function fetchUrl(url, errorMessage = 'unknown', method = 'GET') {
         return await fetch(url, {
             method: method

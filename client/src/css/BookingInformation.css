@@ -1,0 +1,10 @@
+.bookingForm {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+}
+
+.bookingForm-header {
+  justify-content: center;
+  color: #418CBF;
+}
