@@ -24,6 +24,8 @@ function SeatsPage() {
   const [startStation, setStartStation] = useState([]);
   const [destinationStation, setDestinationStation] = useState([]);
 
+  const [messages, setMessages] = useState({});
+
   // Utresa
   // hämta schedule
   useEffect(() => {
@@ -180,27 +182,27 @@ function SeatsPage() {
     return !(Object.keys(state).length === 0);
   }
 
-  function TakenSeat() {
-    alert("Upptagen!");
-  }
-
   function VacantSeatFirst(seatNumber) {
+    //messages.msgFirstCart = null;
     if (context.FirstTripSeats.length == context.TravellerAmount) {
-      alert("Du har redan valt sittplats(er)");
+      document.getElementById('msgFirstCart').innerText='Du har redan valt sittplats(er)';
     } else if (context.FirstTripSeats.includes(seatNumber)) {
-      alert("Du har redan valt den här platsen!");
+      document.getElementById('msgFirstCart').innerText='Du har redan valt den här platsen!';
     } else {
+      document.getElementById('msgFirstCart').innerText=' ';
       context.FirstTripSeats.push(seatNumber);
     }
     // byt färg på knappen eller nåt
   }
 
   function VacantSeatSecond(seatNumber) {
+    messages.msgSecondCart = null;
     if (context.SecondTripSeats.length == context.TravellerAmount) {
-      alert("Du har redan valt sittplats(er)");
+      document.getElementById('msgSecondCart').innerText='Du har redan valt sittplats(er)';
     } else if (context.SecondTripSeats.includes(seatNumber)) {
-      alert("Du har redan valt den här platsen!");
+      document.getElementById('msgSecondCart').innerText='Du har redan valt den här platsen!';
     } else {
+      document.getElementById('msgSecondCart').innerText=' ';
       context.SecondTripSeats.push(seatNumber);
     }
 
@@ -219,7 +221,8 @@ function SeatsPage() {
       if (firstTakenSeats.includes(i)) {
         cartSeats.push(
           <div key={i} className="seat">
-            <button className="takenSeat" onClick={() => TakenSeat()}>
+            <button className="takenSeat">
+
               {i}<br />
 
             </button>
@@ -251,7 +254,7 @@ function SeatsPage() {
       if (secondTakenSeats.includes(i)) {
         cartSeats.push(
           <div key={i} className="seat">
-            <button className="takenSeat" onClick={() => TakenSeat()}>
+            <button className="takenSeat">
               {i}<br />
 
             </button>
@@ -292,6 +295,9 @@ function SeatsPage() {
           <div className="TrainCart">
             {isRenderedFirstSeatsLoaded() ? <RenderFirstCart /> : "laddar..."}
           </div>
+          <div className="messages">
+            <p id='msgFirstCart' className="msgFirstCart"> </p>
+          </div>
           <div className="TotalPrice">
             <div className="search-btn">
               <button type="button" onClick={() => navToPayment()}>
@@ -313,7 +319,9 @@ function SeatsPage() {
           <div className="TrainCart">
             {isRenderedFirstSeatsLoaded() ? <RenderFirstCart /> : "laddar..."}
           </div>
-
+          <div className="messages">
+            <p id='msgFirstCart' className="msgFirstCart"> </p>
+          </div>
           <h1 className="Title">
             <br />
             Sittplatser <br />
@@ -324,6 +332,9 @@ function SeatsPage() {
 
           <div className="TrainCart">
             {isRenderedSecondSeatsLoaded() ? <RenderSecondCart /> : "laddar..."}
+          </div>
+          <div className="messages">
+            <p id='msgSecondCart' className="msgSecondCart"> </p>
           </div>
           <div className="TotalPrice">
             <div className="search-btn">
