@@ -145,9 +145,9 @@ function PaymentPage(props) {
         <div key={schedule.Id} className="itinerary-result">
           <div className="itinerary-date">{departureDate}</div>
           <div className="intinerary section-content">
-            {departureTime} - {departureStation} (Platform {departurePlatform} -
-            Seats: {seats[i]?.join(", ") ?? []})<br />
-            {arrivalTime} - {destinationStation} (Platform {departurePlatform})
+            {departureTime} - {departureStation} (Plattform {departurePlatform} -
+            Sittplats: {seats[i]?.join(", ") ?? []})<br />
+            {arrivalTime} - {destinationStation} (Plattform {departurePlatform})
           </div>
         </div>
       );

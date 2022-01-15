@@ -7,7 +7,6 @@ footer {
   display: grid;
   grid-template-columns: 1fr;
   bottom: 0;
-  width: 100%;
   position: relative;
 }
 
@@ -17,5 +16,6 @@ footer p {
   width: 80%;
   margin-left: auto;
   margin-right: auto;
-  padding: 0.5rem;
+  padding-top: 0.7vw;
+  /* padding: 0.5rem; */
 }
