@@ -35,7 +35,11 @@ function BookingForm(props) {
   }
 
   function submitData() {
-    navigate('/SeatsPage', { state: navState });
+    if (isAllFieldsValid()) {
+      navigate('/SeatsPage', { state: navState });
+    } else {
+      navigate('/BookingInformationPage', { state: navState });
+    }
   }
 
   useEffect(() => {
@@ -44,8 +48,8 @@ function BookingForm(props) {
 
   // validation script here
 const inp_field = {
-  FirstName: /^[a-zåäöA-ZÅÄÖ.-]{1,35}$/i,
-  LastName: /^[a-zåäöA-ZÅÄÖ.-]{1,35}$/i,
+  FirstName: /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð.-]{1,35}$/i,
+  LastName: /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð.-]{1,35}$/i,
   Email: /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/,
   PhoneNumber:/^\d{10}$/,
 }
@@ -57,10 +61,24 @@ const validate = (field, regex) => {
   regex.test(field.value) ? field.className = 'valid' : field.className = 'invalid';
 }
 
+
+
+function isAllFieldsValid () {
+  let keys = document.querySelectorAll('input');
+    let allFieldsValid = true;
+    keys.forEach(item => {
+      if (item.className != 'valid') {
+        allFieldsValid = false;
+      }
+    });
+  return allFieldsValid;
+}
+
 let keys = document.querySelectorAll('input');
 keys.forEach(item => item.addEventListener(
   'keyup', e => {
     validate(e.target, inp_field[e.target.attributes.name.value])
+    document.querySelector('#submitBookingForm').disabled=!isAllFieldsValid();
   }
 ));
 
@@ -127,6 +145,7 @@ keys.forEach(item => item.addEventListener(
         <div className="search-btn">
           <button 
             type="button" 
+            id="submitBookingForm"
             className="submit-button" 
             onClick={submitData}
           >
