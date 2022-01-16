@@ -38,7 +38,7 @@ function BookingForm(props) {
     if (isAllFieldsValid()) {
       navigate('/SeatsPage', { state: navState });
     } else {
-      navigate('/BookingInformationPage');
+      navigate('/BookingInformationPage', { state: navState });
     }
   }
 
@@ -61,6 +61,19 @@ const validate = (field, regex) => {
   regex.test(field.value) ? field.className = 'valid' : field.className = 'invalid';
 }
 
+
+
+function isAllFieldsValid () {
+  let keys = document.querySelectorAll('input');
+    let allFieldsValid = true;
+    keys.forEach(item => {
+      if (item.className != 'valid') {
+        allFieldsValid = false;
+      }
+    });
+  return allFieldsValid;
+}
+
 let keys = document.querySelectorAll('input');
 keys.forEach(item => item.addEventListener(
   'keyup', e => {
@@ -68,17 +81,6 @@ keys.forEach(item => item.addEventListener(
     document.querySelector('#submitBookingForm').disabled=!isAllFieldsValid();
   }
 ));
-
-function isAllFieldsValid () {
-  let keys = document.querySelectorAll('input');
-    let allFieldsValid = true;
-    keys.forEach(item => {
-      if (item.className == 'invalid') {
-        allFieldsValid = false;
-      }
-    });
-  return allFieldsValid;
-}
 
   return (
     <div id="bookingForm" className='bookingForm'>
@@ -146,7 +148,6 @@ function isAllFieldsValid () {
             id="submitBookingForm"
             className="submit-button" 
             onClick={submitData}
-            disabled
           >
               Spara och Fortsätt
           </button>
