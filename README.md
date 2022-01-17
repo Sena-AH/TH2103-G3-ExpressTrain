@@ -1,5 +1,10 @@
 # TH2103-G3
 
+## Byta branch i GitHub Desktop inför testning 17/1 -21  
+- Tryck på knappen 'Current branch' i Github Desktop och välj 'before-last-tests'  
+- Tryck på 'Fetch origin'
+- Börja testa!!
+
 ## Första gången  
 - Installera node.js från [nodejs.org](https://nodejs.org/en/download/)  
 
