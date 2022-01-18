@@ -20,7 +20,7 @@ function SearchResultsPage() {
   const [WantedDateOfTrip, setWantedDateOfTrip] = useState();
 
   const [ArrayOfStations, setArrayOfStations] = useState([]);
-  const [ArrayOfAllSchedules, setArrayOfAllSchedules] = useState([]);
+  const [ArrayOfStages, setArrayOfStages] = useState([]);
   const [ArrayOfSchedules, setArrayOfSchedules] = useState([]);
   const [ArrayOfPossibleDepartures, setArrayOfPossibleDepartures] = useState([]);
   const [ArrayOfPossibleDepartureIds, setArrayOfPossibleDepartureIds] = useState([]);
@@ -106,34 +106,23 @@ function SearchResultsPage() {
     fetchData();
   }, [ArrayOfStations]);
 
-  // useEffect(() => {
-  //   // Ska spara alla schedules där amountOfTravellers < available seats
-  //   // foreach schedule hämta cart med schedule.cartId
+  useEffect(() => {
+    const url = `/api/ScheduleStage/`;
 
+    const fetchData = async () => {
+      try {
+        const response = await fetch(url);
+        const json = await response.json();
 
+        setArrayOfStages(json);
 
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
 
-
-
-  //   const url = "api/Schedule/";
-
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch(url);
-  //       const json = await response.json();
-
-  //       setArrayOfSchedules(json);
-
-  //     } catch (error) {
-  //       console.log("error", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [ArrayOfAllSchedules]);
-
-  // hämta taken seats
-  // hämta hur många platser det finns i cart
+    fetchData();
+  }, [ArrayOfSchedules]);
 
   useEffect(() => {
     setDepartureInput(context.TravelFrom);
@@ -144,22 +133,6 @@ function SearchResultsPage() {
     setReturnTripDepartureStation(DestinationStation);
     setReturnTripDestinationStation(DepartureStation);
   }, [ArrayOfSchedules]);
-
-  async function fetchInfo(url) {
-    return await fetch(url)
-      .then((response) => {
-        if (!response.ok) {
-        }
-        return response.json();
-      })
-      .then(
-        (result) => {
-          return result;
-        },
-        () => { }
-      );
-  }
-
 
   function handleFirstTripClick(TripId) {
     setChosenSchedule(TripId);
@@ -199,56 +172,38 @@ function SearchResultsPage() {
     navigate('/');
   }
 
-  async function countTakenSeats(id) {
-    return await fetchInfo(`/api/Schedulestage/ScheduleId/${id}`);
-    //let stages = await fetchInfo(`/api/Schedulestage/ScheduleId/${id}`);
-    // //console.log(stages);
-    // let takenSeats = stages.length;
-    // //console.log(takenSeats)
-    // return takenSeats;
+  function assignTakenSeats (schedule) {
+    let counter = 0;
 
-  }
-
-  async function validateSchedule(schedule) {
-    let takenSeats = await countTakenSeats(schedule.Id);
-    
-    let availableSeats = 28 - takenSeats.length;
-    if (AmountOfTravellers > availableSeats) {
-    console.log(availableSeats);
+    ArrayOfStages.forEach(element => {
       
-      return true;
-    }
-    //console.log(availableSeats);
-    return false;
-  }
+    });
 
-  async function countAvailableSeats(id) {
-    let takenSeats = await countTakenSeats(id);
-    
-    let availableSeats = 28 - takenSeats.length;
-    console.log(availableSeats)
-    return availableSeats;
-  }
+    ArrayOfStages.forEach(stage => {
+      if(stage.ScheduleId == schedule.Id){
+        counter++;
+      }
+    });
+    schedule.seatsTaken = counter;
+}
 
   function Schedules() {
-    //console.log(ArrayOfSchedules);
     ArrayOfSchedules.forEach(schedule => {
-      let availableSeats = countAvailableSeats(schedule.id);
+      assignTakenSeats(schedule);
       let selectedTime = fixDate(WantedDateOfTrip);
       let selectedTimeNew = new Date(selectedTime);
 
       let departureTime = fixDate(schedule.DepartureTime);
       let departureTimeNew = new Date(departureTime);
-      
 
       if (departureTimeNew >= selectedTimeNew
         && schedule.DepartureTrainStationId === DepartureStation.Id
         && schedule.DestinationTrainStationId === DestinationStation.Id
-        && AmountOfTravellers <= availableSeats) {
+        && AmountOfTravellers <= (28 - schedule.seatsTaken)
+      ) {
         let trip = schedule;
 
         ArrayOfStations.forEach(station => {
-          //let isScheduleInvalid = validateSchedule(schedule);
 
           if (schedule.DepartureTrainStationId === station.Id) {
             trip.DepartureStationName = station.Name;
@@ -257,9 +212,7 @@ function SearchResultsPage() {
             trip.DestinationStationName = station.Name;
           }
 
-          if (trip.DepartureStationName 
-            && trip.DestinationStationName) {
-              //&& !isScheduleInvalid) {
+          if (trip.DepartureStationName && trip.DestinationStationName) {
             if (!ArrayOfPossibleDepartureIds.includes(trip.Id)) {
 
               ArrayOfPossibleDepartureIds.push(trip.Id)
