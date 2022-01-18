@@ -259,7 +259,7 @@ function SearchResultsPage() {
 
   function RoundTrip() {
     ArrayOfSchedules.forEach(schedule => {
-
+      assignTakenSeats(schedule);
       let scheduleDepartureTime = fixDate(schedule.DepartureTime);
       let scheduleDepartureTimeNew = new Date(scheduleDepartureTime);
 
@@ -268,7 +268,8 @@ function SearchResultsPage() {
 
       if (scheduleDepartureTimeNew > dateFixedWantedDate
         && ReturnTripDepartureStation.Id == schedule.DepartureTrainStationId
-        && ReturnTripDestinationStation.Id == schedule.DestinationTrainStationId) {
+        && ReturnTripDestinationStation.Id == schedule.DestinationTrainStationId
+        && AmountOfTravellers <= (28 - schedule.seatsTaken)) {
         let trip = schedule;
         ArrayOfStations.forEach(station => {
 
