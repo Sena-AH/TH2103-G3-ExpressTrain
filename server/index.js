@@ -209,8 +209,6 @@ webServer.post('/api/Booking', (req, res) => {
     req.body.BookingCode = getNewBookingCode();
     req.body.ManipulationCode = getNewManipulationCode();
     req.params.table = 'Booking';
-    console.log(req.body);
-    console.log(req.params);
     // run query and return result
     runQuery(req, res, `
       INSERT INTO ${req.params.table} (${Object.keys(req.body)})     
