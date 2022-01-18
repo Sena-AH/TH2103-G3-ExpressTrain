@@ -21,9 +21,10 @@ function Tickets(props) {
 }
 
 function HomePage() {
-
+  
   const [context, updateContext] = useContext(Context)
   const [travelInfo, setTravelInfo] = useState({});
+  const [ArrayOfStations, setArrayOfStations] = useState([]);
 
   let navigate = useNavigate();
 
@@ -46,10 +47,41 @@ function HomePage() {
     updateContext(travelInfo);
   }, [travelInfo]);
 
+  useEffect(() => {
+    const url = "api/TrainStation/";
+
+    const fetchData = async () => {
+      try {
+        const response = await fetch(url);
+        const json = await response.json();
+        setArrayOfStations(json);
+      } catch (error) {
+        console.log("error", error);
+      }
+    } 
+    fetchData(); 
+  }, []);
+
+  function checkErrorMessages(){
+    let valid = false;
+    if(!travelInfo.FromErrorMessage
+      && !travelInfo.ToErrorMessage
+      && !travelInfo.ToCharErrorMessage
+      && !travelInfo.FromCharErrorMessage
+      && !travelInfo.FromExistsErrorMessage
+      && !travelInfo.ToExistsErrorMessage
+      && !travelInfo.IdenticalErrorMessage
+      && !travelInfo.DateErrorMessage){
+        valid = true;
+      }
+      return valid;
+  }
 
   function handleClick() {
+    
     validateInput();
-    if (!travelInfo.LocationErrorMessage && travelInfo.TravelDate) {
+    checkLocations(travelInfo.TravelFrom, travelInfo.TravelTo);
+    if (checkErrorMessages()) {
       trimContext();
       navigate('/SearchResultsPage');
     } else {
@@ -57,32 +89,66 @@ function HomePage() {
     }
   }
 
+  function checkLocations(departure, arrival) {
+
+    if(departure == arrival && departure && arrival){
+      travelInfo.IdenticalErrorMessage = 'Vänligen ange två olika stationer'
+    } else {
+
+      if(!travelInfo.FromErrorMessage){
+        if(!travelInfo.FromCharErrorMessage){
+          travelInfo.FromExistsErrorMessage = 'Hittade inga resor från den önskade avgångsorten';
+        }
+      }
+      if(!travelInfo.ToErrorMessage){
+        if(!travelInfo.ToCharErrorMessage){
+          travelInfo.ToExistsErrorMessage = 'Hittade inga resor till den önskade destinationen';
+        }
+      }
+
+      ArrayOfStations.forEach(station => {
+        if(departure == station.Location){
+          travelInfo.FromExistsErrorMessage = null;
+        }else if (arrival == station.Location){
+          travelInfo.ToExistsErrorMessage = null;
+        }
+      });
+    }
+      
+  }
+
   function resetErrors() {
     travelInfo.ToCharErrorMessage = null;
     travelInfo.ToErrorMessage = null;
     travelInfo.FromCharErrorMessage = null;
     travelInfo.FromErrorMessage = null;
+    travelInfo.IdenticalErrorMessage = null;
+    travelInfo.FromExistsErrorMessage = null;
+    travelInfo.ToExistsErrorMessage = null;
   }
 
-  function validateInput() {
-    resetErrors();
-    const valid = new RegExp(/[^a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]/)
-    
-      if(valid.test(travelInfo.TravelFrom)){
-        console.log(travelInfo.FromCharErrorMessage);
-        travelInfo.FromCharErrorMessage = 'Vänligen ange enbart bokstäver för avgång';
-      } 
-      if(valid.test(travelInfo.TravelTo)){
-        console.log(travelInfo.ToCharErrorMessage);
-        travelInfo.ToCharErrorMessage = 'Vänligen ange enbart bokstäver för destination';
-      }
-      if (!travelInfo.TravelFrom) {
-        travelInfo.FromErrorMessage = 'Du har inte angivit någon avgång';
-      }
-      if (!travelInfo.TravelTo) {
-        travelInfo.ToErrorMessage = 'Du har inte angivit någon destination';
-      }
+  
 
+  function validateInput() {
+    
+    resetErrors();
+
+    if(travelInfo.ToExistsErrorMessage == null || travelInfo.FromExistsErrorMessage == null){
+        const valid = new RegExp(/[^a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]/)
+        if(valid.test(travelInfo.TravelFrom)){
+          travelInfo.FromCharErrorMessage = 'Vänligen ange enbart bokstäver för avgång';
+        } 
+        if(valid.test(travelInfo.TravelTo)){
+          travelInfo.ToCharErrorMessage = 'Vänligen ange enbart bokstäver för destination';
+        }
+        if (!travelInfo.TravelFrom) {
+          travelInfo.FromErrorMessage = 'Du har inte angivit någon avgång';
+        }
+        if (!travelInfo.TravelTo) {
+          travelInfo.ToErrorMessage = 'Du har inte angivit någon destination';
+        }
+      }
+      
       if (!travelInfo.TravelDate) {
         travelInfo.DateErrorMessage = 'Inget datum angivet';
       } else {
@@ -96,6 +162,7 @@ function HomePage() {
         let toTemp = travelInfo.TravelTo.toLowerCase();
         travelInfo.TravelTo = capitalizeInput(toTemp);
       }
+
       updateContext(travelInfo);
     }
 
@@ -123,6 +190,7 @@ function HomePage() {
           <input maxLength={35} className="input" placeholder="Från:" name="TravelFrom" value={setTravelInfo.TravelFrom} onChange={handleChange} />
         </div>
         <div className="departure-error" style={{ fontWeight: 'bold' }}>
+          {travelInfo.FromExistsErrorMessage}
           {travelInfo.FromErrorMessage}
           {travelInfo.FromCharErrorMessage}
         </div>
@@ -131,8 +199,10 @@ function HomePage() {
           <input maxLength={35} className="input" placeholder="Till:" name="TravelTo" value={setTravelInfo.TravelTo} onChange={handleChange} />
         </div>
         <div className="destination-error" style={{ fontWeight: 'bold' }}>
+          {travelInfo.ToExistsErrorMessage}
           {travelInfo.ToErrorMessage}
           {travelInfo.ToCharErrorMessage}
+          {travelInfo.IdenticalErrorMessage}
         </div>
 
         <form className="input-form" action="" method="post">
