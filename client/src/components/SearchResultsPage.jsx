@@ -121,7 +121,20 @@ function SearchResultsPage() {
     };
 
     fetchData();
-  }, [ArrayOfSchedules]);
+  }, [WantedDateOfTrip]);
+
+  useEffect(() => {
+    //forloop i forloop
+    for (let x = 0; x < ArrayOfSchedules.length; x++) {
+      let counter = 0;
+      for (let i = 0; i < ArrayOfStages.length; i++) {
+        if (ArrayOfStages[i].ScheduleId == ArrayOfSchedules[x].Id) {
+          counter ++;
+        }
+      }
+      ArrayOfSchedules[x].seatsTaken = counter;
+    }
+  }, [ArrayOfStages]);
 
   useEffect(() => {
     setDepartureInput(context.TravelFrom);
@@ -171,24 +184,10 @@ function SearchResultsPage() {
     navigate('/');
   }
 
-  function assignTakenSeats (schedule) {
-    let counter = 0;
-
-    ArrayOfStages.forEach(element => {
-      
-    });
-
-    ArrayOfStages.forEach(stage => {
-      if(stage.ScheduleId == schedule.Id){
-        counter++;
-      }
-    });
-    schedule.seatsTaken = counter;
-}
-
   function Schedules() {
     ArrayOfSchedules.forEach(schedule => {
-      assignTakenSeats(schedule);
+      console.log(schedule.seatsTaken);
+      let availableSeats = 28 - schedule.seatsTaken;
       let selectedTime = fixDate(WantedDateOfTrip);
       let selectedTimeNew = new Date(selectedTime);
 
@@ -198,7 +197,7 @@ function SearchResultsPage() {
       if (departureTimeNew >= selectedTimeNew
         && schedule.DepartureTrainStationId === DepartureStation.Id
         && schedule.DestinationTrainStationId === DestinationStation.Id
-        && AmountOfTravellers <= (28 - schedule.seatsTaken)
+        && AmountOfTravellers <= availableSeats
       ) {
         let trip = schedule;
 
@@ -213,6 +212,7 @@ function SearchResultsPage() {
 
           if (trip.DepartureStationName && trip.DestinationStationName) {
             if (!ArrayOfPossibleDepartureIds.includes(trip.Id)) {
+              console.log(availableSeats);
 
               ArrayOfPossibleDepartureIds.push(trip.Id)
               ArrayOfPossibleDepartures.push(
@@ -259,7 +259,6 @@ function SearchResultsPage() {
 
   function RoundTrip() {
     ArrayOfSchedules.forEach(schedule => {
-      assignTakenSeats(schedule);
       let scheduleDepartureTime = fixDate(schedule.DepartureTime);
       let scheduleDepartureTimeNew = new Date(scheduleDepartureTime);
 
@@ -332,6 +331,10 @@ function SearchResultsPage() {
     return (isObjectLoaded(ArrayOfSchedules));
   }
 
+  function isStagesLoaded() {
+    return (isObjectLoaded(ArrayOfStages));
+  }
+
   function isObjectLoaded(state) {
     if (state === null) return false;
     if (state === undefined) return false;
@@ -365,15 +368,15 @@ function SearchResultsPage() {
   if (TypeOfTrip == 'oneway') {
     return (
       <div className='search-result'>
-        {isSchedulesLoaded() ? <Schedules /> : 'laddar...'}
+        {isStagesLoaded() ? <Schedules /> : 'laddar...'}
       </div>
     );
 
   } else {
     return (
       <div className='search-result'>
-        {isSchedulesLoaded() ? <Schedules /> : 'laddar...'}
-        {isSchedulesLoaded() ? <RoundTrip /> : 'laddar...'}
+        {isStagesLoaded() ? <Schedules /> : 'laddar...'}
+        {isStagesLoaded() ? <RoundTrip /> : 'laddar...'}
       </div>
     )
   }
