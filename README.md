@@ -67,7 +67,14 @@ Vi har använt oss av följande ramverk och delsystem:
 
 
 ## Mappstruktur  
-TBD Kenny (skapare av mappstrukturen i början av projektet)
+- Projektet är uppdelat i två delar. Backend och Frontend.
+- Backend delen ligger i mappen "server". Här har vi installerat node.js, skapat "swish" mapp för betalningshantering, och har vårt Rest API.
+- Frontend delen ligger i mappen "client". Här har vi installerat React, och placerat all vår HTML/CSS och jsx kod.
+- I Frontend har vi alla våra jsx filer i "components" mappen.
+- "database" mappen i "server" mappen innehåller "DbInitializer.js" som seedar databasen.
+- "database" mappen utanför "server" mappen innehåller databasen som har all seedad data och sparar ny data från appen.
+- "img" mappen innehåller bilder och vår logo.
+
 
 ## Databasen  
 I '/server/database' ligger filen 'DbInitializer.js'.  
